@@ -10,12 +10,9 @@ import java.net.URI;
 
 public class BpmClientFactory {
 
-	private static final BpmClientFactory INSTANCE = new BpmClientFactory();
-	
-	public static BpmClientFactory getFactory() {
-		return INSTANCE;
-	}
-	
+	private static final String HTTP_SCHEME = "http";
+	private static final String HTTPS_SCHEME = "https";
+
 	private BpmClientFactory() {}
 	
 	/**
@@ -25,8 +22,17 @@ public class BpmClientFactory {
 	 * @param password is a user password.
 	 * @return {@link ru.bpmink.bpm.api.client.BpmClient} instance.
 	 */
-	public BpmClient createClient(URI serverUri, String user, String password) {
-		return new SimpleBpmClient(serverUri, user, password);
+	public static BpmClient createClient(URI serverUri, String user, String password) {
+		if (serverUri == null) {
+			throw new IllegalArgumentException("Server uri must be specified");
+		}
+		if (HTTP_SCHEME.equals(serverUri.getScheme())) {
+			return new SimpleBpmClient(serverUri, user, password);
+		} else if (HTTPS_SCHEME.equals(serverUri.getScheme())) {
+			return new SecuredBpmClient(serverUri, user, password);
+		} else {
+			throw new IllegalArgumentException("Unknown scheme: " + serverUri.getScheme());
+		}
 	}
 	
 	/**
@@ -34,15 +40,13 @@ public class BpmClientFactory {
 	 * @param serverUri is a absolute server host/port path.
 	 * @param user is a login by which the actions will be performed.
 	 * @param password is a user password.
-	 * @param useSSL shows, if you need use SSL connection.
 	 * @return {@link ru.bpmink.bpm.api.client.BpmClient} instance.
 	 */
-	public BpmClient createClient(URI serverUri, String user, String password, boolean useSSL) {
-		if (useSSL) {
-			return new SecuredBpmClient(serverUri, user, password);
-		} else {
-			return new SimpleBpmClient(serverUri, user, password);
+	public static BpmClient createClient(String serverUri, String user, String password) {
+		if (serverUri == null) {
+			throw new IllegalArgumentException("Server uri must be specified");
 		}
+		return createClient(URI.create(serverUri), user, password);
 	}
 
 	/**
@@ -54,7 +58,7 @@ public class BpmClientFactory {
 	 * @param kdc key distribution center (KDC) is part of a cryptosystem intended to reduce the risks inherent in exchanging keys.
 	 * @return {@link ru.bpmink.bpm.api.client.BpmClient} instance.
 	 */
-	public BpmClient createClient(URI serverUri, String user, String password, String domain, String kdc) {
+	public static BpmClient createClient(URI serverUri, String user, String password, String domain, String kdc) {
 		return new KerberosBpmClient(serverUri, user, password, domain, kdc);
 	}
 	
