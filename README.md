@@ -1,7 +1,7 @@
 # IBM BPM Rest Client
 ---
 
-* Note: ***If you want to use rest client on Websphere, you should follow the recomendations from [developerworks forum](https://www.ibm.com/developerworks/community/forums/html/topic?id=77777777-0000-0000-0000-000014853459)***
+* Note: ***If you want to use rest client on Websphere, you should follow the recommendations from [developerworks forum](https://www.ibm.com/developerworks/community/forums/html/topic?id=77777777-0000-0000-0000-000014853459)***
 
 ## API Usage Examples:
 
@@ -21,13 +21,13 @@ Creating of bpm client as simple as:
 For now just a few endpoints are implemented.
 ### Exposed api:
 
-To obtaint exposed items you can use following methods:
+To obtain exposed items you can use following methods:
     
     ExposedItems exposedItems = bpmClient.getExposedClient().listItems(ItemType.PROCESS); //Or Just .listItems();
 
     Item itemByTypeAndName = bpmClient.getExposedClient().getItemByName(ItemType.SERVICE, "MyService");
     Item itemByName = bpmClient.getExposedClient().getItemByName("MyUnknownTypeItem");
-*Exposed api calls, that return single exposed item can throw a RestException, if the api call was unsuccessfull.*
+*Exposed api calls, that return single exposed item can throw a RestException, if the api call was unsuccessful.*
 
     logger.info(exposedItems.describe());
 
@@ -60,17 +60,17 @@ Output will be something like:
                         exception = null
                     ]
                     
-You can check if the api call was successfull or not:
+You can check if the api call was successful or not:
     
     exposedItems.isExceptional();
 
 And do a lot of other stuff:
 (For example you can obtain process id's by process name and run unit tests for this process)
 
-    List<Item> items = exposedItems.getPayload().getExposedItemsList(); //getPayload() will throw a RestException, if the api call was unsuccessfull.
+    List<Item> items = exposedItems.getPayload().getExposedItemsList(); //getPayload() will throw a RestException, if the api call was unsuccessful.
     for (Item item : items) {
     	if (item.getProcessAppName().equals("Advanced HR Open New Position")) {
-    		//The id of the Busines Process Definition to be used.
+    		//The id of the Business Process Definition to be used.
     		String itemID = item.getItemId();
     		//The id of the process application containing the Business Process Definition.
     		//If this parameter is specified, then the tip snapshot of the default branch within the specified process application will be used.
@@ -221,7 +221,7 @@ Or you can do some more things, like 'resume', 'suspend' or 'terminate':
     bpmClient.getProcessClient().suspendProcess(piid);
     bpmClient.getProcessClient().terminateProcess(piid);
 
-All the calls return ProcessDetails type. It can be usefull for different checks if you are using junit for process tests.
+All the calls return ProcessDetails type. It can be useful for different checks if you are using junit for process tests.
 
 ### Task api:
 
@@ -273,7 +273,7 @@ You can use following api possibilities:
 	//Start task
 	TaskStartData startData = bpmClient.getTaskClient().startTask(tkiid);
 
-	//Assing task to somebody
+	//Assign task to somebody
 	TaskDetails taskDetails = bpmClient.getTaskClient().assignTaskToMe(tkiid);
 	TaskDetails taskDetails = bpmClient.getTaskClient().assignTaskBack(tkiid);
 	TaskDetails taskDetails = bpmClient.getTaskClient().assignTaskToUser(tkiid, userName);
