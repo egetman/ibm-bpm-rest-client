@@ -22,6 +22,13 @@
 		<slf4j.version>1.7.7</slf4j.version>
 	</properties>
 
+	<licenses>
+		<license>
+			<name>Apache Software License 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
