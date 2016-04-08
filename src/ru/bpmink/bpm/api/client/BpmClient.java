@@ -5,7 +5,7 @@ import java.io.Closeable;
 
 /**
  * Public root api client.
- * You can obtaint different api client's through it.
+ * You can obtain different api client's through it.
  * {@link ru.bpmink.bpm.api.client.BpmClient} propagates all it's settings to another client's.
  */
 public interface BpmClient extends Closeable {

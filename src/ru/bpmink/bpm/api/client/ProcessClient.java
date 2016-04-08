@@ -17,7 +17,7 @@ public interface ProcessClient {
 	/**
 	 * Start a new instance of a process. One of snapshotId, branchId, or processAppId must be specified.
 	 * Will use only one parameter of processId, snapshotId or branchId. Which one is not specified. Set another params to null for exact behavior.
-	 * @param bpdId The id of the Busines Process Definition to be used.
+	 * @param bpdId The id of the Business Process Definition to be used.
 	 * @param processAppId The id of the process application containing the Business Process Definition. If this parameter is specified, then the tip snapshot of the default branch within the specified process application will be used.
 	 * @param snapshotId The id of the snapshot containing the Business Process Definition.
 	 * @param branchId The id of the branch containing the Business Process Definition. If this parameter is specified, then the tip snapshot of the specified branch will be used.

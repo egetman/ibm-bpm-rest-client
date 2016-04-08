@@ -19,7 +19,7 @@ public class RestRootEntity <T extends Describable> extends RestEntity {
     private RestException exception;
 
     /**
-     * @return true if the API call was unsuccessfull, and {@link ru.bpmink.bpm.model.common.RestRootEntity} contains exception information.
+     * @return true if the API call was unsuccessful, and {@link ru.bpmink.bpm.model.common.RestRootEntity} contains exception information.
      */
     public boolean isExceptional() {
         return exception != null;
@@ -27,7 +27,7 @@ public class RestRootEntity <T extends Describable> extends RestEntity {
 
     /**
      * @return Success API call data.
-     * @throws ru.bpmink.bpm.model.common.RestException if the API call was unsuccessfull, and {@link ru.bpmink.bpm.model.common.RestRootEntity}
+     * @throws ru.bpmink.bpm.model.common.RestException if the API call was unsuccessful, and {@link ru.bpmink.bpm.model.common.RestRootEntity}
      *         contain any exception details.
      */
     public T getPayload() {
