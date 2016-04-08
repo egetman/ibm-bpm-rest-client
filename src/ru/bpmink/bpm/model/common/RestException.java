@@ -112,31 +112,4 @@ class RestException extends RuntimeException {
         return responses;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public void setExceptionType(String exceptionType) {
-        this.exceptionType = exceptionType;
-    }
-
-    public void setErrorNumber(String errorNumber) {
-        this.errorNumber = errorNumber;
-    }
-
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
-    }
-
-    public void setErrorMessageParameters(List<String> errorMessageParameters) {
-        this.errorMessageParameters = errorMessageParameters;
-    }
-
-    public void setProgrammersDetails(Object programmersDetails) {
-        this.programmersDetails = programmersDetails;
-    }
-
-    public void setResponses(Object responses) {
-        this.responses = responses;
-    }
 }

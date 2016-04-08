@@ -77,9 +77,9 @@ public interface TaskClient {
 	TaskDetails completeTask(@Nonnull String tkiid, @Nullable Map<String, Object> input);
 
 	/**
-	 * Get data from specified task
+	 * Get data from specified task.
 	 * @param tkiid The id of the task instance to be assigned.
-	 * @param fields Comma-separated list of fields
+	 * @param fields Comma-separated list of fields.
 	 * @return task data information (see {@link ru.bpmink.bpm.model.task.TaskData});
 	 * @throws IllegalArgumentException if tkiid is null
 	 */

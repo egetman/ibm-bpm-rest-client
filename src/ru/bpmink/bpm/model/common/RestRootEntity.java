@@ -25,10 +25,6 @@ public class RestRootEntity <T extends Describable> extends RestEntity {
         return exception != null;
     }
 
-    public void setException(RestException exception) {
-        this.exception = exception;
-    }
-
     /**
      * @return Success API call data.
      * @throws ru.bpmink.bpm.model.common.RestException if the API call was unsuccessfull, and {@link ru.bpmink.bpm.model.common.RestRootEntity}
@@ -41,19 +37,11 @@ public class RestRootEntity <T extends Describable> extends RestEntity {
         return payload;
     }
 
-    public void setPayload(T payload) {
-        this.payload = payload;
-    }
-
     /**
      * @return The status of the API call.
      */
     public String getStatus() {
         return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     @Override
