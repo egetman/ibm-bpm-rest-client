@@ -2,10 +2,12 @@ package ru.bpmink.bpm.api.client;
 
 import ru.bpmink.bpm.model.task.TaskData;
 import ru.bpmink.bpm.model.task.TaskDetails;
+import ru.bpmink.bpm.model.task.TaskPriority;
 import ru.bpmink.bpm.model.task.TaskStartData;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Date;
 import java.util.Map;
 
 
@@ -83,6 +85,25 @@ public interface TaskClient {
 	 * @return task data information (see {@link ru.bpmink.bpm.model.task.TaskData});
 	 * @throws IllegalArgumentException if tkiid is null
 	 */
-	TaskData getData(@Nonnull String tkiid, @Nullable String fields);
+	TaskData getTaskData(@Nonnull String tkiid, @Nullable String fields);
+
+    /**
+     * Update a task's priority.
+     * @param tkiid The id of the task instance to be assigned.
+     * @param priority Is new task priority. (see {@link ru.bpmink.bpm.model.task.TaskPriority});
+     * @return the detailed task information (see {@link ru.bpmink.bpm.model.task.TaskDetails});
+     * @throws IllegalArgumentException if priority is null
+     */
+    TaskDetails updateTaskPriority(@Nonnull String tkiid, @Nonnull TaskPriority priority);
+
+
+    /**
+     * Update a task's due time.
+     * @param tkiid The id of the task instance to be assigned.
+     * @param dueTime Is new task due time.
+     * @return the detailed task information (see {@link ru.bpmink.bpm.model.task.TaskDetails});
+     * @throws IllegalArgumentException if dueTime is null
+     */
+    TaskDetails updateTaskDueTime(@Nonnull String tkiid, @Nonnull Date dueTime);
 
 }

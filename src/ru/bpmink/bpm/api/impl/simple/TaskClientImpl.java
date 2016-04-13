@@ -14,12 +14,15 @@ import org.apache.http.protocol.HttpContext;
 import ru.bpmink.bpm.api.client.TaskClient;
 import ru.bpmink.bpm.model.task.TaskData;
 import ru.bpmink.bpm.model.task.TaskDetails;
+import ru.bpmink.bpm.model.task.TaskPriority;
 import ru.bpmink.bpm.model.task.TaskStartData;
 import ru.bpmink.util.SafeUriBuilder;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.net.URI;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 @Immutable
@@ -32,12 +35,15 @@ public class TaskClientImpl extends BaseClient implements TaskClient {
 	//Request parameters constants
 	private static final String ACTION = "action";
 	private static final String PARAMS = "params";
-	
-	//Methods for tasks
+    private static final String DUE_DATE = "dueDate";
+    private static final String PRIORITY = "priority";
+
+    //Methods for tasks
 	private static final String ACTION_ASSIGN = "assign";
 	private static final String ACTION_COMPLETE = "finish";
 	private static final String ACTION_START = "start";
 	private static final String ACTION_GET_DATA = "getData";
+	private static final String ACTION_UPDATE = "update";
 	@SuppressWarnings("unused")
 	private static final String ACTION_SET_DATA = "setData";
 	
@@ -227,8 +233,72 @@ public class TaskClientImpl extends BaseClient implements TaskClient {
 		return gson.fromJson(body, TaskDetails.class);
 	}
 
-	@Override
-	public TaskData getData(@Nonnull String tkiid, String fields) {
+    @Override
+    public TaskDetails updateTaskDueTime(@Nonnull String tkiid, @Nonnull Date dueTime) {
+        tkiid = nonNull(tkiid, "Task id (tkiid) can't be null!");
+        dueTime = nonNull(dueTime, "Task dueTime can't be null!");
+        Gson gson = new GsonBuilder().setDateFormat(DATE_TIME_FORMAT).create();
+
+        URI uri = new SafeUriBuilder(rootUri).addPath(tkiid).addParameter(ACTION, ACTION_UPDATE).addParameter(DUE_DATE, dueTime, new SimpleDateFormat(DATE_TIME_FORMAT)).build();
+
+
+        HttpPost request = new HttpPost(uri);
+        setRequestTimeOut(request, DEFAULT_TIMEOUT);
+        setHeadersPost(request);
+
+        logRequest(request, null);
+
+        String body;
+        HttpResponse response;
+
+        try {
+            response = httpContext == null ? httpClient.execute(request) : httpClient.execute(request, httpContext);
+            body = IOUtils.toString(response.getEntity().getContent(), Charsets.UTF_8);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Can't update dueTime of task " + tkiid + " with value: " + dueTime, e);
+        }
+
+        logResponse(response, body);
+        request.releaseConnection();
+
+        return gson.fromJson(body, TaskDetails.class);
+    }
+
+    @Override
+    public TaskDetails updateTaskPriority(@Nonnull String tkiid, @Nonnull TaskPriority priority) {
+        tkiid = nonNull(tkiid, "Task id (tkiid) can't be null!");
+        priority = nonNull(priority, "Task priority can't be null!");
+        Gson gson = new GsonBuilder().setDateFormat(DATE_TIME_FORMAT).create();
+
+        URI uri = new SafeUriBuilder(rootUri).addPath(tkiid).addParameter(ACTION, ACTION_UPDATE).addParameter(PRIORITY, priority).build();
+
+
+        HttpPost request = new HttpPost(uri);
+        setRequestTimeOut(request, DEFAULT_TIMEOUT);
+        setHeadersPost(request);
+
+        logRequest(request, null);
+
+        String body;
+        HttpResponse response;
+
+        try {
+            response = httpContext == null ? httpClient.execute(request) : httpClient.execute(request, httpContext);
+            body = IOUtils.toString(response.getEntity().getContent(), Charsets.UTF_8);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Can't update priority of task " + tkiid + " with value: " + priority, e);
+        }
+
+        logResponse(response, body);
+        request.releaseConnection();
+
+        return gson.fromJson(body, TaskDetails.class);
+    }
+
+    @Override
+	public TaskData getTaskData(@Nonnull String tkiid, String fields) {
 		tkiid = nonNull(tkiid, "Task id (tkiid) can't be null!");
 		SafeUriBuilder uri = new SafeUriBuilder(rootUri).addPath(tkiid).addParameter(ACTION, ACTION_GET_DATA);
 		Gson gson = new GsonBuilder().setDateFormat(DATE_TIME_FORMAT).create();

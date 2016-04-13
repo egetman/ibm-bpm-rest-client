@@ -5,6 +5,8 @@ import org.apache.http.client.utils.URIBuilder;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.Format;
+import java.util.Date;
 
 import static ru.bpmink.util.Constants.*;
 
@@ -90,4 +92,7 @@ public class SafeUriBuilder extends URIBuilder {
 		return this.addParameter(param, String.valueOf(value));
 	}
 
+	public SafeUriBuilder addParameter(String param, Date value, Format format) {
+		return this.addParameter(param, format.format(value));
+	}
 }
