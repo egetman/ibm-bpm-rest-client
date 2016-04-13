@@ -101,6 +101,14 @@ public class TaskDetailsBody extends RestEntity {
 	@SerializedName("processData")
 	private Object processData;
 
+    //Contains ID of the next task if autoflow is enabled and next task was found.
+    @SerializedName("nextTaskId")
+    private String nextTaskId;
+
+    //Shows if the task is under collaboration or not
+    @SerializedName("collaboration")
+    private Collaboration collaboration;
+
 	//An URL that defines how to run the service/task...This is reserved for future use.
 	@SerializedName("runURL")
 	private String runUrl;
@@ -276,7 +284,14 @@ public class TaskDetailsBody extends RestEntity {
 		return processData;
 	}
 
-	/**
+    /**
+     * @return ID of the next task if autoflow is enabled and next task was found.
+     */
+    public String getNextTaskId() {
+        return nextTaskId;
+    }
+
+    /**
 	 * @return An URL that defines how to run the service/task...This is reserved for future use.
 	 */
 	public String getRunUrl() {

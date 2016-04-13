@@ -12,9 +12,7 @@ public class QueryResultSetBody extends RestEntity {
 	private static final List<QueryAttribute> EMPTY_QUERY_ATTRIBUTE = Lists.newArrayList();
 	private static final List<QueryResult> EMPTY_QUERY_RESULT = Lists.newArrayList();
 	
-	public QueryResultSetBody() {
-
-	}
+	public QueryResultSetBody() {}
 
 	//Name of query result set attribute identifying an entity.
 	@SerializedName("identifier")
@@ -32,7 +30,8 @@ public class QueryResultSetBody extends RestEntity {
 	@SerializedName("attributeInfo")
 	private List<QueryAttribute> attributes = Lists.newArrayList();
 	
-	//The offset value that was specified on the original request. This value represents the index (within the overall query result set) of the first item being returned.
+	//The offset value that was specified on the original request. This value represents the index
+	//(within the overall query result set) of the first item being returned.
 	@SerializedName("offset")
 	private Integer offset;
 	
@@ -56,7 +55,8 @@ public class QueryResultSetBody extends RestEntity {
 	@SerializedName("countLimit")
 	private Integer countLimit;
 	
-	//Entities contained in this query result set; list of attribute names and values, as selected by selectedAttributes, plus the entities' key (using its source attribute name).
+	//Entities contained in this query result set; list of attribute names and values, as selected by
+	// selectedAttributes, plus the entities' key (using its source attribute name).
 	@SerializedName("items")
 	private List<QueryResult> queryResults = Lists.newArrayList();
 
@@ -90,7 +90,8 @@ public class QueryResultSetBody extends RestEntity {
 	}
 
 	/**
-	 * @return The offset value that was specified on the original request. This value represents the index (within the overall query result set) of the first item being returned.
+	 * @return The offset value that was specified on the original request.
+	 * 			This value represents the index (within the overall query result set) of the first item being returned.
 	 */
 	public Integer getOffset() {
 		return offset;
@@ -132,8 +133,8 @@ public class QueryResultSetBody extends RestEntity {
 	}
 	
 	/**
-	 * @return Entities contained in this query result set; list of attribute names and values, as selected by selectedAttributes, 
-	 * 			plus the entities' key (using its source attribute name).
+	 * @return Entities contained in this query result set; list of attribute names and values, as selected
+	 * 			by selectedAttributes, plus the entities' key (using its source attribute name).
 	 * 			(see {@link ru.bpmink.bpm.model.query.QueryResult});
 	 */
 	public List<QueryResult> getQueryResults() {
