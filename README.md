@@ -32,34 +32,33 @@ To obtain exposed items you can use following methods:
     logger.info(exposedItems.describe());
 
 Output will be something like:
-
-    12:53:21.574 [main] INFO  ru.Test - 
-                    ExposedItems [
-                    	status = 200
-                    	payload = [
-                    		exposedItemsList = [
-                    			    id = 2015.35
-                    			    itemType = PROCESS
-                    			    sybType = null
-                    			    runUrl = null
-                    			    itemId = 25.12df730b-3c1f-4658-98c9-cb99eefbc9ad
-                    			    itemReference = /25.12df730b-3c1f-4658-98c9-cb99eefbc9ad
-                    			    processAppId = 2066.7b7f619b-1f3c-434f-a4be-63dd5508f388
-                    			    processAppName = Hiring Sample Advanced
-                    			    processAppAcronym = HSAV1
-                    			    snapshotId = 2064.17b5290a-04fa-4a65-a352-226adaec20be
-                    			    snapshotName = null
-                    			    snapshotCreatedOn = Thu Jun 18 09:16:35 MSK 2015
-                    			    name = Advanced HR Open New Position
-                    			    branchId = 2063.a93a5b31-e2f6-4d4a-8299-9d8e8c7e476f
-                    			    branchName = Main
-                    			    startUrl = /rest/bpm/wle/v1/process?action=start&bpdId=25.12df730b-3c1f-4658-98c9-cb99eefbc9ad&processAppId=2066.7b7f619b-1f3c-434f-a4be-63dd5508f388
-                    			    isDefault = false
-                    			    tip = true
-                    		]
-                        exception = null
-                    ]
                     
+
+    ExposedItems [
+        status = 200
+        payload = [
+            exposedItemsList = [
+                id = 2015.35
+                itemType = PROCESS
+                sybType = null
+                runUrl = null
+                itemId = 25.12df730b-3c1f-4658-98c9-cb99eefbc9ad
+                itemReference = /25.12df730b-3c1f-4658-98c9-cb99eefbc9ad
+                processAppId = 2066.7b7f619b-1f3c-434f-a4be-63dd5508f388
+                processAppName = Hiring Sample Advanced
+                processAppAcronym = HSAV1
+                snapshotId = 2064.17b5290a-04fa-4a65-a352-226adaec20be
+                snapshotName = null
+                snapshotCreatedOn = Thu Jun 18 09:16:35 MSK 2015
+                name = Advanced HR Open New Position
+                branchId = 2063.a93a5b31-e2f6-4d4a-8299-9d8e8c7e476f
+                branchName = Main
+                startUrl = /rest/bpm/wle/v1/process?action=start&bpdId=25.12df730b-3c1f-4658-98c9-cb99eefbc9ad&processAppId=2066.7b7f619b-1f3c-434f-a4be-63dd5508f388
+                isDefault = false
+                tip = true
+                ]
+        exception = null
+    ]
 You can check if the api call was successful or not:
     
     exposedItems.isExceptional();
@@ -93,7 +92,6 @@ If you need input parameters for your process, you can put them in map (paramete
                     
 There will be some complex output like that:
     
-    13:31:45.100 [main] INFO  ru.Test - 
     ProcessDetails [
     	status = 200
     	payload = [
@@ -286,7 +284,61 @@ You can use following api possibilities:
 	TaskData taskData = bpmClient.getTaskClient().getData(tkiid, fields); // Where fields is comma-separated list of fields.
 
 ### ProcessApps api:
-TODO (see javadoc)
+
+With process apps client you can obtain information about all process applications installed on process server and it's snapshots.
+
+    ProcessApps processApps  = bpmClient.getProcessAppsClient().listProcessApps();
+    logger.info(processApps.describe());
+    
+After that you can obtain needed id's. 
+    
+    ProcessApps [
+    	status = 200
+    	payload = [
+    		processAppsList = [
+    		    id = 2066.bbdd633b-9c86-4534-a5c2-0e75deac46ea
+    		    shortName = TEST
+    		    name = Test
+    		    description = null
+    		    richDescription = null
+    		    lastModifiedBy = Administrator
+    		    defaultVersion = Main
+    		    installedSnapshots = [
+                    name = 0.0.2
+                	acronym = 0.0.2
+                	isActive = true
+                	createdOn = Thu Aug 13 12:30:25 MSK 2015
+                	isTip = false
+                	activeSince = Fri Aug 14 09:15:00 MSK 2015
+                	branchId = 2063.f6dd26b0-67a7-4762-9c06-12d2819b3192
+                	branchName = Main
+                	id = 2064.bf2e87f0-6383-4b7f-af1e-67af2a1259b7
+                	][
+                	name = 0.0.1
+                	acronym = 0.0.1
+                	isActive = false
+                	createdOn = Thu Aug 13 12:30:17 MSK 2015
+                	isTip = false
+                	activeSince = null
+                	branchId = 2063.f6dd26b0-67a7-4762-9c06-12d2819b3192
+                	branchName = Main
+                	id = 2064.be5c907a-c165-4ff3-8a1e-baeab478b1aa
+                	][
+                	name = Version1
+                	acronym = V1
+                	isActive = false
+                	createdOn = Fri May 29 13:57:59 MSK 2015
+                	isTip = false
+                	activeSince = null
+                	branchId = 2063.f6dd26b0-67a7-4762-9c06-12d2819b3192
+                	branchName = Main
+                	id = 2064.3d880bdf-9980-4ce9-b2fe-38e0a07973d0
+                	]
+                lastModified = Mon May 25 09:35:33 MSK 2015
+                ]
+            ]
+        exception = null
+    ]
 
 ### Query api (Task, TaskTemplate, Process):
 TODO (see javadoc)

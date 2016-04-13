@@ -134,7 +134,7 @@ public class ProcessApp extends RestEntity {
 	}
 
 	public void setInstalledSnapshots(List<InstalledSnapshot> installedSnapshots) {
-		this.installedSnapshots = installedSnapshots;
+		this.installedSnapshots = Lists.newArrayList(installedSnapshots);
 	}
 	
 	public void setRichDescription(String richDescription) {

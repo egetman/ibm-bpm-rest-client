@@ -1,6 +1,5 @@
 package ru.bpmink.util;
 
-@SuppressWarnings("unused")
 public class Constants {
 
     /** Opposite of {@link #FAILS}. */
@@ -43,7 +42,7 @@ public class Constants {
     public static final String SEMICOLON = ";";
 
     /**
-     The caller references the constants using <tt>Consts.EMPTY_STRING</tt>,
+     The caller references the constants using <tt>Constants.EMPTY_STRING</tt>,
      and so on. Thus, the caller should be prevented from constructing objects of
      this class, by declaring this private constructor.
      */

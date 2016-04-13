@@ -6,8 +6,7 @@ import org.apache.http.client.utils.URIBuilder;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import static ru.bpmink.util.Constants.EMPTY_STRING;
-import static ru.bpmink.util.Constants.SLASH;
+import static ru.bpmink.util.Constants.*;
 
 /**
  * Builder for {@link URI} instances.
@@ -56,7 +55,7 @@ public class SafeUriBuilder extends URIBuilder {
 	}
 	
 	/**
-	 * Replaces '/' from the path end and add '/' to beggining if them don't present.
+	 * Replaces '/' from the path end and add '/' to beginning, if them don't present.
 	 * @param path given new segment of path.
 	 * @return normalized path.
 	 */

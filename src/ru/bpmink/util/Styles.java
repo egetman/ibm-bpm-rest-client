@@ -40,8 +40,8 @@ public class Styles {
             if (coll == null || coll.isEmpty() || !(coll.iterator().next() instanceof Describable)) {
                 super.appendDetail(buffer, fieldName, coll);
             } else {
-                Collection<Describable> describables = (Collection<Describable>) coll;
-                for (Describable describable : describables) {
+                Collection<Describable> describableCollection = (Collection<Describable>) coll;
+                for (Describable describable : describableCollection) {
                     appendDetail(buffer, fieldName, describable);
                 }
             }
@@ -94,8 +94,8 @@ public class Styles {
             if (coll == null || coll.isEmpty() || !(coll.iterator().next() instanceof Describable)) {
                 super.appendDetail(buffer, fieldName, coll);
             } else {
-                Collection<Describable> describables = (Collection<Describable>) coll;
-                for (Describable describable : describables) {
+                Collection<Describable> describableCollection = (Collection<Describable>) coll;
+                for (Describable describable : describableCollection) {
                     appendDetail(buffer, fieldName, describable);
                 }
             }
