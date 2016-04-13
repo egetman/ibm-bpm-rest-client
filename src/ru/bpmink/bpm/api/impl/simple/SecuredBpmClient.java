@@ -35,7 +35,7 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
 /**
- * Fake (Secure-all) implementation of {@link ru.bpmink.bpm.api.client.BpmClient} which supports {@link org.apache.http.impl.auth.BasicScheme} authentification.
+ * Fake (Secure-all) implementation of {@link ru.bpmink.bpm.api.client.BpmClient} which supports {@link org.apache.http.impl.auth.BasicScheme} authentication.
  * Need to be carefully rewrite.
  */
 @SuppressWarnings("deprecation")
@@ -170,8 +170,8 @@ public class SecuredBpmClient implements BpmClient {
 	    
 		SSLContext sslContext = SSLContext.getInstance("TLS");
 
-		public NoSSLSocketFactory(KeyStore truststore) throws NoSuchAlgorithmException, KeyManagementException, KeyStoreException, UnrecoverableKeyException {
-	        super(truststore);
+		public NoSSLSocketFactory(KeyStore trustStore) throws NoSuchAlgorithmException, KeyManagementException, KeyStoreException, UnrecoverableKeyException {
+	        super(trustStore);
 
 	        TrustManager tm = new X509TrustManager() {
 	            public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {}

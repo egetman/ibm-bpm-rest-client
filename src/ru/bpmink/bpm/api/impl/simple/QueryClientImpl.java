@@ -26,7 +26,7 @@ public class QueryClientImpl extends BaseClient implements QueryClient {
 	private final HttpClient httpClient;
 	private final HttpContext httpContext;
 	
-	//Endpoind additional paths
+	//Endpoint additional paths
 	private static final String QUERIES = "queries";
 	private static final String QUERY = "query";
 	
@@ -96,7 +96,7 @@ public class QueryClientImpl extends BaseClient implements QueryClient {
 	}
 	
 	@Override
-	public QueryResultSet queryEntityList(@Nonnull Query query, List<QueryAttribute> selectedAttributes, InteractionFilter interactionFilter, String processAppName,	List<SortAttribute> sortAttributes, Integer size, Boolean filterByCurrentUser) {
+	public QueryResultSet queryEntityList(@Nonnull Query query, List<QueryAttribute> selectedAttributes, InteractionFilter interactionFilter, String processAppName, List<SortAttribute> sortAttributes, Integer size, Boolean filterByCurrentUser) {
 		query = nonNull(query, "Search query can't be null!");
 		String querySearch = nonNull(query.getName(), "Search query name can't be null!");
 		

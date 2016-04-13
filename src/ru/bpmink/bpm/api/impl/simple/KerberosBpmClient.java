@@ -43,7 +43,7 @@ import java.security.PrivilegedAction;
 import java.util.ArrayList;
 
 /**
- * Simple implementation of {@link ru.bpmink.bpm.api.client.BpmClient} which supports {@link org.apache.http.impl.auth.KerberosScheme} authentification.
+ * Simple implementation of {@link ru.bpmink.bpm.api.client.BpmClient} which supports {@link org.apache.http.impl.auth.KerberosScheme} authentication.
  */
 //TODO: Broken implementation. Rewrite and retest needed.
 @Immutable
@@ -224,10 +224,10 @@ public class KerberosBpmClient implements BpmClient {
     			httpContext = getHttpContext();
 				loginContext = getLoginContext(user, password);
 				
-				//without it, authentification will be failed.
+				//without it, authentication will be failed.
 				Subject.doAs(loginContext.getSubject(), this.privilegedExecute(new HttpGet(KerberosBpmClient.this.rootUri), httpContext));
     		} catch (Exception e) {
-    			logger.error("Can't create Kerberos bpmn client!");
+    			logger.error("Can't create Kerberos client!");
     			e.printStackTrace();
     			throw new RuntimeException(e);
     		}

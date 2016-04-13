@@ -29,7 +29,7 @@ class ProcessClientImpl extends BaseClient implements ProcessClient {
 	
 	//Request parameters constants
 	private static final String ACTION = "action";
-	private static final String PROCESS_DEFENITION_ID = "bpdId";
+	private static final String PROCESS_DEFINITION_ID = "bpdId";
 	private static final String SNAPSHOT_ID = "snapshotId";
 	private static final String BRANCH_ID = "branchId";
 	private static final String PROCESS_APP_ID = "processAppId";
@@ -59,13 +59,13 @@ class ProcessClientImpl extends BaseClient implements ProcessClient {
 		bpdId = nonNull(bpdId, "bpdId can't be null");	
 		Gson gson = new GsonBuilder().setDateFormat(DATE_TIME_FORMAT).create();
 		
-		Map<String, String> choise = Maps.newHashMap();
-		choise.put(SNAPSHOT_ID, snapshotId);
-		choise.put(BRANCH_ID, branchId);
-		choise.put(PROCESS_APP_ID, processAppId);
-		Map.Entry<String, String> entry = reduce(choise);
+		Map<String, String> choice = Maps.newHashMap();
+		choice.put(SNAPSHOT_ID, snapshotId);
+		choice.put(BRANCH_ID, branchId);
+		choice.put(PROCESS_APP_ID, processAppId);
+		Map.Entry<String, String> entry = reduce(choice);
 			
-		SafeUriBuilder uri = new SafeUriBuilder(rootUri).addParameter(ACTION, ACTION_START).addParameter(PROCESS_DEFENITION_ID, bpdId).addParameter(entry.getKey(), entry.getValue());
+		SafeUriBuilder uri = new SafeUriBuilder(rootUri).addParameter(ACTION, ACTION_START).addParameter(PROCESS_DEFINITION_ID, bpdId).addParameter(entry.getKey(), entry.getValue());
 		
 		if (input != null && input.size() > 0) {
 			uri.addParameter(PARAMS, gson.toJson(input));
