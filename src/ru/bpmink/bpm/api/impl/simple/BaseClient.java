@@ -1,16 +1,24 @@
 package ru.bpmink.bpm.api.impl.simple;
 
+import org.apache.commons.io.Charsets;
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.annotation.Immutable;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.AuthSchemes;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.protocol.HttpContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.URI;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -65,6 +73,33 @@ abstract class BaseClient {
 			logger.debug("Response headers: " + Arrays.toString(response.getAllHeaders()));
 			logger.debug("Response: " + response);
 			logger.debug("Response body: " + body);
+		}
+	}
+
+	protected String makeGet(HttpClient httpClient, HttpContext httpContext, URI endpoint) {
+		try(ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream()) {
+			HttpGet request = new HttpGet(endpoint);
+			setRequestTimeOut(request, DEFAULT_TIMEOUT);
+			setHeadersGet(request);
+
+			logRequest(request, null);
+
+			HttpResponse response = httpClient.execute(request, httpContext);
+
+			byte[] buffer = new byte[1024];
+			int length;
+			while ((length = response.getEntity().getContent().read(buffer)) != -1) {
+				arrayOutputStream.write(buffer, 0, length);
+			}
+			String body = arrayOutputStream.toString("UTF-8");
+
+			logResponse(response, body);
+			request.releaseConnection();
+
+			return body;
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException("Can't get Entity object from Server with uri: " + endpoint, e);
 		}
 	}
 

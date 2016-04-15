@@ -69,8 +69,10 @@ public class TaskClientImpl extends BaseClient implements TaskClient {
 		Gson gson = new GsonBuilder().setDateFormat(DATE_TIME_FORMAT).create();
 		
 		URI uri = new SafeUriBuilder(rootUri).addPath(tkiid).build();
+
+		String body = makeGet(httpClient, httpContext, uri);
 		
-		HttpGet request = new HttpGet(uri);
+		/*HttpGet request = new HttpGet(uri);
 		setRequestTimeOut(request, DEFAULT_TIMEOUT);
 		setHeadersGet(request);
 	
@@ -80,7 +82,7 @@ public class TaskClientImpl extends BaseClient implements TaskClient {
 		HttpResponse response;
 		
 		try {
-			response = httpContext == null ? httpClient.execute(request) : httpClient.execute(request, httpContext);
+			response = httpClient.execute(request, httpContext);
 			body = IOUtils.toString(response.getEntity().getContent(), Charsets.UTF_8);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -88,8 +90,8 @@ public class TaskClientImpl extends BaseClient implements TaskClient {
 		} 
 
 		logResponse(response, body); 
-		request.releaseConnection();
-		
+		request.releaseConnection();*/
+
 		return gson.fromJson(body, TaskDetails.class);
 	}
 
@@ -110,7 +112,7 @@ public class TaskClientImpl extends BaseClient implements TaskClient {
 		HttpResponse response;
 		
 		try {
-			response = httpContext == null ? httpClient.execute(request) : httpClient.execute(request, httpContext);
+			response = httpClient.execute(request, httpContext);
 			body = IOUtils.toString(response.getEntity().getContent(), Charsets.UTF_8);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -119,7 +121,7 @@ public class TaskClientImpl extends BaseClient implements TaskClient {
 
 		logResponse(response, body); 
 		request.releaseConnection();
-		
+
 		return gson.fromJson(body, TaskStartData.class);
 	}
 	
