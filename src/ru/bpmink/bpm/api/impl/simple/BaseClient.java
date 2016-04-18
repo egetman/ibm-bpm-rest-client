@@ -1,7 +1,5 @@
 package ru.bpmink.bpm.api.impl.simple;
 
-import org.apache.commons.io.Charsets;
-import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
@@ -11,12 +9,13 @@ import org.apache.http.client.config.AuthSchemes;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.protocol.HttpContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.bpmink.util.Utils;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Arrays;
@@ -77,7 +76,7 @@ abstract class BaseClient {
 	}
 
 	protected String makeGet(HttpClient httpClient, HttpContext httpContext, URI endpoint) {
-		try(ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream()) {
+		try {
 			HttpGet request = new HttpGet(endpoint);
 			setRequestTimeOut(request, DEFAULT_TIMEOUT);
 			setHeadersGet(request);
@@ -85,17 +84,10 @@ abstract class BaseClient {
 			logRequest(request, null);
 
 			HttpResponse response = httpClient.execute(request, httpContext);
-
-			byte[] buffer = new byte[1024];
-			int length;
-			while ((length = response.getEntity().getContent().read(buffer)) != -1) {
-				arrayOutputStream.write(buffer, 0, length);
-			}
-			String body = arrayOutputStream.toString("UTF-8");
+			String body = Utils.inputStreamToString(response.getEntity().getContent());
 
 			logResponse(response, body);
 			request.releaseConnection();
-
 			return body;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -103,13 +95,24 @@ abstract class BaseClient {
 		}
 	}
 
-	//For avoid null checks
-	protected <T> T nonNull(T obj, String message) {
-		if (obj == null) {
-			throw new IllegalArgumentException(message);
+	protected String makePost(HttpClient httpClient, HttpContext httpContext, URI endpoint) {
+		try {
+			HttpPost request = new HttpPost(endpoint);
+			setRequestTimeOut(request, DEFAULT_TIMEOUT);
+			setHeadersPost(request);
+
+			logRequest(request, null);
+
+			HttpResponse response = httpClient.execute(request, httpContext);
+			String body = Utils.inputStreamToString(response.getEntity().getContent());
+
+			logResponse(response, body);
+			request.releaseConnection();
+			return body;
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException("Can't update Entity object from Server with uri " + endpoint, e);
 		}
-		return obj;
 	}
 
-	
 }

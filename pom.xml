@@ -12,7 +12,6 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<httpclient.version>4.4.1</httpclient.version>
-		<commons-io.version>2.4</commons-io.version>
 		<annotations.version>3.0.0</annotations.version>
 		<commons.version>3.4</commons.version>
 		<bpm.version>1.0.0</bpm.version>
@@ -44,11 +43,6 @@
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>${guava.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>${commons-io.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.code.findbugs</groupId>

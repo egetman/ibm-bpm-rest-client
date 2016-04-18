@@ -3,20 +3,15 @@ package ru.bpmink.bpm.api.impl.simple;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.apache.commons.io.Charsets;
-import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpResponse;
 import org.apache.http.annotation.Immutable;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.protocol.HttpContext;
+import org.apache.http.util.Args;
 import ru.bpmink.bpm.api.client.ProcessClient;
 import ru.bpmink.bpm.model.process.ProcessDetails;
 import ru.bpmink.util.SafeUriBuilder;
 
 import javax.annotation.Nonnull;
-import java.io.IOException;
 import java.net.URI;
 import java.util.Map;
 
@@ -56,7 +51,7 @@ class ProcessClientImpl extends BaseClient implements ProcessClient {
 	//Will use only one parameter of processAppId, snapshotId or branchId. Which one is not specified.
 	@Override
 	public ProcessDetails startProcess(@Nonnull String bpdId, String processAppId, String snapshotId, String branchId, Map<String, Object> input) {
-		bpdId = nonNull(bpdId, "bpdId can't be null");	
+		bpdId = Args.notNull(bpdId, "BusinessProcessDefinition (bpdId)");
 		Gson gson = new GsonBuilder().setDateFormat(DATE_TIME_FORMAT).create();
 		
 		Map<String, String> choice = Maps.newHashMap();
@@ -71,26 +66,7 @@ class ProcessClientImpl extends BaseClient implements ProcessClient {
 			uri.addParameter(PARAMS, gson.toJson(input));
 		}
 		
-		HttpPost request = new HttpPost(uri.build());
-		setRequestTimeOut(request, DEFAULT_TIMEOUT);
-		setHeadersPost(request);
-
-		logRequest(request, null);
-
-		String body;
-		HttpResponse response;
-		
-		try {
-			response = httpContext == null ? httpClient.execute(request) : httpClient.execute(request, httpContext);
-			body = IOUtils.toString(response.getEntity().getContent(), Charsets.UTF_8);
-		} catch (IOException e) {
-			e.printStackTrace();
-			throw new RuntimeException("Can't start process object from Server with uri: " + rootUri, e);
-		} 
-
-		logResponse(response, body); 
-		request.releaseConnection();
-		
+		String body = makePost(httpClient, httpContext, uri.build());
 		return gson.fromJson(body, ProcessDetails.class);
 	}
 	
@@ -119,61 +95,23 @@ class ProcessClientImpl extends BaseClient implements ProcessClient {
 	}
 	
 	private ProcessDetails changeProcessState(String piid,  String action) {
-		piid = nonNull(piid, "piid can't be null");		
+		piid = Args.notNull(piid, "ProcessInstanceID (piid)");
 		Gson gson = new GsonBuilder().setDateFormat(DATE_TIME_FORMAT).create();
 
 		URI uri = new SafeUriBuilder(rootUri).addPath(piid).addParameter(ACTION, action).build();
 	
-		HttpPost request = new HttpPost(uri);
-		setRequestTimeOut(request, DEFAULT_TIMEOUT);
-		setHeadersPut(request); //Same headers as for GET/PUT
-
-		logRequest(request, null);
-
-		String body;
-		HttpResponse response;
-		
-		try {
-			response = httpContext == null ? httpClient.execute(request) : httpClient.execute(request, httpContext);
-			body = IOUtils.toString(response.getEntity().getContent(), Charsets.UTF_8);
-		} catch (IOException e) {
-			e.printStackTrace();
-			throw new RuntimeException("Can't change process state to state: " + action, e);
-		} 
-
-		logResponse(response, body); 
-		request.releaseConnection();
-		
+		String body = makePost(httpClient, httpContext, uri);
 		return gson.fromJson(body, ProcessDetails.class);
 	}
 
 	@Override
 	public ProcessDetails currentState(@Nonnull String piid) {
-		piid = nonNull(piid, "piid can't be null");
+		piid = Args.notNull(piid, "ProcessInstanceID (piid)");
 		Gson gson = new GsonBuilder().setDateFormat(DATE_TIME_FORMAT).create();
 
 		URI uri = new SafeUriBuilder(rootUri).addPath(piid).build();
 
-		HttpGet request = new HttpGet(uri);
-		setRequestTimeOut(request, DEFAULT_TIMEOUT);
-		setHeadersGet(request);
-		
-		logRequest(request, null);
-
-		String body;
-		HttpResponse response;
-
-		try {
-			response = httpContext == null ? httpClient.execute(request) : httpClient.execute(request, httpContext);
-			body = IOUtils.toString(response.getEntity().getContent(), Charsets.UTF_8);
-		} catch (IOException e) {
-			e.printStackTrace();
-			throw new RuntimeException("Can't get ProcessDetails object from Server with uri: " + uri, e);
-		} 
-
-		logResponse(response, body); 
-		request.releaseConnection();
-		
+		String body = makeGet(httpClient, httpContext, uri);
 		return gson.fromJson(body, ProcessDetails.class);
 	}
 	

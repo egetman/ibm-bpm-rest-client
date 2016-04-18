@@ -283,6 +283,10 @@ You can use following api possibilities:
 	//Or retrieve data from specified task
 	TaskData taskData = bpmClient.getTaskClient().getData(tkiid, fields); // Where fields is comma-separated list of fields.
 
+	//Update task metadata
+	TaskDetails taskDetails = bpmClient.getTaskClient().updateTaskDueTime(tkiid, new Date());
+	TaskDetails taskDetails = bpmClient.getTaskClient().updateTaskPriority(tkiid, TaskPriority.HIGH);
+
 ### ProcessApps api:
 
 With process apps client you can obtain information about all process applications installed on process server and it's snapshots.

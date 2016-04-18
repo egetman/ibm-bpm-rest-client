@@ -1,7 +1,6 @@
 package ru.bpmink.bpm.api.impl.simple;
 
 import com.google.common.collect.Lists;
-import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
 import org.apache.http.annotation.Immutable;
@@ -29,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.bpmink.bpm.api.client.*;
 import ru.bpmink.util.SafeUriBuilder;
+import ru.bpmink.util.Utils;
 
 import javax.security.auth.Subject;
 import javax.security.auth.callback.*;
@@ -162,8 +162,7 @@ public class KerberosBpmClient implements BpmClient {
 		lines.add("\t\tadmin_server = " + kdc);
 		lines.add("\t}");
 		FileWriter writer = new FileWriter(tempFile);
-		IOUtils.writeLines(lines, System.lineSeparator(), writer);
-		IOUtils.closeQuietly(writer);
+		Utils.writeLines(writer, lines);
 		return tempFile;
 	}
 
@@ -172,8 +171,7 @@ public class KerberosBpmClient implements BpmClient {
 		ArrayList<String> lines = Lists.newArrayList();
 		lines.add("krb5.login { com.sun.security.auth.module.Krb5LoginModule required doNotPrompt=false debug=true useTicketCache=false; };");
 		FileWriter writer = new FileWriter(tempFile);
-		IOUtils.writeLines(lines, System.lineSeparator(), writer);
-		IOUtils.closeQuietly(writer);
+		Utils.writeLines(writer, lines);
 		return tempFile;
 	}
 	

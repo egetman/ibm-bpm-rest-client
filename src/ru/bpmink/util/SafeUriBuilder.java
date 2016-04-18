@@ -6,6 +6,7 @@ import org.apache.http.client.utils.URIBuilder;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static ru.bpmink.util.Constants.*;
@@ -16,6 +17,8 @@ import static ru.bpmink.util.Constants.*;
  * Doesn't throw checked exceptions.
  */
 public class SafeUriBuilder extends URIBuilder {
+
+	private static final String DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
 	/**
      * Constructs an empty instance.
@@ -94,5 +97,9 @@ public class SafeUriBuilder extends URIBuilder {
 
 	public SafeUriBuilder addParameter(String param, Date value, Format format) {
 		return this.addParameter(param, format.format(value));
+	}
+
+	public SafeUriBuilder addParameter(String param, Date value) {
+		return this.addParameter(param, value, new SimpleDateFormat(DATE_TIME_FORMAT));
 	}
 }

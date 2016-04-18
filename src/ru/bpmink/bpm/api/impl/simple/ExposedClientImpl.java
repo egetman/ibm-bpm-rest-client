@@ -2,13 +2,10 @@ package ru.bpmink.bpm.api.impl.simple;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.apache.commons.io.Charsets;
-import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpResponse;
 import org.apache.http.annotation.Immutable;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.protocol.HttpContext;
+import org.apache.http.util.Args;
 import ru.bpmink.bpm.api.client.ExposedClient;
 import ru.bpmink.bpm.model.other.exposed.ExposedItems;
 import ru.bpmink.bpm.model.other.exposed.Item;
@@ -16,7 +13,6 @@ import ru.bpmink.bpm.model.other.exposed.ItemType;
 import ru.bpmink.util.SafeUriBuilder;
 
 import javax.annotation.Nonnull;
-import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
@@ -53,37 +49,23 @@ public class ExposedClientImpl extends BaseClient implements ExposedClient {
 	}
 	
 	private ExposedItems listItems(URI uri) {
-		HttpGet request = new HttpGet(uri);
-		setRequestTimeOut(request, DEFAULT_TIMEOUT);
-		setHeadersGet(request);
-		logRequest(request, null);
-		
-		HttpResponse response;
-		String body;
-		try {
-			response = httpContext == null ? httpClient.execute(request) : httpClient.execute(request, httpContext);
-			body = IOUtils.toString(response.getEntity().getContent(), Charsets.UTF_8);
-		} catch (IOException e) {
-			e.printStackTrace();
-			throw new RuntimeException("Can't get ExposedItems object from Server with uri: " + rootUri, e);
-		} 
-
-		logResponse(response, body); 
-		request.releaseConnection();
-		
 		Gson gson = new GsonBuilder().setDateFormat(DATE_TIME_FORMAT).create();
+
+		String body = makeGet(httpClient, httpContext, uri);
+
 		return gson.fromJson(body, ExposedItems.class);
 	}
 
 	@Override
 	public Item getItemByName(@Nonnull String itemName) {
-		validateParameters(itemName);
+		itemName = Args.notNull(itemName, "Item name");
 		return getItem(null, itemName);
 	}
 
 	@Override
 	public Item getItemByName(@Nonnull ItemType itemType, @Nonnull String itemName) {
-		validateParameters(itemType, itemName);
+		itemType = Args.notNull(itemType, "Item type");
+		itemName = Args.notNull(itemName, "Item name");
 		return getItem(itemType, itemName);
 	}
 	
@@ -108,14 +90,5 @@ public class ExposedClientImpl extends BaseClient implements ExposedClient {
 		}
 		return EMPTY_ITEM;		
 	}
-	
-	private void validateParameters(Object... objects) {
-		for (Object object : objects) {
-			if (object == null) {
-				throw new IllegalArgumentException("Parameter is mandatory");
-			}
-		}
-	}
-	
 
 }
