@@ -90,6 +90,7 @@ abstract class BaseClient {
 			request.releaseConnection();
 			return body;
 		} catch (IOException e) {
+			logger.error("Can't get Entity object from Server with uri: " + endpoint, e);
 			e.printStackTrace();
 			throw new RuntimeException("Can't get Entity object from Server with uri: " + endpoint, e);
 		}
@@ -110,6 +111,7 @@ abstract class BaseClient {
 			request.releaseConnection();
 			return body;
 		} catch (IOException e) {
+			logger.error("Can't update Entity object from Server with uri " + endpoint, e);
 			e.printStackTrace();
 			throw new RuntimeException("Can't update Entity object from Server with uri " + endpoint, e);
 		}

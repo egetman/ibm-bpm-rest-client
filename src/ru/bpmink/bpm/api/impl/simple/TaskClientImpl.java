@@ -1,5 +1,6 @@
 package ru.bpmink.bpm.api.impl.simple;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -8,6 +9,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.Args;
 import ru.bpmink.bpm.api.client.TaskClient;
+import ru.bpmink.bpm.model.common.RestEmptyEntity;
 import ru.bpmink.bpm.model.task.TaskData;
 import ru.bpmink.bpm.model.task.TaskDetails;
 import ru.bpmink.bpm.model.task.TaskPriority;
@@ -35,9 +37,12 @@ public class TaskClientImpl extends BaseClient implements TaskClient {
     //Methods for tasks
 	private static final String ACTION_ASSIGN = "assign";
 	private static final String ACTION_COMPLETE = "finish";
+	private static final String ACTION_CANCEL = "cancel";
 	private static final String ACTION_START = "start";
 	private static final String ACTION_GET_DATA = "getData";
 	private static final String ACTION_UPDATE = "update";
+	private static final String ACTION_CLIENT_SETTINGS = "clientSettings";
+
 	@SuppressWarnings("unused")
 	private static final String ACTION_SET_DATA = "setData";
 	
@@ -151,7 +156,18 @@ public class TaskClientImpl extends BaseClient implements TaskClient {
 		return gson.fromJson(body, TaskDetails.class);
 	}
 
-    @Override
+	@Override
+	public RestEmptyEntity cancelTask(@Nonnull String tkiid) {
+		tkiid = Args.notNull(tkiid, "Task id (tkiid)");
+		Gson gson = new GsonBuilder().setDateFormat(DATE_TIME_FORMAT).create();
+
+		URI uri = new SafeUriBuilder(rootUri).addPath(tkiid).addParameter(ACTION, ACTION_CANCEL).build();
+
+		String body = makePost(httpClient, httpContext, uri);
+		return MoreObjects.firstNonNull(gson.fromJson(body, RestEmptyEntity.class), new RestEmptyEntity());
+	}
+
+	@Override
     public TaskDetails updateTaskDueTime(@Nonnull String tkiid, @Nonnull Date dueTime) {
 		tkiid = Args.notNull(tkiid, "Task id (tkiid)");
         dueTime =  Args.notNull(dueTime, "Task dueTime");

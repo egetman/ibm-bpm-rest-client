@@ -18,6 +18,9 @@ public class Utils {
     }
 
     public static String inputStreamToString(InputStream inputStream, Charset charset) throws IOException {
+        if (inputStream == null) {
+            return null;
+        }
         try(ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream()) {
             byte[] buffer = new byte[1024];
             int length;

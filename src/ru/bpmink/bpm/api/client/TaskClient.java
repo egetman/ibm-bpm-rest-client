@@ -1,5 +1,6 @@
 package ru.bpmink.bpm.api.client;
 
+import ru.bpmink.bpm.model.common.RestEmptyEntity;
 import ru.bpmink.bpm.model.task.TaskData;
 import ru.bpmink.bpm.model.task.TaskDetails;
 import ru.bpmink.bpm.model.task.TaskPriority;
@@ -28,7 +29,7 @@ public interface TaskClient {
 	/**
 	 * Use this method to start a task. The input variables defined on the task will be set according to the definitions in 
 	 * the associated business process instance. The task will proceed until the first coach is encountered. 
-	 * @param tkiid The id of the task instance to be retrieved.
+	 * @param tkiid The id of the task instance to be started.
 	 * @return task start data which contains a list of attribute/value pairs (see {@link ru.bpmink.bpm.model.task.TaskStartData}})
 	 * @throws IllegalArgumentException if tkiid is null
 	 */
@@ -36,7 +37,7 @@ public interface TaskClient {
 	
 	/**
 	 * Assign the specified task to the current user. 
-	 * @param tkiid The id of the task instance to be assigned.
+	 * @param tkiid The id of the task instance to be started.
 	 * @return the detailed task information (see {@link ru.bpmink.bpm.model.task.TaskDetails});
 	 * @throws IllegalArgumentException if tkiid is null
 	 */
@@ -70,7 +71,7 @@ public interface TaskClient {
 	
 	/**
 	 * Finish the specified task.
-	 * @param tkiid The id of the task instance to be assigned.
+	 * @param tkiid The id of the task instance to be finished.
 	 * @param input Parameters to finish specified task/activity. Parameters NOT propagated to enclosing process. Use Task 
 	 * 			api setData(@Nonnull String tkiid, @Nullable Map<String, Object> input) for that purpose.
 	 * @return the detailed task information (see {@link ru.bpmink.bpm.model.task.TaskDetails});
@@ -79,8 +80,17 @@ public interface TaskClient {
 	TaskDetails completeTask(@Nonnull String tkiid, @Nullable Map<String, Object> input);
 
 	/**
+	 * Cancel the specified task.
+	 * @param tkiid The id of the task instance to be cancelled.
+	 * @return empty response (see {@link ru.bpmink.bpm.model.common.RestEmptyEntity}). If the call was unsuccessful, error
+	 * 			details will be filled with information.
+	 * @throws IllegalArgumentException if tkiid is null
+	 */
+	RestEmptyEntity cancelTask(@Nonnull String tkiid);
+
+	/**
 	 * Get data from specified task.
-	 * @param tkiid The id of the task instance to be assigned.
+	 * @param tkiid The id of the task instance.
 	 * @param fields Comma-separated list of fields.
 	 * @return task data information (see {@link ru.bpmink.bpm.model.task.TaskData});
 	 * @throws IllegalArgumentException if tkiid is null
@@ -89,7 +99,7 @@ public interface TaskClient {
 
     /**
      * Update a task's priority.
-     * @param tkiid The id of the task instance to be assigned.
+     * @param tkiid The id of the task instance to be updated.
      * @param priority Is new task priority. (see {@link ru.bpmink.bpm.model.task.TaskPriority});
      * @return the detailed task information (see {@link ru.bpmink.bpm.model.task.TaskDetails});
      * @throws IllegalArgumentException if priority is null
@@ -99,7 +109,7 @@ public interface TaskClient {
 
     /**
      * Update a task's due time.
-     * @param tkiid The id of the task instance to be assigned.
+     * @param tkiid The id of the task instance to be updated.
      * @param dueTime Is new task due time.
      * @return the detailed task information (see {@link ru.bpmink.bpm.model.task.TaskDetails});
      * @throws IllegalArgumentException if dueTime is null
