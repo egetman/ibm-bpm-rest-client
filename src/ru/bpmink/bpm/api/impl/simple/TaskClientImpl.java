@@ -4,19 +4,19 @@ import com.google.common.base.MoreObjects;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import org.apache.http.annotation.Immutable;
 import org.apache.http.client.HttpClient;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.Args;
 import ru.bpmink.bpm.api.client.TaskClient;
 import ru.bpmink.bpm.model.common.RestEmptyEntity;
-import ru.bpmink.bpm.model.task.TaskData;
-import ru.bpmink.bpm.model.task.TaskDetails;
-import ru.bpmink.bpm.model.task.TaskPriority;
-import ru.bpmink.bpm.model.task.TaskStartData;
+import ru.bpmink.bpm.model.common.RestRootEntity;
+import ru.bpmink.bpm.model.task.*;
 import ru.bpmink.util.SafeUriBuilder;
 
 import javax.annotation.Nonnull;
+import java.lang.reflect.Type;
 import java.net.URI;
 import java.util.Date;
 import java.util.Map;
@@ -33,6 +33,8 @@ public class TaskClientImpl extends BaseClient implements TaskClient {
 	private static final String PARAMS = "params";
     private static final String DUE_DATE = "dueDate";
     private static final String PRIORITY = "priority";
+	private static final String RELATIVE_URL = "relativeURL";
+	private static final String SETTINGS_TYPE = "IBM_WLE_Coach";
 
     //Methods for tasks
 	private static final String ACTION_ASSIGN = "assign";
@@ -41,7 +43,7 @@ public class TaskClientImpl extends BaseClient implements TaskClient {
 	private static final String ACTION_START = "start";
 	private static final String ACTION_GET_DATA = "getData";
 	private static final String ACTION_UPDATE = "update";
-	private static final String ACTION_CLIENT_SETTINGS = "clientSettings";
+	private static final String ACTION_SETTINGS = "clientSettings";
 
 	@SuppressWarnings("unused")
 	private static final String ACTION_SET_DATA = "setData";
@@ -205,4 +207,17 @@ public class TaskClientImpl extends BaseClient implements TaskClient {
 		return gson.fromJson(body, TaskData.class);
 	}
 
+	@Override
+	public RestRootEntity<TaskClientSettings> getTaskClientSettings(@Nonnull String tkiid, @Nonnull Boolean isRelativeURL) {
+		tkiid = Args.notNull(tkiid, "Task id (tkiid)");
+		isRelativeURL = Args.notNull(isRelativeURL, "IsRelativeURL");
+		Gson gson = new GsonBuilder().setDateFormat(DATE_TIME_FORMAT).create();
+		URI uri = new SafeUriBuilder(rootUri).addPath(tkiid).addPath(ACTION_SETTINGS).addPath(SETTINGS_TYPE).addParameter(RELATIVE_URL, isRelativeURL).build();
+
+		String body = makeGet(httpClient, httpContext, uri);
+
+		Type typeOfT = new TypeToken<RestRootEntity<TaskClientSettings>>(){}.getType();
+
+		return gson.fromJson(body, typeOfT);
+	}
 }

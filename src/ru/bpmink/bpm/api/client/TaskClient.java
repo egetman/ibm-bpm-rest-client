@@ -1,10 +1,8 @@
 package ru.bpmink.bpm.api.client;
 
 import ru.bpmink.bpm.model.common.RestEmptyEntity;
-import ru.bpmink.bpm.model.task.TaskData;
-import ru.bpmink.bpm.model.task.TaskDetails;
-import ru.bpmink.bpm.model.task.TaskPriority;
-import ru.bpmink.bpm.model.task.TaskStartData;
+import ru.bpmink.bpm.model.common.RestRootEntity;
+import ru.bpmink.bpm.model.task.*;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -115,5 +113,15 @@ public interface TaskClient {
      * @throws IllegalArgumentException if dueTime is null
      */
     TaskDetails updateTaskDueTime(@Nonnull String tkiid, @Nonnull Date dueTime);
+
+	/**
+	 * Use this method to retrieve client settings for a human task instance.
+	 * A human task's client settings will mainly consist of the URL to be used to invoke the coach associated with the task.
+	 * @param tkiid The id of the task instance.
+	 * @param isRelativeURL If true, the URL returned is a relative URL.
+	 * @return URL to be used to invoke the coach associated with the task wrapped by {@link RestRootEntity<TaskClientSettings>};
+	 * @throws IllegalArgumentException if tkiid or isRelativeURL is null
+	 */
+	RestRootEntity<TaskClientSettings> getTaskClientSettings(@Nonnull String tkiid, @Nonnull Boolean isRelativeURL);
 
 }
