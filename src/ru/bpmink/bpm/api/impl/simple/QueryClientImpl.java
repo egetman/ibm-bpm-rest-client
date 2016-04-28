@@ -67,8 +67,7 @@ public class QueryClientImpl extends BaseClient implements QueryClient {
 			uri.addParameter(CONTENT, Joiner.on(DEFAULT_SEPARATOR).skipNulls().join(Collections2.transform(content, new ContentFunction())));
 		}
 
-		return makeGet(httpClient, httpContext, uri.build(), new TypeToken<RestRootEntity<QueryList>>() {
-		});
+		return makeGet(httpClient, httpContext, uri.build(), new TypeToken<RestRootEntity<QueryList>>() {});
 	}
 	
 	@Override
@@ -97,8 +96,7 @@ public class QueryClientImpl extends BaseClient implements QueryClient {
 			uri.addParameter(FILTER_BY_CURRENT_USER, filterByCurrentUser);
 		}
 
-		return makeGet(httpClient, httpContext, uri.build(), new TypeToken<RestRootEntity<QueryResultSet>>() {
-		});
+		return makeGet(httpClient, httpContext, uri.build(), new TypeToken<RestRootEntity<QueryResultSet>>() {});
 	}
 	
 	@Override
@@ -118,8 +116,7 @@ public class QueryClientImpl extends BaseClient implements QueryClient {
 			uri.addParameter(FILTER_BY_CURRENT_USER, filterByCurrentUser);
 		}
 
-		return makeGet(httpClient, httpContext, uri.build(), new TypeToken<RestRootEntity<QueryResultSetCount>>() {
-		});
+		return makeGet(httpClient, httpContext, uri.build(), new TypeToken<RestRootEntity<QueryResultSetCount>>() {});
 	}
 
 	@Override

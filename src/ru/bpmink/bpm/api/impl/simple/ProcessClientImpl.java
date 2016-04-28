@@ -68,8 +68,7 @@ class ProcessClientImpl extends BaseClient implements ProcessClient {
 			uri.addParameter(PARAMS, gson.toJson(input));
 		}
 
-		return makePost(httpClient, httpContext, uri.build(), new TypeToken<RestRootEntity<ProcessDetails>>() {
-		});
+		return makePost(httpClient, httpContext, uri.build(), new TypeToken<RestRootEntity<ProcessDetails>>() {});
 	}
 	
 	private Map.Entry<String, String> reduce(Map<String, String> map) {
@@ -101,8 +100,7 @@ class ProcessClientImpl extends BaseClient implements ProcessClient {
 
 		URI uri = new SafeUriBuilder(rootUri).addPath(piid).addParameter(ACTION, action).build();
 
-		return makePost(httpClient, httpContext, uri, new TypeToken<RestRootEntity<ProcessDetails>>() {
-		});
+		return makePost(httpClient, httpContext, uri, new TypeToken<RestRootEntity<ProcessDetails>>() {});
 	}
 
 	@Override
