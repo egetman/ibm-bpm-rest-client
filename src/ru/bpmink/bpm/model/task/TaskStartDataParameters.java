@@ -7,11 +7,11 @@ import ru.bpmink.bpm.model.common.RestEntity;
 
 import java.util.Map;
 
-public class TaskStartDataBodyParameters extends RestEntity {
+public class TaskStartDataParameters extends RestEntity {
 
 	private static final Map<String, Object> EMPTY_MAP = Maps.newHashMap();
 	
-	public TaskStartDataBodyParameters() {
+	public TaskStartDataParameters() {
 	
 	}
 	

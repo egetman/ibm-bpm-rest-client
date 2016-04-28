@@ -3,6 +3,7 @@
  */
 package ru.bpmink.bpm.api.client;
 
+import ru.bpmink.bpm.model.common.RestRootEntity;
 import ru.bpmink.bpm.model.query.*;
 
 import javax.annotation.Nonnull;
@@ -17,9 +18,9 @@ public interface QueryClient {
 	/**
 	 * Use this method to retrieve a list of queries for entity instance data.
 	 * This method similar to {@link #listQueries(String, QueryKind, List)} with null parameters.
-	 * @return list of queries for entity instance data (see {@link ru.bpmink.bpm.model.query.QueryList}});
+	 * @return list of queries for entity instance data {@link ru.bpmink.bpm.model.common.RestRootEntity<ru.bpmink.bpm.model.query.QueryList>}
 	 */
-	QueryList listQueries();
+	RestRootEntity<QueryList> listQueries();
 	
 	/**
 	 * Use this method to retrieve a list of queries for entity instance data.
@@ -36,9 +37,9 @@ public interface QueryClient {
 	 * 		 	in your request URI query, then the response will include only those queries that return both content types. 
 	 * 			To determine the valid content values, you can use the {@link #queryAttributes} 
 	 * 			API and inspect the response details.
-	 * @return list of queries for entity instance data (see {@link ru.bpmink.bpm.model.query.QueryList}});
+	 * @return list of queries for entity instance data {@link ru.bpmink.bpm.model.common.RestRootEntity<ru.bpmink.bpm.model.query.QueryList>}
 	 */
-	QueryList listQueries(@Nullable String processAppName, @Nullable QueryKind kind, @Nullable List<QueryAttribute> content);
+	RestRootEntity<QueryList> listQueries(@Nullable String processAppName, @Nullable QueryKind kind, @Nullable List<QueryAttribute> content);
 	
 	/**
 	 * Use this method to retrieve a list of entity instances via a query.
@@ -59,10 +60,10 @@ public interface QueryClient {
 	 * 			an administrative user, then the default is to perform a filtered search. If the current user is not an administrative user, 
 	 * 			then this parameter is ignored and a filtered search is performed.
 	 * 			Note: This parameter is used only when the request is being executed by an administrative user and no interactionFilter parameter is set, otherwise it is ignored.
-	 * @return detailed information about entity instances (see {@link ru.bpmink.bpm.model.query.QueryResultSet});
+	 * @return detailed information about entity instances {@link ru.bpmink.bpm.model.common.RestRootEntity<ru.bpmink.bpm.model.query.QueryResultSet>}
 	 * @throws IllegalArgumentException if specified {@link ru.bpmink.bpm.model.query.Query} is null
 	 */
-	QueryResultSet queryEntityList(@Nonnull Query query, @Nullable List<QueryAttribute> selectedAttributes, @Nullable InteractionFilter interactionFilter, @Nullable String processAppName, @Nullable List<SortAttribute> sortAttributes, @Nullable Integer size, @Nullable Boolean filterByCurrentUser);
+	RestRootEntity<QueryResultSet> queryEntityList(@Nonnull Query query, @Nullable List<QueryAttribute> selectedAttributes, @Nullable InteractionFilter interactionFilter, @Nullable String processAppName, @Nullable List<SortAttribute> sortAttributes, @Nullable Integer size, @Nullable Boolean filterByCurrentUser);
 
 	/**
 	 * Use this method to retrieve the number of entity instances in a query matching specified criteria.
@@ -77,20 +78,20 @@ public interface QueryClient {
 	 * 			an administrative user, then the default is to perform a filtered search. If the current user is not an administrative user, 
 	 * 			then this parameter is ignored and a filtered search is performed.
 	 * 			Note: This parameter is used only when the request is being executed by an administrative user and no interactionFilter parameter is set, otherwise it is ignored.
-	 * @return number of entities in a query matching specified criteria. (see {@link ru.bpmink.bpm.model.query.QueryResultSetCount})
+	 * @return number of entities in a query matching specified criteria {@link ru.bpmink.bpm.model.common.RestRootEntity<ru.bpmink.bpm.model.query.QueryResultSetCount>}
 	 * @throws  IllegalArgumentException if specified {@link ru.bpmink.bpm.model.query.Query} is null
 	 */
-	QueryResultSetCount queryEntityListCount(@Nonnull Query query, @Nullable InteractionFilter interactionFilter, @Nullable String processAppName, @Nullable Boolean filterByCurrentUser);
+	RestRootEntity<QueryResultSetCount> queryEntityListCount(@Nonnull Query query, @Nullable InteractionFilter interactionFilter, @Nullable String processAppName, @Nullable Boolean filterByCurrentUser);
 	
 	/**
 	 * Use this method to retrieve a list of attributes of a specified query for containing entity instance data.
 	 * @param query Query for task instance data (see {@link ru.bpmink.bpm.model.query.Query});
 	 * @param processAppName Name of the process application, used for additional filtering. 
 	 * 		  	This parameter is intended for future use and has currently no effect on the returned query metadata.
-	 * @return all available attributes of specified query (see {@link ru.bpmink.bpm.model.query.QueryAttributes})
+	 * @return all available attributes of specified query {@link ru.bpmink.bpm.model.common.RestRootEntity<ru.bpmink.bpm.model.query.QueryAttributes>}
 	 * @throws IllegalArgumentException if specified {@link ru.bpmink.bpm.model.query.Query} is null
 	 */
-	QueryAttributes queryAttributes(@Nonnull Query query, @Nullable String processAppName);
+	RestRootEntity<QueryAttributes> queryAttributes(@Nonnull Query query, @Nullable String processAppName);
 	
 	
 	

@@ -1,12 +1,12 @@
 package ru.bpmink.bpm.api.impl.simple;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import org.apache.http.annotation.Immutable;
 import org.apache.http.client.HttpClient;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.Args;
 import ru.bpmink.bpm.api.client.ExposedClient;
+import ru.bpmink.bpm.model.common.RestRootEntity;
 import ru.bpmink.bpm.model.other.exposed.ExposedItems;
 import ru.bpmink.bpm.model.other.exposed.Item;
 import ru.bpmink.bpm.model.other.exposed.ItemType;
@@ -36,24 +36,20 @@ public class ExposedClientImpl extends BaseClient implements ExposedClient {
 	}
 	
 	@Override
-	public ExposedItems listItems() {
+	public RestRootEntity<ExposedItems> listItems() {
 		return listItems(rootUri);
 	}
 
 	@Override
-	public ExposedItems listItems(ItemType itemType) {
+	public RestRootEntity<ExposedItems> listItems(ItemType itemType) {
 		if (itemType == null) {
 			return listItems(rootUri);
 		}
 		return listItems(new SafeUriBuilder(rootUri).addPath(itemType.name().toLowerCase()).build());
 	}
 	
-	private ExposedItems listItems(URI uri) {
-		Gson gson = new GsonBuilder().setDateFormat(DATE_TIME_FORMAT).create();
-
-		String body = makeGet(httpClient, httpContext, uri);
-
-		return gson.fromJson(body, ExposedItems.class);
+	private RestRootEntity<ExposedItems> listItems(URI uri) {
+		return makeGet(httpClient, httpContext, uri, new TypeToken<RestRootEntity<ExposedItems>>() {});
 	}
 
 	@Override
@@ -70,7 +66,7 @@ public class ExposedClientImpl extends BaseClient implements ExposedClient {
 	}
 	
 	private Item getItem(ItemType itemType, String itemName) {
-		List<Item> items = listItems(itemType).getPayload().getExposedItemsList();
+		List<Item> items = listItems(itemType).getPayload().getExposedItems();
 		for (Item item : items) {
 			ItemType type = item.getItemType();
 			switch (type) {

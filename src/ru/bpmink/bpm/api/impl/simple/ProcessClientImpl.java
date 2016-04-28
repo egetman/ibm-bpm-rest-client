@@ -3,11 +3,13 @@ package ru.bpmink.bpm.api.impl.simple;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import org.apache.http.annotation.Immutable;
 import org.apache.http.client.HttpClient;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.Args;
 import ru.bpmink.bpm.api.client.ProcessClient;
+import ru.bpmink.bpm.model.common.RestRootEntity;
 import ru.bpmink.bpm.model.process.ProcessDetails;
 import ru.bpmink.util.SafeUriBuilder;
 
@@ -50,7 +52,7 @@ class ProcessClientImpl extends BaseClient implements ProcessClient {
 	
 	//Will use only one parameter of processAppId, snapshotId or branchId. Which one is not specified.
 	@Override
-	public ProcessDetails startProcess(@Nonnull String bpdId, String processAppId, String snapshotId, String branchId, Map<String, Object> input) {
+	public RestRootEntity<ProcessDetails> startProcess(@Nonnull String bpdId, String processAppId, String snapshotId, String branchId, Map<String, Object> input) {
 		bpdId = Args.notNull(bpdId, "BusinessProcessDefinition (bpdId)");
 		Gson gson = new GsonBuilder().setDateFormat(DATE_TIME_FORMAT).create();
 		
@@ -65,9 +67,9 @@ class ProcessClientImpl extends BaseClient implements ProcessClient {
 		if (input != null && input.size() > 0) {
 			uri.addParameter(PARAMS, gson.toJson(input));
 		}
-		
-		String body = makePost(httpClient, httpContext, uri.build());
-		return gson.fromJson(body, ProcessDetails.class);
+
+		return makePost(httpClient, httpContext, uri.build(), new TypeToken<RestRootEntity<ProcessDetails>>() {
+		});
 	}
 	
 	private Map.Entry<String, String> reduce(Map<String, String> map) {
@@ -80,39 +82,36 @@ class ProcessClientImpl extends BaseClient implements ProcessClient {
 	}
 
 	@Override
-	public ProcessDetails suspendProcess(@Nonnull String piid) {
+	public RestRootEntity<ProcessDetails> suspendProcess(@Nonnull String piid) {
 		return changeProcessState(piid, ACTION_SUSPEND);
 	}
 
 	@Override
-	public ProcessDetails resumeProcess(@Nonnull String piid) {
+	public RestRootEntity<ProcessDetails> resumeProcess(@Nonnull String piid) {
 		return changeProcessState(piid, ACTION_RESUME);
 	}
 
 	@Override
-	public ProcessDetails terminateProcess(@Nonnull String piid) {
+	public RestRootEntity<ProcessDetails> terminateProcess(@Nonnull String piid) {
 		return changeProcessState(piid, ACTION_TERMINATE);
 	}
 	
-	private ProcessDetails changeProcessState(String piid,  String action) {
+	private RestRootEntity<ProcessDetails> changeProcessState(String piid,  String action) {
 		piid = Args.notNull(piid, "ProcessInstanceID (piid)");
-		Gson gson = new GsonBuilder().setDateFormat(DATE_TIME_FORMAT).create();
 
 		URI uri = new SafeUriBuilder(rootUri).addPath(piid).addParameter(ACTION, action).build();
-	
-		String body = makePost(httpClient, httpContext, uri);
-		return gson.fromJson(body, ProcessDetails.class);
+
+		return makePost(httpClient, httpContext, uri, new TypeToken<RestRootEntity<ProcessDetails>>() {
+		});
 	}
 
 	@Override
-	public ProcessDetails currentState(@Nonnull String piid) {
+	public RestRootEntity<ProcessDetails> currentState(@Nonnull String piid) {
 		piid = Args.notNull(piid, "ProcessInstanceID (piid)");
-		Gson gson = new GsonBuilder().setDateFormat(DATE_TIME_FORMAT).create();
 
 		URI uri = new SafeUriBuilder(rootUri).addPath(piid).build();
 
-		String body = makeGet(httpClient, httpContext, uri);
-		return gson.fromJson(body, ProcessDetails.class);
+		return makeGet(httpClient, httpContext, uri, new TypeToken<RestRootEntity<ProcessDetails>>() {});
 	}
 	
 }

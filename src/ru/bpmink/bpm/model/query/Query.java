@@ -15,9 +15,7 @@ public class Query extends RestEntity {
 	//Some predefined queries
 	public static final String QUERY_ALL_TASKS = "IBM.PI_TASKLIST_ALL";
 
-	public Query() {
-		
-	}
+	public Query() {}
 	
 	//Query name.
 	@SerializedName("name")

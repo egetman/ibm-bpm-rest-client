@@ -1,6 +1,7 @@
 package ru.bpmink.bpm.api.client;
 
 
+import ru.bpmink.bpm.model.common.RestRootEntity;
 import ru.bpmink.bpm.model.process.ProcessDetails;
 
 import javax.annotation.Nonnull;
@@ -22,42 +23,42 @@ public interface ProcessClient {
 	 * @param snapshotId The id of the snapshot containing the Business Process Definition.
 	 * @param branchId The id of the branch containing the Business Process Definition. If this parameter is specified, then the tip snapshot of the specified branch will be used.
 	 * @param input Input parameters of the process. format: input parameter name + input parameter value.
-	 * @return the detailed process information (see {@link ru.bpmink.bpm.model.process.ProcessDetails})
+	 * @return the detailed process information {@link ru.bpmink.bpm.model.common.RestRootEntity<ru.bpmink.bpm.model.process.ProcessDetails>}
 	 * @throws IllegalArgumentException if bpdId is null or if all of processAppId, snapshotId and branchId are null's
 	 */
-	ProcessDetails startProcess(@Nonnull String bpdId, @Nullable String processAppId, @Nullable String snapshotId, @Nullable String branchId, @Nullable Map<String, Object> input);
+	RestRootEntity<ProcessDetails> startProcess(@Nonnull String bpdId, @Nullable String processAppId, @Nullable String snapshotId, @Nullable String branchId, @Nullable Map<String, Object> input);
 	
 	/**
 	 * Suspend a process instance.
 	 * @param piid The id of the process instance to be suspended.
-	 * @return the detailed process information (see {@link ru.bpmink.bpm.model.process.ProcessDetails});
+	 * @return the detailed process information {@link ru.bpmink.bpm.model.common.RestRootEntity<ru.bpmink.bpm.model.process.ProcessDetails>}
 	 * @throws IllegalArgumentException if processId is null
 	 */
-	ProcessDetails suspendProcess(@Nonnull String piid);
+	RestRootEntity<ProcessDetails> suspendProcess(@Nonnull String piid);
 	
 	/**
 	 * Resume a process instance.
 	 * @param piid The id of the process instance to be resumed.
-	 * @return the detailed process information (see {@link ru.bpmink.bpm.model.process.ProcessDetails});
+	 * @return the detailed process information {@link ru.bpmink.bpm.model.common.RestRootEntity<ru.bpmink.bpm.model.process.ProcessDetails>}
 	 * @throws IllegalArgumentException if processId is null
 	 */
-	ProcessDetails resumeProcess(@Nonnull String piid);
+	RestRootEntity<ProcessDetails> resumeProcess(@Nonnull String piid);
 
 	/**
 	 * Terminate a process instance.
 	 * @param piid The id of the process instance to be terminated.
-	 * @return the detailed process information (see {@link ru.bpmink.bpm.model.process.ProcessDetails});
+	 * @return the detailed process information {@link ru.bpmink.bpm.model.common.RestRootEntity<ru.bpmink.bpm.model.process.ProcessDetails>}
 	 * @throws IllegalArgumentException if processId is null
 	 */
-	ProcessDetails terminateProcess(@Nonnull String piid);
+	RestRootEntity<ProcessDetails> terminateProcess(@Nonnull String piid);
 	
 	
 	/**
 	 * Retrieves details of a process instance.
 	 * @param piid The id of the process instance to be retrieved.
-	 * @return the detailed process information (see {@link ru.bpmink.bpm.model.process.ProcessDetails});
+	 * @return the detailed process information {@link ru.bpmink.bpm.model.common.RestRootEntity<ru.bpmink.bpm.model.process.ProcessDetails>}
 	 * @throws IllegalArgumentException if processId is null
 	 */
-	ProcessDetails currentState(@Nonnull String piid);
+	RestRootEntity<ProcessDetails> currentState(@Nonnull String piid);
 	
 }

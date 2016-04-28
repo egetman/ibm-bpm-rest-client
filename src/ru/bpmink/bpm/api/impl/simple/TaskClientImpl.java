@@ -1,6 +1,5 @@
 package ru.bpmink.bpm.api.impl.simple;
 
-import com.google.common.base.MoreObjects;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -10,13 +9,12 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.Args;
 import ru.bpmink.bpm.api.client.TaskClient;
-import ru.bpmink.bpm.model.common.RestEmptyEntity;
+import ru.bpmink.bpm.model.common.RestEntity;
 import ru.bpmink.bpm.model.common.RestRootEntity;
 import ru.bpmink.bpm.model.task.*;
 import ru.bpmink.util.SafeUriBuilder;
 
 import javax.annotation.Nonnull;
-import java.lang.reflect.Type;
 import java.net.URI;
 import java.util.Date;
 import java.util.Map;
@@ -65,29 +63,25 @@ public class TaskClientImpl extends BaseClient implements TaskClient {
 	}
 
 	@Override
-	public TaskDetails getTask(@Nonnull String tkiid) {
+	public RestRootEntity<TaskDetails> getTask(@Nonnull String tkiid) {
 		tkiid = Args.notNull(tkiid, "Task id (tkiid)");
-		Gson gson = new GsonBuilder().setDateFormat(DATE_TIME_FORMAT).create();
-		
-		URI uri = new SafeUriBuilder(rootUri).addPath(tkiid).build();
-		String body = makeGet(httpClient, httpContext, uri);
 
-		return gson.fromJson(body, TaskDetails.class);
+		URI uri = new SafeUriBuilder(rootUri).addPath(tkiid).build();
+
+		return makeGet(httpClient, httpContext, uri, new TypeToken<RestRootEntity<TaskDetails>>() {});
 	}
 
 	@Override
-	public TaskStartData startTask(@Nonnull String tkiid) {
+	public RestRootEntity<TaskStartData> startTask(@Nonnull String tkiid) {
 		tkiid = Args.notNull(tkiid, "Task id (tkiid)");
-		Gson gson = new GsonBuilder().setDateFormat(DATE_TIME_FORMAT).create();
-		
-		URI uri = new SafeUriBuilder(rootUri).addPath(tkiid).addParameter(ACTION, ACTION_START).build();
-		String body = makePost(httpClient, httpContext, uri);
 
-		return gson.fromJson(body, TaskStartData.class);
+		URI uri = new SafeUriBuilder(rootUri).addPath(tkiid).addParameter(ACTION, ACTION_START).build();
+
+		return makePost(httpClient, httpContext, uri, new TypeToken<RestRootEntity<TaskStartData>>() {});
 	}
 	
 	@Override
-	public TaskDetails assignTaskToMe(@Nonnull String tkiid) {
+	public RestRootEntity<TaskDetails> assignTaskToMe(@Nonnull String tkiid) {
 		tkiid = Args.notNull(tkiid, "Task id (tkiid)");
 		
 		Map<String, Object> query = Maps.newHashMap();
@@ -96,7 +90,7 @@ public class TaskClientImpl extends BaseClient implements TaskClient {
 	}
 
 	@Override
-	public TaskDetails assignTaskBack(@Nonnull String tkiid) {
+	public RestRootEntity<TaskDetails> assignTaskBack(@Nonnull String tkiid) {
 		tkiid = Args.notNull(tkiid, "Task id (tkiid)");
 
 		Map<String, Object> query = Maps.newHashMap();
@@ -105,7 +99,7 @@ public class TaskClientImpl extends BaseClient implements TaskClient {
 	}
 
 	@Override
-	public TaskDetails assignTaskToUser(@Nonnull String tkiid, String userName) {
+	public RestRootEntity<TaskDetails> assignTaskToUser(@Nonnull String tkiid, String userName) {
 		tkiid = Args.notNull(tkiid, "Task id (tkiid)");
 
 		Map<String, Object> query = Maps.newHashMap();
@@ -118,7 +112,7 @@ public class TaskClientImpl extends BaseClient implements TaskClient {
 	}
 
 	@Override
-	public TaskDetails assignTaskToGroup(@Nonnull String tkiid, String groupName) {
+	public RestRootEntity<TaskDetails> assignTaskToGroup(@Nonnull String tkiid, String groupName) {
 		tkiid = Args.notNull(tkiid, "Task id (tkiid)");
 
 		Map<String, Object> query = Maps.newHashMap();
@@ -130,9 +124,7 @@ public class TaskClientImpl extends BaseClient implements TaskClient {
 		return assignTask(tkiid, query);
 	}
 	
-	private TaskDetails assignTask(String tkiid, Map<String, Object> query) {
-		Gson gson = new GsonBuilder().setDateFormat(DATE_TIME_FORMAT).create();
-		
+	private RestRootEntity<TaskDetails> assignTask(String tkiid, Map<String, Object> query) {
 		SafeUriBuilder uri = new SafeUriBuilder(rootUri).addPath(tkiid).addParameter(ACTION, ACTION_ASSIGN);
 
 		if (query.entrySet().iterator().hasNext()) {
@@ -140,12 +132,11 @@ public class TaskClientImpl extends BaseClient implements TaskClient {
 			uri.addParameter(entry.getKey(), String.valueOf(entry.getValue()));
 		}
 
-		String body = makePost(httpClient, httpContext, uri.build());
-		return gson.fromJson(body, TaskDetails.class);
+		return makePost(httpClient, httpContext, uri.build(), new TypeToken<RestRootEntity<TaskDetails>>() {});
 	}
 
 	@Override
-	public TaskDetails completeTask(@Nonnull String tkiid, Map<String, Object> input) {
+	public RestRootEntity<TaskDetails> completeTask(@Nonnull String tkiid, Map<String, Object> input) {
 		tkiid = Args.notNull(tkiid, "Task id (tkiid)");
 		Gson gson = new GsonBuilder().setDateFormat(DATE_TIME_FORMAT).create();
 		
@@ -154,70 +145,80 @@ public class TaskClientImpl extends BaseClient implements TaskClient {
 			uri.addParameter(PARAMS, gson.toJson(input));
 		}
 
-		String body = makePost(httpClient, httpContext, uri.build());
-		return gson.fromJson(body, TaskDetails.class);
+		return makePost(httpClient, httpContext, uri.build(), new TypeToken<RestRootEntity<TaskDetails>>() {});
 	}
 
 	@Override
-	public RestEmptyEntity cancelTask(@Nonnull String tkiid) {
+	public RestRootEntity<RestEntity> cancelTask(@Nonnull String tkiid) {
 		tkiid = Args.notNull(tkiid, "Task id (tkiid)");
-		Gson gson = new GsonBuilder().setDateFormat(DATE_TIME_FORMAT).create();
 
 		URI uri = new SafeUriBuilder(rootUri).addPath(tkiid).addParameter(ACTION, ACTION_CANCEL).build();
 
-		String body = makePost(httpClient, httpContext, uri);
-		return MoreObjects.firstNonNull(gson.fromJson(body, RestEmptyEntity.class), new RestEmptyEntity());
+		return makePost(httpClient, httpContext, uri, new TypeToken<RestRootEntity<RestEntity>>() {});
 	}
 
 	@Override
-    public TaskDetails updateTaskDueTime(@Nonnull String tkiid, @Nonnull Date dueTime) {
+    public RestRootEntity<TaskDetails> updateTaskDueTime(@Nonnull String tkiid, @Nonnull Date dueTime) {
 		tkiid = Args.notNull(tkiid, "Task id (tkiid)");
         dueTime =  Args.notNull(dueTime, "Task dueTime");
-        Gson gson = new GsonBuilder().setDateFormat(DATE_TIME_FORMAT).create();
 
         URI uri = new SafeUriBuilder(rootUri).addPath(tkiid).addParameter(ACTION, ACTION_UPDATE).addParameter(DUE_DATE, dueTime).build();
 
-		String body = makePost(httpClient, httpContext, uri);
-        return gson.fromJson(body, TaskDetails.class);
+		return makePost(httpClient, httpContext, uri, new TypeToken<RestRootEntity<TaskDetails>>() {});
     }
 
     @Override
-    public TaskDetails updateTaskPriority(@Nonnull String tkiid, @Nonnull TaskPriority priority) {
+    public RestRootEntity<TaskDetails> updateTaskPriority(@Nonnull String tkiid, @Nonnull TaskPriority priority) {
 		tkiid = Args.notNull(tkiid, "Task id (tkiid)");
         priority = Args.notNull(priority, "Task priority");
-        Gson gson = new GsonBuilder().setDateFormat(DATE_TIME_FORMAT).create();
 
         URI uri = new SafeUriBuilder(rootUri).addPath(tkiid).addParameter(ACTION, ACTION_UPDATE).addParameter(PRIORITY, priority).build();
 
-		String body = makePost(httpClient, httpContext, uri);
-        return gson.fromJson(body, TaskDetails.class);
+		return makePost(httpClient, httpContext, uri, new TypeToken<RestRootEntity<TaskDetails>>() {});
     }
 
     @Override
-	public TaskData getTaskData(@Nonnull String tkiid, String fields) {
+	public RestRootEntity<TaskData> getTaskData(@Nonnull String tkiid, String fields) {
 		tkiid = Args.notNull(tkiid, "Task id (tkiid)");
-		Gson gson = new GsonBuilder().setDateFormat(DATE_TIME_FORMAT).create();
 		SafeUriBuilder uri = new SafeUriBuilder(rootUri).addPath(tkiid).addParameter(ACTION, ACTION_GET_DATA);
 		if (fields != null) {
 			uri.addParameter("fields", fields);
 		}
 
-		String body = makeGet(httpClient, httpContext, uri.build());
-
-		return gson.fromJson(body, TaskData.class);
+		return makeGet(httpClient, httpContext, uri.build(), new TypeToken<RestRootEntity<TaskData>>() {});
 	}
 
 	@Override
 	public RestRootEntity<TaskClientSettings> getTaskClientSettings(@Nonnull String tkiid, @Nonnull Boolean isRelativeURL) {
 		tkiid = Args.notNull(tkiid, "Task id (tkiid)");
 		isRelativeURL = Args.notNull(isRelativeURL, "IsRelativeURL");
-		Gson gson = new GsonBuilder().setDateFormat(DATE_TIME_FORMAT).create();
+
 		URI uri = new SafeUriBuilder(rootUri).addPath(tkiid).addPath(ACTION_SETTINGS).addPath(SETTINGS_TYPE).addParameter(RELATIVE_URL, isRelativeURL).build();
-
-		String body = makeGet(httpClient, httpContext, uri);
-
-		Type typeOfT = new TypeToken<RestRootEntity<TaskClientSettings>>(){}.getType();
-
-		return gson.fromJson(body, typeOfT);
+		return makeGet(httpClient, httpContext, uri, new TypeToken<RestRootEntity<TaskClientSettings>>() {});
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

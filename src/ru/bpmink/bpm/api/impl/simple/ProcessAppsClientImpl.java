@@ -1,11 +1,11 @@
 package ru.bpmink.bpm.api.impl.simple;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import org.apache.http.annotation.Immutable;
 import org.apache.http.client.HttpClient;
 import org.apache.http.protocol.HttpContext;
 import ru.bpmink.bpm.api.client.ProcessAppsClient;
+import ru.bpmink.bpm.model.common.RestRootEntity;
 import ru.bpmink.bpm.model.other.processapp.ProcessApps;
 
 import java.net.URI;
@@ -29,10 +29,8 @@ public class ProcessAppsClientImpl extends BaseClient implements ProcessAppsClie
 
 	
 	@Override
-	public ProcessApps listProcessApps() {
-		Gson gson = new GsonBuilder().setDateFormat(DATE_TIME_FORMAT).create();
-		String body = makeGet(httpClient, httpContext, rootUri);
-		return gson.fromJson(body, ProcessApps.class);
+	public RestRootEntity<ProcessApps> listProcessApps() {
+		return makeGet(httpClient, httpContext, rootUri, new TypeToken<RestRootEntity<ProcessApps>>() {});
 	}
 
 }

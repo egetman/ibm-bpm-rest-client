@@ -22,7 +22,8 @@ import java.io.IOException;
 import java.net.URI;
 
 /**
- * Simple implementation of {@link ru.bpmink.bpm.api.client.BpmClient} which supports {@link org.apache.http.impl.auth.BasicScheme} authentication.
+ * Simple implementation of {@link ru.bpmink.bpm.api.client.BpmClient} which supports
+ * {@link org.apache.http.impl.auth.BasicScheme} authentication.
  */
 @Immutable
 public class SimpleBpmClient implements BpmClient {

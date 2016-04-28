@@ -5,9 +5,7 @@ import ru.bpmink.bpm.model.common.RestEntity;
 
 public class QueryAttribute extends RestEntity {
 	
-	public QueryAttribute() {
-
-	}	
+	public QueryAttribute() {}
 
 	//Attribute name.
 	@SerializedName("name")
@@ -45,7 +43,7 @@ public class QueryAttribute extends RestEntity {
 	@SerializedName("content")
 	private String content;
 	
-	//The ID of the source attribute's table, as defined in the query table definition.
+	//The ID of the source attribute table, as defined in the query table definition.
 	@SerializedName("sourceQueryTableIdentifier")
 	private String sourceQueryTableIdentifier;
 	
@@ -113,7 +111,7 @@ public class QueryAttribute extends RestEntity {
 	}
 
 	/**
-	 * @return The ID of the source attribute's table, as defined in the query table definition.
+	 * @return The ID of the source attribute table, as defined in the query table definition.
 	 */
 	public String getSourceQueryTableIdentifier() {
 		return sourceQueryTableIdentifier;

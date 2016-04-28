@@ -44,6 +44,10 @@ public class RestRootEntity <T extends Describable> extends RestEntity {
         return status;
     }
 
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Override
     @SuppressWarnings("StringBufferReplaceableByString")
     public String toString() {

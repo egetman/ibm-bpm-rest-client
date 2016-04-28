@@ -3,12 +3,12 @@ package ru.bpmink.bpm.api.impl.simple;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Collections2;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import org.apache.http.client.HttpClient;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.Args;
 import ru.bpmink.bpm.api.client.QueryClient;
+import ru.bpmink.bpm.model.common.RestRootEntity;
 import ru.bpmink.bpm.model.query.*;
 import ru.bpmink.util.SafeUriBuilder;
 
@@ -49,14 +49,12 @@ public class QueryClientImpl extends BaseClient implements QueryClient {
 	}
 
 	@Override
-	public QueryList listQueries() {
+	public RestRootEntity<QueryList> listQueries() {
 		return this.listQueries(null, null, null);
 	} 
 
 	@Override
-	public QueryList listQueries(String processAppName, QueryKind kind, List<QueryAttribute> content) {
-
-		Gson gson = new GsonBuilder().setDateFormat(DATE_TIME_FORMAT).create();
+	public RestRootEntity<QueryList> listQueries(String processAppName, QueryKind kind, List<QueryAttribute> content) {
 		SafeUriBuilder uri = new SafeUriBuilder(rootUri).addPath(QUERIES);
 		
 		if (processAppName != null) {
@@ -68,17 +66,16 @@ public class QueryClientImpl extends BaseClient implements QueryClient {
 		if (content != null) {
 			uri.addParameter(CONTENT, Joiner.on(DEFAULT_SEPARATOR).skipNulls().join(Collections2.transform(content, new ContentFunction())));
 		}
-		
-		String body = makeGet(httpClient, httpContext, uri.build());
-		return gson.fromJson(body, QueryList.class);
+
+		return makeGet(httpClient, httpContext, uri.build(), new TypeToken<RestRootEntity<QueryList>>() {
+		});
 	}
 	
 	@Override
-	public QueryResultSet queryEntityList(@Nonnull Query query, List<QueryAttribute> selectedAttributes, InteractionFilter interactionFilter, String processAppName, List<SortAttribute> sortAttributes, Integer size, Boolean filterByCurrentUser) {
+	public RestRootEntity<QueryResultSet> queryEntityList(@Nonnull Query query, List<QueryAttribute> selectedAttributes, InteractionFilter interactionFilter, String processAppName, List<SortAttribute> sortAttributes, Integer size, Boolean filterByCurrentUser) {
 		query = Args.notNull(query, "Search query");
 		String querySearch = Args.notNull(query.getName(), "Search query name");
 		
-		Gson gson = new GsonBuilder().setDateFormat(DATE_TIME_FORMAT).create();
 		SafeUriBuilder uri = new SafeUriBuilder(rootUri).addPath(QUERY).addPath(querySearch);
 		
 		if (selectedAttributes != null) {
@@ -99,17 +96,16 @@ public class QueryClientImpl extends BaseClient implements QueryClient {
 		if (filterByCurrentUser != null) {
 			uri.addParameter(FILTER_BY_CURRENT_USER, filterByCurrentUser);
 		}
-		
-		String body = makeGet(httpClient, httpContext, uri.build());
-		return gson.fromJson(body, QueryResultSet.class);
+
+		return makeGet(httpClient, httpContext, uri.build(), new TypeToken<RestRootEntity<QueryResultSet>>() {
+		});
 	}
 	
 	@Override
-	public QueryResultSetCount queryEntityListCount(@Nonnull Query query, InteractionFilter interactionFilter, String processAppName, Boolean filterByCurrentUser) {
+	public RestRootEntity<QueryResultSetCount> queryEntityListCount(@Nonnull Query query, InteractionFilter interactionFilter, String processAppName, Boolean filterByCurrentUser) {
 		query = Args.notNull(query, "Search query");
 		String querySearch = Args.notNull(query.getName(), "Search query name");
 
-		Gson gson = new GsonBuilder().setDateFormat(DATE_TIME_FORMAT).create();
 		SafeUriBuilder uri = new SafeUriBuilder(rootUri).addPath(QUERY).addPath(querySearch).addPath(COUNT);
 		
 		if (interactionFilter != null) {
@@ -122,24 +118,22 @@ public class QueryClientImpl extends BaseClient implements QueryClient {
 			uri.addParameter(FILTER_BY_CURRENT_USER, filterByCurrentUser);
 		}
 
-		String body = makeGet(httpClient, httpContext, uri.build());
-		return gson.fromJson(body, QueryResultSetCount.class);
+		return makeGet(httpClient, httpContext, uri.build(), new TypeToken<RestRootEntity<QueryResultSetCount>>() {
+		});
 	}
 
 	@Override
-	public QueryAttributes queryAttributes(@Nonnull Query query, String processAppName) {
+	public RestRootEntity<QueryAttributes> queryAttributes(@Nonnull Query query, String processAppName) {
 		query = Args.notNull(query, "Search query");
 		String querySearch = Args.notNull(query.getName(), "Search query name");
 
-		Gson gson = new GsonBuilder().setDateFormat(DATE_TIME_FORMAT).create();
 		SafeUriBuilder uri = new SafeUriBuilder(rootUri).addPath(QUERY).addPath(querySearch).addPath(ATTRIBUTES);
 		
 		if (processAppName != null) {
 			uri.addParameter(PROCESS_APP_NAME, processAppName);
 		}
 
-		String body = makeGet(httpClient, httpContext, uri.build());
-		return gson.fromJson(body, QueryAttributes.class);
+		return makeGet(httpClient, httpContext, uri.build(), new TypeToken<RestRootEntity<QueryAttributes>>() {});
 	}
 
 	

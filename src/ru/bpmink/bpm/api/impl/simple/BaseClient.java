@@ -1,5 +1,9 @@
 package ru.bpmink.bpm.api.impl.simple;
 
+import com.google.common.base.MoreObjects;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
@@ -14,6 +18,8 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.protocol.HttpContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.bpmink.bpm.model.common.Describable;
+import ru.bpmink.bpm.model.common.RestRootEntity;
 import ru.bpmink.util.Utils;
 
 import java.io.IOException;
@@ -75,7 +81,7 @@ abstract class BaseClient {
 		}
 	}
 
-	protected String makeGet(HttpClient httpClient, HttpContext httpContext, URI endpoint) {
+	protected <T extends Describable> RestRootEntity<T> makeGet(HttpClient httpClient, HttpContext httpContext, URI endpoint, TypeToken<RestRootEntity<T>> typeToken) {
 		try {
 			HttpGet request = new HttpGet(endpoint);
 			setRequestTimeOut(request, DEFAULT_TIMEOUT);
@@ -84,11 +90,11 @@ abstract class BaseClient {
 			logRequest(request, null);
 
 			HttpResponse response = httpClient.execute(request, httpContext);
-			String body = Utils.inputStreamToString(response.getEntity().getContent());
+			RestRootEntity<T> entity = makeEntity(response, typeToken);
 
-			logResponse(response, body);
 			request.releaseConnection();
-			return body;
+
+			return entity;
 		} catch (IOException e) {
 			logger.error("Can't get Entity object from Server with uri: " + endpoint, e);
 			e.printStackTrace();
@@ -96,7 +102,7 @@ abstract class BaseClient {
 		}
 	}
 
-	protected String makePost(HttpClient httpClient, HttpContext httpContext, URI endpoint) {
+	protected <T extends Describable> RestRootEntity<T> makePost(HttpClient httpClient, HttpContext httpContext, URI endpoint, TypeToken<RestRootEntity<T>> typeToken) {
 		try {
 			HttpPost request = new HttpPost(endpoint);
 			setRequestTimeOut(request, DEFAULT_TIMEOUT);
@@ -105,15 +111,36 @@ abstract class BaseClient {
 			logRequest(request, null);
 
 			HttpResponse response = httpClient.execute(request, httpContext);
-			String body = Utils.inputStreamToString(response.getEntity().getContent());
+			RestRootEntity<T> entity = makeEntity(response, typeToken);
 
-			logResponse(response, body);
 			request.releaseConnection();
-			return body;
+
+			return entity;
 		} catch (IOException e) {
 			logger.error("Can't update Entity object from Server with uri " + endpoint, e);
 			e.printStackTrace();
 			throw new RuntimeException("Can't update Entity object from Server with uri " + endpoint, e);
+		}
+	}
+
+	private  <T extends Describable> RestRootEntity<T> makeEntity(HttpResponse response, TypeToken<RestRootEntity<T>> typeToken) {
+		try {
+			Gson gson = new GsonBuilder().setDateFormat(DATE_TIME_FORMAT).create();
+			String body = Utils.inputStreamToString(response.getEntity().getContent());
+			logResponse(response, body);
+
+			RestRootEntity<T> entity = gson.fromJson(body, typeToken.getType());
+			//In case of system / communication errors body will be empty. (i.e. if provided credentials was wrong
+			//we will receive 401 code - Unauthorized. So we set correct status code in to the entity, and it's payload will be empty)
+			entity = MoreObjects.firstNonNull(entity, new RestRootEntity<T>());
+
+			//In error case status field updated by 'error' value. So just replace it by actual status code.
+			entity.setStatus(String.valueOf(response.getStatusLine().getStatusCode()));
+			return entity;
+		} catch (IOException e) {
+			logger.error("Can't create response Entity object with type: " + typeToken.getType(), e);
+			e.printStackTrace();
+			throw new RuntimeException("Can't create response Entity object with type: " + typeToken.getType(), e);
 		}
 	}
 
