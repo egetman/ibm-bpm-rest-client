@@ -10,7 +10,7 @@ Assume you have this info:
 
     final String user = "user";
     final String password = "password";
-    final String serverUrl = "http://127.0.0.1:9080";
+    final String serverUrl = "http://127.0.0.1:9080"; //SSL supported too.
 
 Creating of bpm client as simple as:
 
@@ -23,7 +23,7 @@ For now just a few endpoints are implemented.
 
 To obtain exposed items you can use following methods:
     
-    ExposedItems exposedItems = bpmClient.getExposedClient().listItems(ItemType.PROCESS); //Or Just .listItems();
+    RestRootEntity<ExposedItems> exposedItems = bpmClient.getExposedClient().listItems(ItemType.PROCESS); //Or Just .listItems();
 
     Item itemByTypeAndName = bpmClient.getExposedClient().getItemByName(ItemType.SERVICE, "MyService");
     Item itemByName = bpmClient.getExposedClient().getItemByName("MyUnknownTypeItem");
@@ -34,7 +34,7 @@ To obtain exposed items you can use following methods:
 Output will be something like:
                     
 
-    ExposedItems [
+    RestRootEntity [
         status = 200
         payload = [
             exposedItemsList = [
@@ -66,7 +66,7 @@ You can check if the api call was successful or not:
 And do a lot of other stuff:
 (For example you can obtain process id's by process name and run unit tests for this process)
 
-    List<Item> items = exposedItems.getPayload().getExposedItemsList(); //getPayload() will throw a RestException, if the api call was unsuccessful.
+    List<Item> items = exposedItems.getPayload().getExposedItems(); //getPayload() will throw a RestException, if the api call was unsuccessful.
     for (Item item : items) {
     	if (item.getProcessAppName().equals("Advanced HR Open New Position")) {
     		//The id of the Business Process Definition to be used.
@@ -87,12 +87,12 @@ If you need input parameters for your process, you can put them in map (paramete
     inputParams.put("Loan", new MySuperPuperComplexObject()); // All will be serialized as json
     
     //You can put null instead of input, if your process doesn't need input.
-    ProcessDetails processDetails = bpmClient.getProcessClient().startProcess(item.getItemId(), item.getProcessAppId(), null, null, inputParams);
+    RestRootEntity<ProcessDetails> processDetails = bpmClient.getProcessClient().startProcess(item.getItemId(), item.getProcessAppId(), null, null, inputParams);
     logger.info(processDetails.describe());                                   
                     
 There will be some complex output like that:
     
-    ProcessDetails [
+    RestRootEntity [
     	status = 200
     	payload = [
     		actionDetails = null
@@ -226,12 +226,12 @@ All the calls return ProcessDetails type. It can be useful for different checks 
 You can obtain task instance id from ProcessDetails type, after you start process.
 After you have it, you can obtain detailed information about started tasks:
 
-	TaskDetails taskDetails = bpmClient.getTaskClient().getTask(tkiid);
+	RestRootEntity<TaskDetails> taskDetails = bpmClient.getTaskClient().getTask(tkiid);
 	logger.info(taskDetails.describe());
 
 After that you will see similar output:
 
-	TaskDetails [
+	RestRootEntity [
     	status = 200
     	payload = [
     		activationTime = Tue Mar 15 10:33:43 MSK 2016
@@ -269,34 +269,37 @@ After that you will see similar output:
 You can use following api possibilities:
 
 	//Start task
-	TaskStartData startData = bpmClient.getTaskClient().startTask(tkiid);
+	RestRootEntity<TaskStartData> startData = bpmClient.getTaskClient().startTask(tkiid);
 
 	//Assign task to somebody
-	TaskDetails taskDetails = bpmClient.getTaskClient().assignTaskToMe(tkiid);
-	TaskDetails taskDetails = bpmClient.getTaskClient().assignTaskBack(tkiid);
-	TaskDetails taskDetails = bpmClient.getTaskClient().assignTaskToUser(tkiid, userName);
-	TaskDetails taskDetails = bpmClient.getTaskClient().assignTaskToGroup(tkiid, groupName);
+	RestRootEntity<TaskDetails> taskDetails = bpmClient.getTaskClient().assignTaskToMe(tkiid);
+	RestRootEntity<TaskDetails> taskDetails = bpmClient.getTaskClient().assignTaskBack(tkiid);
+	RestRootEntity<TaskDetails> taskDetails = bpmClient.getTaskClient().assignTaskToUser(tkiid, userName);
+	RestRootEntity<TaskDetails> taskDetails = bpmClient.getTaskClient().assignTaskToGroup(tkiid, groupName);
 
 	//Complete task
-	TaskDetails taskDetails = bpmClient.getTaskClient().completeTask(tkiid, input); // Where input is @Nullable Map<String, Object>
+	RestRootEntity<TaskDetails> taskDetails = bpmClient.getTaskClient().completeTask(tkiid, input); // Where input is @Nullable Map<String, Object>
 
 	//Or retrieve data from specified task
-	TaskData taskData = bpmClient.getTaskClient().getData(tkiid, fields); // Where fields is comma-separated list of fields.
+	RestRootEntity<TaskData> taskData = bpmClient.getTaskClient().getData(tkiid, fields); // Where fields is comma-separated list of fields.
+
+	//Cancel task
+    RestRootEntity<RestEntity> taskCancel = bpmClient.getTaskClient().cancelTask(tkiid);
 
 	//Update task metadata
-	TaskDetails taskDetails = bpmClient.getTaskClient().updateTaskDueTime(tkiid, new Date());
-	TaskDetails taskDetails = bpmClient.getTaskClient().updateTaskPriority(tkiid, TaskPriority.HIGH);
+	RestRootEntity<TaskDetails> taskDetails = bpmClient.getTaskClient().updateTaskDueTime(tkiid, new Date());
+	RestRootEntity<TaskDetails> taskDetails = bpmClient.getTaskClient().updateTaskPriority(tkiid, TaskPriority.HIGH);
 
 ### ProcessApps api:
 
 With process apps client you can obtain information about all process applications installed on process server and it's snapshots.
 
-    ProcessApps processApps  = bpmClient.getProcessAppsClient().listProcessApps();
+    RestRootEntity<ProcessApps> processApps  = bpmClient.getProcessAppsClient().listProcessApps();
     logger.info(processApps.describe());
     
 After that you can obtain needed id's. 
     
-    ProcessApps [
+    RestRootEntity [
     	status = 200
     	payload = [
     		processAppsList = [
