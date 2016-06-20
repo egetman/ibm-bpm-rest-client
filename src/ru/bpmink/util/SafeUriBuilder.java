@@ -23,7 +23,6 @@ public class SafeUriBuilder extends URIBuilder {
 	/**
      * Constructs an empty instance.
      */
-	@SuppressWarnings("unused")
 	public SafeUriBuilder() {
 		super();
 	}

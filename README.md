@@ -96,10 +96,10 @@ There will be some complex output like that:
     	status = 200
     	payload = [
     		actionDetails = null
-    		businessData = [{name=requisition.department, type=String, alias=Department, label=Department, value=Software Engineering}, {name=requisition.status, type=String, alias=EmploymentStatus, label=Employment Status}, {name=requisition.requestor, type=String, alias=HiringManager, label=Hiring Manager, value=Roland Peisl}, {name=requisition.location, type=String, alias=Location, label=Location}, {name=requisition.reqNum, type=String, alias=RequistionNumber, label=Requistion Number, value=1140}]
+    		businessData = [{name=requisition.department, type=String, alias=Department, label=Department, value=Software Engineering}, {name=requisition.status, type=String, alias=EmploymentStatus, label=Employment Status}, {name=requisition.requester, type=String, alias=HiringManager, label=Hiring Manager, value=Roland Peisl}, {name=requisition.location, type=String, alias=Location, label=Location}, {name=requisition.reqNum, type=String, alias=RequisitionNumber, label=Requisition Number, value=1140}]
     		creationTime = Tue Mar 15 10:33:42 MSK 2016
     		comments = []
-    		data = "{\"currentPosition\":{\"positionType\":\"\",\"jobTitle\":\"Management\",\"iId\":\"\",\"replacement\":{\"lastName\":\"\",\"firstName\":\"\",\"supervisor\":\"\",\"payLevel\":\"\",\"payType\":\"\",\"notes\":\"\",\"@metadata\":{\"dirty\":false,\"shared\":false,\"rootVersionContextID\":\"2064.17b5290a-04fa-4a65-a352-226adaec20beT\",\"className\":\"PersonData\"}},\"@metadata\":{\"dirty\":false,\"shared\":false,\"rootVersionContextID\":\"2064.17b5290a-04fa-4a65-a352-226adaec20beT\",\"className\":\"Position\"}},\"ListOfCandidates\":{\"NrOfCandidatesFound\":0,\"Candidate\":{ \"selected\": [], \"items\": [{\"lastName\":\"\",\"firstName\":\"\",\"supervisor\":\"\",\"payLevel\":\"\",\"payType\":\"\",\"notes\":\"\",\"@metadata\":{\"dirty\":false,\"shared\":false,\"rootVersionContextID\":\"2064.17b5290a-04fa-4a65-a352-226adaec20beT\",\"className\":\"PersonData\"}}], \"@metadata\":{\"dirty\":false,\"shared\":false}},\"@metadata\":{\"dirty\":false,\"shared\":false,\"rootVersionContextID\":\"2064.17b5290a-04fa-4a65-a352-226adaec20beT\",\"className\":\"Candidates\"}},\"person\":{\"lastName\":\"\",\"firstName\":\"\",\"supervisor\":\"\",\"payLevel\":\"\",\"payType\":\"\",\"notes\":\"\",\"@metadata\":{\"dirty\":false,\"shared\":false,\"rootVersionContextID\":\"2064.17b5290a-04fa-4a65-a352-226adaec20beT\",\"className\":\"PersonData\"}},\"requisition\":{\"reqNum\":\"1140\",\"requestor\":\"Roland Peisl\",\"status\":\"\",\"approvalNeeded\":false,\"date\":\"2016-03-15T10:33:42Z\",\"department\":\"Software Engineering\",\"location\":\"\",\"empNum\":1,\"gmApproval\":\"\",\"gmComments\":\"\",\"instanceId\":\"\",\"hrcandidateAvailable\":false,\"@metadata\":{\"dirty\":false,\"shared\":false,\"rootVersionContextID\":\"2064.17b5290a-04fa-4a65-a352-226adaec20beT\",\"className\":\"Requisition\"}},\"candidatesRequest\":{\"status\":\"XXX\",\"positionType\":\"New\",\"location\":\"Boston\",\"payType\":\"Excempt\",\"payLevel\":\"4\",\"@metadata\":{\"dirty\":false,\"shared\":false,\"rootVersionContextID\":\"2064.17b5290a-04fa-4a65-a352-226adaec20beT\",\"className\":\"RequestForCandidates\"}}}"
+    		data = "{\"currentPosition\":{\"positionType\":\"\",\"jobTitle\":\"Management\",\"iId\":\"\",\"replacement\":{\"lastName\":\"\",\"firstName\":\"\",\"supervisor\":\"\",\"payLevel\":\"\",\"payType\":\"\",\"notes\":\"\",\"@metadata\":{\"dirty\":false,\"shared\":false,\"rootVersionContextID\":\"2064.17b5290a-04fa-4a65-a352-226adaec20beT\",\"className\":\"PersonData\"}},\"@metadata\":{\"dirty\":false,\"shared\":false,\"rootVersionContextID\":\"2064.17b5290a-04fa-4a65-a352-226adaec20beT\",\"className\":\"Position\"}},\"ListOfCandidates\":{\"NrOfCandidatesFound\":0,\"Candidate\":{ \"selected\": [], \"items\": [{\"lastName\":\"\",\"firstName\":\"\",\"supervisor\":\"\",\"payLevel\":\"\",\"payType\":\"\",\"notes\":\"\",\"@metadata\":{\"dirty\":false,\"shared\":false,\"rootVersionContextID\":\"2064.17b5290a-04fa-4a65-a352-226adaec20beT\",\"className\":\"PersonData\"}}], \"@metadata\":{\"dirty\":false,\"shared\":false}},\"@metadata\":{\"dirty\":false,\"shared\":false,\"rootVersionContextID\":\"2064.17b5290a-04fa-4a65-a352-226adaec20beT\",\"className\":\"Candidates\"}},\"person\":{\"lastName\":\"\",\"firstName\":\"\",\"supervisor\":\"\",\"payLevel\":\"\",\"payType\":\"\",\"notes\":\"\",\"@metadata\":{\"dirty\":false,\"shared\":false,\"rootVersionContextID\":\"2064.17b5290a-04fa-4a65-a352-226adaec20beT\",\"className\":\"PersonData\"}},\"requisition\":{\"reqNum\":\"1140\",\"requester\":\"Roland Peisl\",\"status\":\"\",\"approvalNeeded\":false,\"date\":\"2016-03-15T10:33:42Z\",\"department\":\"Software Engineering\",\"location\":\"\",\"empNum\":1,\"gmApproval\":\"\",\"gmComments\":\"\",\"instanceId\":\"\",\"hrCandidateAvailable\":false,\"@metadata\":{\"dirty\":false,\"shared\":false,\"rootVersionContextID\":\"2064.17b5290a-04fa-4a65-a352-226adaec20beT\",\"className\":\"Requisition\"}},\"candidatesRequest\":{\"status\":\"XXX\",\"positionType\":\"New\",\"location\":\"Boston\",\"payType\":\"Exempt\",\"payLevel\":\"4\",\"@metadata\":{\"dirty\":false,\"shared\":false,\"rootVersionContextID\":\"2064.17b5290a-04fa-4a65-a352-226adaec20beT\",\"className\":\"RequestForCandidates\"}}}"
     		description = null
     		diagram = [
     			processAppId = 2066.7b7f619b-1f3c-434f-a4be-63dd5508f388
@@ -177,7 +177,7 @@ There will be some complex output like that:
     			clientTypes = [IBM_WLE_Coach]
     			completionTime = null
     			containmentContextId = 47275
-    			data = {variables={currentPosition={positionType=, jobTitle=Management, iId=, replacement={lastName=, firstName=, supervisor=, payLevel=, payType=, notes=, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=PersonData}}, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=Position}}, ListOfCandidates={NrOfCandidatesFound=0.0, Candidate={selected=[], items=[{lastName=, firstName=, supervisor=, payLevel=, payType=, notes=, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=PersonData}}], @metadata={dirty=false, shared=false}}, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=Candidates}}, person={lastName=, firstName=, supervisor=, payLevel=, payType=, notes=, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=PersonData}}, requisition={reqNum=1140, requestor=Roland Peisl, status=, approvalNeeded=false, date=2016-03-15T10:33:42Z, department=Software Engineering, location=, empNum=1.0, gmApproval=, gmComments=, instanceId=, hrcandidateAvailable=false, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=Requisition}}, candidatesRequest={status=XXX, positionType=New, location=Boston, payType=Excempt, payLevel=4, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=RequestForCandidates}}}}
+    			data = {variables={currentPosition={positionType=, jobTitle=Management, iId=, replacement={lastName=, firstName=, supervisor=, payLevel=, payType=, notes=, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=PersonData}}, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=Position}}, ListOfCandidates={NrOfCandidatesFound=0.0, Candidate={selected=[], items=[{lastName=, firstName=, supervisor=, payLevel=, payType=, notes=, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=PersonData}}], @metadata={dirty=false, shared=false}}, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=Candidates}}, person={lastName=, firstName=, supervisor=, payLevel=, payType=, notes=, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=PersonData}}, requisition={reqNum=1140, requester=Roland Peisl, status=, approvalNeeded=false, date=2016-03-15T10:33:42Z, department=Software Engineering, location=, empNum=1.0, gmApproval=, gmComments=, instanceId=, hrCandidateAvailable=false, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=Requisition}}, candidatesRequest={status=XXX, positionType=New, location=Boston, payType=Exempt, payLevel=4, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=RequestForCandidates}}}}
     			description = 
     			displayName = Step: Submit job requisition
     			dueTime = Tue Mar 15 11:33:43 MSK 2016
@@ -200,7 +200,7 @@ There will be some complex output like that:
     			tktid = null
     			tkiid = 52129
     		]
-    		variables = {currentPosition={positionType=, jobTitle=Management, iId=, replacement={lastName=, firstName=, supervisor=, payLevel=, payType=, notes=, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=PersonData}}, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=Position}}, ListOfCandidates={NrOfCandidatesFound=0.0, Candidate={selected=[], items=[{lastName=, firstName=, supervisor=, payLevel=, payType=, notes=, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=PersonData}}], @metadata={dirty=false, shared=false}}, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=Candidates}}, person={lastName=, firstName=, supervisor=, payLevel=, payType=, notes=, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=PersonData}}, requisition={reqNum=1140, requestor=Roland Peisl, status=, approvalNeeded=false, date=2016-03-15T10:33:42Z, department=Software Engineering, location=, empNum=1.0, gmApproval=, gmComments=, instanceId=, hrcandidateAvailable=false, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=Requisition}}, candidatesRequest={status=XXX, positionType=New, location=Boston, payType=Excempt, payLevel=4, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=RequestForCandidates}}}
+    		variables = {currentPosition={positionType=, jobTitle=Management, iId=, replacement={lastName=, firstName=, supervisor=, payLevel=, payType=, notes=, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=PersonData}}, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=Position}}, ListOfCandidates={NrOfCandidatesFound=0.0, Candidate={selected=[], items=[{lastName=, firstName=, supervisor=, payLevel=, payType=, notes=, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=PersonData}}], @metadata={dirty=false, shared=false}}, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=Candidates}}, person={lastName=, firstName=, supervisor=, payLevel=, payType=, notes=, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=PersonData}}, requisition={reqNum=1140, requester=Roland Peisl, status=, approvalNeeded=false, date=2016-03-15T10:33:42Z, department=Software Engineering, location=, empNum=1.0, gmApproval=, gmComments=, instanceId=, hrCandidateAvailable=false, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=Requisition}}, candidatesRequest={status=XXX, positionType=New, location=Boston, payType=Exempt, payLevel=4, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=RequestForCandidates}}}
     		state = STATE_RUNNING
     	]
     	exception = null
@@ -240,7 +240,7 @@ After that you will see similar output:
     		clientTypes = [IBM_WLE_Coach]
     		completionTime = null
     		containmentContextId = 47275
-    		data = {variables={currentPosition={positionType=, jobTitle=Management, iId=, replacement={lastName=, firstName=, supervisor=, payLevel=, payType=, notes=, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=PersonData}}, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=Position}}, ListOfCandidates={NrOfCandidatesFound=0.0, Candidate={selected=[], items=[{lastName=, firstName=, supervisor=, payLevel=, payType=, notes=, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=PersonData}}], @metadata={dirty=false, shared=false}}, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=Candidates}}, person={lastName=, firstName=, supervisor=, payLevel=, payType=, notes=, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=PersonData}}, requisition={reqNum=1140, requestor=Roland Peisl, status=, approvalNeeded=false, date=2016-03-15T10:33:42Z, department=Software Engineering, location=, empNum=1.0, gmApproval=, gmComments=, instanceId=, hrcandidateAvailable=false, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=Requisition}}, candidatesRequest={status=XXX, positionType=New, location=Boston, payType=Excempt, payLevel=4, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=RequestForCandidates}}}}
+    		data = {variables={currentPosition={positionType=, jobTitle=Management, iId=, replacement={lastName=, firstName=, supervisor=, payLevel=, payType=, notes=, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=PersonData}}, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=Position}}, ListOfCandidates={NrOfCandidatesFound=0.0, Candidate={selected=[], items=[{lastName=, firstName=, supervisor=, payLevel=, payType=, notes=, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=PersonData}}], @metadata={dirty=false, shared=false}}, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=Candidates}}, person={lastName=, firstName=, supervisor=, payLevel=, payType=, notes=, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=PersonData}}, requisition={reqNum=1140, requester=Roland Peisl, status=, approvalNeeded=false, date=2016-03-15T10:33:42Z, department=Software Engineering, location=, empNum=1.0, gmApproval=, gmComments=, instanceId=, hrCandidateAvailable=false, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=Requisition}}, candidatesRequest={status=XXX, positionType=New, location=Boston, payType=Exempt, payLevel=4, @metadata={dirty=false, shared=false, rootVersionContextID=2064.17b5290a-04fa-4a65-a352-226adaec20beT, className=RequestForCandidates}}}}
     		description =
     		displayName = Step: Submit job requisition
     		dueTime = Tue Mar 15 11:33:43 MSK 2016
@@ -254,7 +254,7 @@ After that you will see similar output:
     		owner = egetman
     		priority = 30
     		priorityName = NORMAL
-    		processData = {businessData=[{name=requisition.department, type=String, alias=Department, label=Department, value=Software Engineering}, {name=requisition.status, type=String, alias=EmploymentStatus, label=Employment Status}, {name=requisition.requestor, type=String, alias=HiringManager, label=Hiring Manager, value=Roland Peisl}, {name=requisition.location, type=String, alias=Location, label=Location}, {name=requisition.reqNum, type=String, alias=RequistionNumber, label=Requistion Number, value=1140}]}
+    		processData = {businessData=[{name=requisition.department, type=String, alias=Department, label=Department, value=Software Engineering}, {name=requisition.status, type=String, alias=EmploymentStatus, label=Employment Status}, {name=requisition.requester, type=String, alias=HiringManager, label=Hiring Manager, value=Roland Peisl}, {name=requisition.location, type=String, alias=Location, label=Location}, {name=requisition.reqNum, type=String, alias=RequisitionNumber, label=Requisition Number, value=1140}]}
     		runUrl = null
     		serviceId = 1.e9dcdbce-873e-41b6-9350-a4a5de140cad
     		startTime = Tue Mar 15 10:33:43 MSK 2016
@@ -303,7 +303,7 @@ After that you can obtain needed id's.
     	status = 200
     	payload = [
     		processAppsList = [
-    		    id = 2066.bbdd633b-9c86-4534-a5c2-0e75deac46ea
+    		    id = 2066.abc3633b-9c86-4534-a5c2-0e75d5ac46ea
     		    shortName = TEST
     		    name = Test
     		    description = null
@@ -329,7 +329,7 @@ After that you can obtain needed id's.
                 	activeSince = null
                 	branchId = 2063.f6dd26b0-67a7-4762-9c06-12d2819b3192
                 	branchName = Main
-                	id = 2064.be5c907a-c165-4ff3-8a1e-baeab478b1aa
+                	id = 2064.be5c907a-c165-4ff3-8a1e-ba4ab478b1aa
                 	][
                 	name = Version1
                 	acronym = V1
@@ -348,4 +348,40 @@ After that you can obtain needed id's.
     ]
 
 ### Query api (Task, TaskTemplate, Process):
-TODO (see javadoc)
+
+For now, you can use query clients, based on 3 different entity types:
+
+* Task
+* TaskTemplate
+* Process
+
+Obtaining of each of them is quite similar:
+
+    QueryClient taskQueryClient = bpmClient.getTaskQueryClient();
+    QueryClient taskTemplateQueryClient = bpmClient.getTaskTemplateQueryClient();
+    QueryClient processQueryClient = bpmClient.getProcessQueryClient();
+    
+Api of the query client is the same. The only difference is entity type, that you want to query.
+     
+For example, if you want to build your custom portal, and want to display tasks with specified order to some customer
+you can do the following:
+
+    //List available queries for specified process:
+    RestRootEntity<QueryList> listOfAvailableQueries = bpmClient.getTaskQueryClient().listQueries(processAppName, null, null);
+    List<Query> queries = listOfAvailableQueries.getPayload().getQueries();
+
+    for (Query query : queries) {
+        //Find query, that you need. QUERY_ALL_TASKS is one of predefined queries.
+        if (Query.QUERY_ALL_TASKS.equalsIgnoreCase(query.getName())) {
+            //And query task that you can take to work on:
+            RestRootEntity<QueryResultSet> queriedEntities = bpmClient.getTaskQueryClient().queryEntityList(query, null, InteractionFilter.ASSESS_AND_WORK_ON, processAppName, Arrays.asList(new SortAttribute(SortAttribute.OWNER, SortOrder.ASC), new SortAttribute(SortAttribute.DUE, SortOrder.ASC)), 1, true);
+
+            //Get tkiid from found result:
+            if (queriedEntities.getPayload().getQueryResults().iterator().hasNext()) {
+                String tkiid = queriedEntities.getPayload().getQueryResults().iterator().next().getTkiid();
+                //After that you can obtain task object and retrieve it's "start url" or build it manually.
+                //Default template of url is something like: 
+                //SERVER_URL + "/teamworks/process.lsw?zWorkflowState=1&zTaskId={tkiid here}&zResetContext=true";
+            }
+        }
+    }
