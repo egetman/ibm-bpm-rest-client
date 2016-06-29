@@ -6,7 +6,7 @@
         </encoder>
     </appender>
 
-    <root level="fine">
+    <root level="FINE">
         <appender-ref ref="STDOUT"/>
     </root>
 </configuration>

@@ -5,8 +5,16 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-import static ru.bpmink.util.Constants.*;
+import static ru.bpmink.util.Constants.CLOSE_BRACKET;
+import static ru.bpmink.util.Constants.COLON;
+import static ru.bpmink.util.Constants.OPEN_BRACKET;
+import static ru.bpmink.util.Constants.SPACE;
 
+/**
+ * Thrown during try to access {@link ru.bpmink.bpm.model.common.RestRootEntity#getPayload()} if the rest-api call
+ * was unsuccessful.
+ * This exception contains all information about server-side exceptional event.
+ */
 class RestException extends RuntimeException {
 
     //The status of the previous API call.

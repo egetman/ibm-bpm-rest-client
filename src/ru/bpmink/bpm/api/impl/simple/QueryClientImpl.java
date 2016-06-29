@@ -71,7 +71,7 @@ public class QueryClientImpl extends BaseClient implements QueryClient {
 	}
 	
 	@Override
-	public RestRootEntity<QueryResultSet> queryEntityList(@Nonnull Query query, List<QueryAttribute> selectedAttributes, InteractionFilter interactionFilter, String processAppName, List<SortAttribute> sortAttributes, Integer size, Boolean filterByCurrentUser) {
+	public RestRootEntity<QueryResultSet> queryEntities(@Nonnull Query query, List<QueryAttribute> selectedAttributes, InteractionFilter interactionFilter, String processAppName, List<SortAttribute> sortAttributes, Integer size, Boolean filterByCurrentUser) {
 		query = Args.notNull(query, "Search query");
 		String querySearch = Args.notNull(query.getName(), "Search query name");
 		
@@ -100,7 +100,7 @@ public class QueryClientImpl extends BaseClient implements QueryClient {
 	}
 	
 	@Override
-	public RestRootEntity<QueryResultSetCount> queryEntityListCount(@Nonnull Query query, InteractionFilter interactionFilter, String processAppName, Boolean filterByCurrentUser) {
+	public RestRootEntity<QueryResultSetCount> queryEntitiesCount(@Nonnull Query query, InteractionFilter interactionFilter, String processAppName, Boolean filterByCurrentUser) {
 		query = Args.notNull(query, "Search query");
 		String querySearch = Args.notNull(query.getName(), "Search query name");
 

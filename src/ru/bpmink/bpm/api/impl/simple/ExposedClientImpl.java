@@ -34,12 +34,18 @@ public class ExposedClientImpl extends BaseClient implements ExposedClient {
 	ExposedClientImpl(URI rootUri, HttpClient httpClient) {
 		this(rootUri, httpClient, null);
 	}
-	
-	@Override
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
 	public RestRootEntity<ExposedItems> listItems() {
 		return listItems(rootUri);
 	}
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public RestRootEntity<ExposedItems> listItems(ItemType itemType) {
 		if (itemType == null) {
@@ -52,13 +58,23 @@ public class ExposedClientImpl extends BaseClient implements ExposedClient {
 		return makeGet(httpClient, httpContext, uri, new TypeToken<RestRootEntity<ExposedItems>>() {});
 	}
 
-	@Override
+    /**
+     * {@inheritDoc}
+     * @throws IllegalArgumentException {@inheritDoc}
+     * @throws ru.bpmink.bpm.model.common.RestException {@inheritDoc}
+     */
+    @Override
 	public Item getItemByName(@Nonnull String itemName) {
 		itemName = Args.notNull(itemName, "Item name");
 		return getItem(null, itemName);
 	}
 
-	@Override
+    /**
+     * {@inheritDoc}
+     * @throws IllegalArgumentException {@inheritDoc}
+     * @throws ru.bpmink.bpm.model.common.RestException {@inheritDoc}
+     */
+    @Override
 	public Item getItemByName(@Nonnull ItemType itemType, @Nonnull String itemName) {
 		itemType = Args.notNull(itemType, "Item type");
 		itemName = Args.notNull(itemName, "Item name");

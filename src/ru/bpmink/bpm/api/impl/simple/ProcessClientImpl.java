@@ -49,14 +49,17 @@ class ProcessClientImpl extends BaseClient implements ProcessClient {
 		this(rootUri, httpClient, null);
 	}
 
-	
-	//Will use only one parameter of processAppId, snapshotId or branchId. Which one is not specified.
+
+    /**
+     * <p>Will use only one parameter of processAppId, snapshotId or branchId. Which one is not specified.</p>
+     * {@inheritDoc}
+     */
 	@Override
 	public RestRootEntity<ProcessDetails> startProcess(@Nonnull String bpdId, String processAppId, String snapshotId, String branchId, Map<String, Object> input) {
 		bpdId = Args.notNull(bpdId, "BusinessProcessDefinition (bpdId)");
 		Gson gson = new GsonBuilder().setDateFormat(DATE_TIME_FORMAT).create();
-		
-		Map<String, String> choice = Maps.newHashMap();
+
+        Map<String, String> choice = Maps.newHashMap();
 		choice.put(SNAPSHOT_ID, snapshotId);
 		choice.put(BRANCH_ID, branchId);
 		choice.put(PROCESS_APP_ID, processAppId);

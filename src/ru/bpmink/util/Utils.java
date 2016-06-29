@@ -21,7 +21,7 @@ public class Utils {
         if (inputStream == null) {
             return null;
         }
-        try(ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream()) {
+        try (ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream()) {
             byte[] buffer = new byte[1024];
             int length;
             while ((length = inputStream.read(buffer)) != -1) {
@@ -39,7 +39,11 @@ public class Utils {
             }
             writer.flush();
         } finally {
-            writer.close();
+            try {
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

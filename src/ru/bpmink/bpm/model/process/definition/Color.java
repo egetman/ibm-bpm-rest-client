@@ -3,7 +3,7 @@ package ru.bpmink.bpm.model.process.definition;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Color of the element in the diagramm.
+ * Color of the element in the diagram.
  */
 public enum Color {
 
