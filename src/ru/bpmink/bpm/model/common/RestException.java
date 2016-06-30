@@ -11,8 +11,8 @@ import static ru.bpmink.util.Constants.OPEN_BRACKET;
 import static ru.bpmink.util.Constants.SPACE;
 
 /**
- * Thrown during try to access {@link ru.bpmink.bpm.model.common.RestRootEntity#getPayload()} if the rest-api call
- * was unsuccessful.
+ * Thrown during an attempt to access {@link ru.bpmink.bpm.model.common.RestRootEntity#getPayload()} if the rest-api
+ * call was unsuccessful.
  * This exception contains all information about server-side exceptional event.
  */
 class RestException extends RuntimeException {

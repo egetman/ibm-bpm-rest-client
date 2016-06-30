@@ -21,7 +21,7 @@ import java.util.List;
 public interface QueryClient {
 
     /**
-     * Use this method to retrieve a list of queries for entity instance data.
+     * Retrieves a list of queries for entity instance data.
      * This method similar to {@link #listQueries(String, QueryKind, List)} with null parameters.
      *
      * @return {@link ru.bpmink.bpm.model.common.RestRootEntity} instance, that contains information about available
@@ -30,7 +30,7 @@ public interface QueryClient {
     RestRootEntity<QueryList> listQueries();
 
     /**
-     * Use this method to retrieve a list of queries for entity instance data.
+     * Retrieves a list of queries for entity instance data.
      *
      * @param processAppName Name of the process application, used for additional filtering.
      *      This parameter is intended for future use and has currently no effect on the returned query metadata.
@@ -40,13 +40,13 @@ public interface QueryClient {
      *      see {@link ru.bpmink.bpm.model.query.QueryAttribute}) which specifies the semantic use and implicit
      *      value range of a query attribute. For example, there might be multiple query attributes that represent a
      *	    task's priority value, but the content value associated with each one would be TASK.PRIORITY, identifying
-     * 		those attributes as containing a "task priority" type value.
-     * 	 	When using this parameter, only queries which return the specified content values in their result set
+     *      those attributes as containing a "task priority" type value.
+     *      When using this parameter, only queries which return the specified content values in their result set
      * 	   	are returned.
-     *		For example, if you specified {@link ru.bpmink.bpm.model.query.QueryAttribute} content =
+     *      For example, if you specified {@link ru.bpmink.bpm.model.query.QueryAttribute} content =
      *	    {@literal TASK.PRIORITY}, {@literal TASK.TKIID} in your request URI query, then the response will include
      *	    only those queries that return both content types.
-     *		To determine the valid content values, you can use the {@link #queryAttributes(Query, String)} API and
+     *      To determine the valid content values, you can use the {@link #queryAttributes(Query, String)} API and
      *	   	inspect the response details.
      * @return {@link ru.bpmink.bpm.model.common.RestRootEntity} instance, that contains information about available
      * 	   	queries: {@link ru.bpmink.bpm.model.query.QueryList}
@@ -56,7 +56,7 @@ public interface QueryClient {
                                           @Nullable List<QueryAttribute> content);
 
     /**
-     * Use this method to retrieve a list of entity instances via a query.
+     * Retrieves a list of entity instances via a query.
      *
      * @param query Query for task instance data (see {@link ru.bpmink.bpm.model.query.Query});
      * @param selectedAttributes List of attributes (see {@link ru.bpmink.bpm.model.query.QueryAttribute}), which
@@ -64,14 +64,14 @@ public interface QueryClient {
      * 	    If no selected attributes are specified, all of the attributes that are defined on the query are returned.
      * @param interactionFilter Name of a predefined user interaction
      *      (see {@link ru.bpmink.bpm.model.query.InteractionFilter});
-     * 		Note: Using any of the interactionFilter values implies that the query filters by current user, even
+     *      Note: Using any of the interactionFilter values implies that the query filters by current user, even
      *      if the user has administrative privileges. The effect is the same as
      * 	    if {@code filterByCurrentUser} is set to {@literal true}.
      * @param processAppName Name of the process application, used for additional filtering.
      * @param sortAttributes List of sort criteria (see {@link ru.bpmink.bpm.model.query.SortAttribute}) applied to the
      *      list of returned process instance entities. Each list entry has the form attribute {@literal [ASC|DESC]}
      *      where ascending is the default.
-     * 		The attributes {@literal TAD_DESCRIPTION}, {@literal STATE} and {@literal KIND} cannot be used within
+     *      The attributes {@literal TAD_DESCRIPTION}, {@literal STATE} and {@literal KIND} cannot be used within
      * 	    sort criteria.
      * @param size Specifies the maximum number of entities to be returned. If not specified, then the default size,
      *      defined for the query will be used.
@@ -81,10 +81,10 @@ public interface QueryClient {
      *      the current user. If the current user is an administrative user, then the default is to perform a filtered
      *      search. If the current user is not an administrative user, then this parameter is ignored and a filtered
      *      search is performed.
-     * 		Note: This parameter is used only when the request is being executed by an administrative user and no
+     *      Note: This parameter is used only when the request is being executed by an administrative user and no
      * 	    interactionFilter parameter is set, otherwise it is ignored.
      * @return {@link ru.bpmink.bpm.model.common.RestRootEntity} instance, that contains detailed information
-     * 		about entity instances: {@link ru.bpmink.bpm.model.query.QueryResultSet}
+     *      about entity instances: {@link ru.bpmink.bpm.model.query.QueryResultSet}
      * @throws IllegalArgumentException if specified {@link ru.bpmink.bpm.model.query.Query} is null
      */
     RestRootEntity<QueryResultSet> queryEntities(@Nonnull Query query,
@@ -96,13 +96,13 @@ public interface QueryClient {
                                                  @Nullable Boolean filterByCurrentUser);
 
     /**
-     * Use this method to retrieve the number of entity instances in a query matching specified criteria.
+     * Retrieves the number of entity instances in a query matching specified criteria.
      *
      * @param query Query for task instance data (see {@link ru.bpmink.bpm.model.query.Query});
      * @param interactionFilter Name of a predefined user interaction
      *      (see {@link ru.bpmink.bpm.model.query.InteractionFilter});
-     * 		Note: Using any of the interactionFilter values implies that the query filters by current user, even
-     * 		if the user has administrative privileges. The effect is the same as
+     *      Note: Using any of the interactionFilter values implies that the query filters by current user, even
+     *      if the user has administrative privileges. The effect is the same as
      * 	    if {@code filterByCurrentUser} is set to {@literal true}.
      * @param processAppName Name of the process application, used for additional filtering.
      * @param filterByCurrentUser This parameter is a flag which indicates whether or not the search results should be
@@ -111,11 +111,11 @@ public interface QueryClient {
      *      the current user. If the current user is an administrative user, then the default is to perform a filtered
      *      search. If the current user is not an administrative user, then this parameter is ignored and a filtered
      *      search is performed.
-     * 		Note: This parameter is used only when the request is being executed by an administrative user and no
+     *      Note: This parameter is used only when the request is being executed by an administrative user and no
      * 	    interactionFilter parameter is set, otherwise it is ignored.
      * @return {@link ru.bpmink.bpm.model.common.RestRootEntity} instance, that contains information
-     * 		about number of entities in a query matching specified
-     * 		criteria: {@link ru.bpmink.bpm.model.query.QueryResultSetCount}
+     *      about number of entities in a query matching specified
+     *      criteria: {@link ru.bpmink.bpm.model.query.QueryResultSetCount}
      * @throws  IllegalArgumentException if specified {@link ru.bpmink.bpm.model.query.Query} is null
      */
     RestRootEntity<QueryResultSetCount> queryEntitiesCount(@Nonnull Query query,
@@ -124,13 +124,13 @@ public interface QueryClient {
                                                            @Nullable Boolean filterByCurrentUser);
 
     /**
-     * Use this method to retrieve a list of attributes of a specified query for containing entity instance data.
+     * Retrieves a list of attributes of a specified query for containing entity instance data.
      *
      * @param query Query for task instance data (see {@link ru.bpmink.bpm.model.query.Query});
      * @param processAppName Name of the process application, used for additional filtering.
-     * 		This parameter is intended for future use and has currently no effect on the returned query metadata.
+     *      This parameter is intended for future use and has currently no effect on the returned query metadata.
      * @return {@link ru.bpmink.bpm.model.common.RestRootEntity} instance, that contains all available attributes
-     * 		of specified query: {@link ru.bpmink.bpm.model.query.QueryAttributes}
+     *      of specified query: {@link ru.bpmink.bpm.model.query.QueryAttributes}
      * @throws IllegalArgumentException if specified {@link ru.bpmink.bpm.model.query.Query} is null
      */
     RestRootEntity<QueryAttributes> queryAttributes(@Nonnull Query query, @Nullable String processAppName);

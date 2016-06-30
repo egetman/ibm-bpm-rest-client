@@ -27,7 +27,9 @@ public class ProcessAppsClientImpl extends BaseClient implements ProcessAppsClie
 		this(rootUri, httpClient, null);
 	}
 
-	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public RestRootEntity<ProcessApps> listProcessApps() {
 		return makeGet(httpClient, httpContext, rootUri, new TypeToken<RestRootEntity<ProcessApps>>() {});

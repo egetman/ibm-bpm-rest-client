@@ -53,6 +53,7 @@ class ProcessClientImpl extends BaseClient implements ProcessClient {
     /**
      * <p>Will use only one parameter of processAppId, snapshotId or branchId. Which one is not specified.</p>
      * {@inheritDoc}
+     * @throws IllegalArgumentException {@inheritDoc}
      */
 	@Override
 	public RestRootEntity<ProcessDetails> startProcess(@Nonnull String bpdId, String processAppId, String snapshotId, String branchId, Map<String, Object> input) {
@@ -83,17 +84,29 @@ class ProcessClientImpl extends BaseClient implements ProcessClient {
 		throw new IllegalArgumentException("One of processAppId, snapshotId or branchId must be specified");
 	}
 
+    /**
+     * {@inheritDoc}
+     * @throws IllegalArgumentException {@inheritDoc}
+     */
 	@Override
 	public RestRootEntity<ProcessDetails> suspendProcess(@Nonnull String piid) {
 		return changeProcessState(piid, ACTION_SUSPEND);
 	}
 
-	@Override
+    /**
+     * {@inheritDoc}
+     * @throws IllegalArgumentException {@inheritDoc}
+     */
+    @Override
 	public RestRootEntity<ProcessDetails> resumeProcess(@Nonnull String piid) {
 		return changeProcessState(piid, ACTION_RESUME);
 	}
 
-	@Override
+    /**
+     * {@inheritDoc}
+     * @throws IllegalArgumentException {@inheritDoc}
+     */
+    @Override
 	public RestRootEntity<ProcessDetails> terminateProcess(@Nonnull String piid) {
 		return changeProcessState(piid, ACTION_TERMINATE);
 	}
@@ -106,7 +119,11 @@ class ProcessClientImpl extends BaseClient implements ProcessClient {
 		return makePost(httpClient, httpContext, uri, new TypeToken<RestRootEntity<ProcessDetails>>() {});
 	}
 
-	@Override
+    /**
+     * {@inheritDoc}
+     * @throws IllegalArgumentException {@inheritDoc}
+     */
+    @Override
 	public RestRootEntity<ProcessDetails> currentState(@Nonnull String piid) {
 		piid = Args.notNull(piid, "ProcessInstanceID (piid)");
 
