@@ -62,6 +62,10 @@ public class TaskClientImpl extends BaseClient implements TaskClient {
 		this(rootUri, httpClient, null);
 	}
 
+    /**
+     * {@inheritDoc}
+     * @throws IllegalArgumentException {@inheritDoc}
+     */
 	@Override
 	public RestRootEntity<TaskDetails> getTask(@Nonnull String tkiid) {
 		tkiid = Args.notNull(tkiid, "Task id (tkiid)");
@@ -71,7 +75,11 @@ public class TaskClientImpl extends BaseClient implements TaskClient {
 		return makeGet(httpClient, httpContext, uri, new TypeToken<RestRootEntity<TaskDetails>>() {});
 	}
 
-	@Override
+    /**
+     * {@inheritDoc}
+     * @throws IllegalArgumentException {@inheritDoc}
+     */
+    @Override
 	public RestRootEntity<TaskStartData> startTask(@Nonnull String tkiid) {
 		tkiid = Args.notNull(tkiid, "Task id (tkiid)");
 
@@ -79,7 +87,11 @@ public class TaskClientImpl extends BaseClient implements TaskClient {
 
 		return makePost(httpClient, httpContext, uri, new TypeToken<RestRootEntity<TaskStartData>>() {});
 	}
-	
+
+    /**
+     * {@inheritDoc}
+     * @throws IllegalArgumentException {@inheritDoc}
+     */
 	@Override
 	public RestRootEntity<TaskDetails> assignTaskToMe(@Nonnull String tkiid) {
 		tkiid = Args.notNull(tkiid, "Task id (tkiid)");
@@ -89,6 +101,10 @@ public class TaskClientImpl extends BaseClient implements TaskClient {
 		return assignTask(tkiid, query);
 	}
 
+    /**
+     * {@inheritDoc}
+     * @throws IllegalArgumentException {@inheritDoc}
+     */
 	@Override
 	public RestRootEntity<TaskDetails> assignTaskBack(@Nonnull String tkiid) {
 		tkiid = Args.notNull(tkiid, "Task id (tkiid)");
@@ -98,6 +114,10 @@ public class TaskClientImpl extends BaseClient implements TaskClient {
 		return assignTask(tkiid, query);
 	}
 
+    /**
+     * {@inheritDoc}
+     * @throws IllegalArgumentException {@inheritDoc}
+     */
 	@Override
 	public RestRootEntity<TaskDetails> assignTaskToUser(@Nonnull String tkiid, String userName) {
 		tkiid = Args.notNull(tkiid, "Task id (tkiid)");
@@ -111,6 +131,10 @@ public class TaskClientImpl extends BaseClient implements TaskClient {
 		return assignTask(tkiid, query);
 	}
 
+    /**
+     * {@inheritDoc}
+     * @throws IllegalArgumentException {@inheritDoc}
+     */
 	@Override
 	public RestRootEntity<TaskDetails> assignTaskToGroup(@Nonnull String tkiid, String groupName) {
 		tkiid = Args.notNull(tkiid, "Task id (tkiid)");
@@ -135,6 +159,10 @@ public class TaskClientImpl extends BaseClient implements TaskClient {
 		return makePost(httpClient, httpContext, uri.build(), new TypeToken<RestRootEntity<TaskDetails>>() {});
 	}
 
+    /**
+     * {@inheritDoc}
+     * @throws IllegalArgumentException {@inheritDoc}
+     */
 	@Override
 	public RestRootEntity<TaskDetails> completeTask(@Nonnull String tkiid, Map<String, Object> input) {
 		tkiid = Args.notNull(tkiid, "Task id (tkiid)");
@@ -148,6 +176,10 @@ public class TaskClientImpl extends BaseClient implements TaskClient {
 		return makePost(httpClient, httpContext, uri.build(), new TypeToken<RestRootEntity<TaskDetails>>() {});
 	}
 
+    /**
+     * {@inheritDoc}
+     * @throws IllegalArgumentException {@inheritDoc}
+     */
 	@Override
 	public RestRootEntity<RestEntity> cancelTask(@Nonnull String tkiid) {
 		tkiid = Args.notNull(tkiid, "Task id (tkiid)");
@@ -157,6 +189,10 @@ public class TaskClientImpl extends BaseClient implements TaskClient {
 		return makePost(httpClient, httpContext, uri, new TypeToken<RestRootEntity<RestEntity>>() {});
 	}
 
+    /**
+     * {@inheritDoc}
+     * @throws IllegalArgumentException {@inheritDoc}
+     */
 	@Override
     public RestRootEntity<TaskDetails> updateTaskDueTime(@Nonnull String tkiid, @Nonnull Date dueTime) {
 		tkiid = Args.notNull(tkiid, "Task id (tkiid)");
@@ -167,6 +203,10 @@ public class TaskClientImpl extends BaseClient implements TaskClient {
 		return makePost(httpClient, httpContext, uri, new TypeToken<RestRootEntity<TaskDetails>>() {});
     }
 
+    /**
+     * {@inheritDoc}
+     * @throws IllegalArgumentException {@inheritDoc}
+     */
     @Override
     public RestRootEntity<TaskDetails> updateTaskPriority(@Nonnull String tkiid, @Nonnull TaskPriority priority) {
 		tkiid = Args.notNull(tkiid, "Task id (tkiid)");
@@ -177,23 +217,32 @@ public class TaskClientImpl extends BaseClient implements TaskClient {
 		return makePost(httpClient, httpContext, uri, new TypeToken<RestRootEntity<TaskDetails>>() {});
     }
 
+    /**
+     * {@inheritDoc}
+     * @throws IllegalArgumentException {@inheritDoc}
+     */
     @Override
 	public RestRootEntity<TaskData> getTaskData(@Nonnull String tkiid, String fields) {
 		tkiid = Args.notNull(tkiid, "Task id (tkiid)");
 		SafeUriBuilder uri = new SafeUriBuilder(rootUri).addPath(tkiid).addParameter(ACTION, ACTION_GET_DATA);
-		if (fields != null) {
+
+        if (fields != null) {
 			uri.addParameter("fields", fields);
 		}
 
 		return makeGet(httpClient, httpContext, uri.build(), new TypeToken<RestRootEntity<TaskData>>() {});
 	}
 
+    /**
+     * {@inheritDoc}
+     * @throws IllegalArgumentException {@inheritDoc}
+     */
 	@Override
-	public RestRootEntity<TaskClientSettings> getTaskClientSettings(@Nonnull String tkiid, @Nonnull Boolean isRelativeURL) {
+	public RestRootEntity<TaskClientSettings> getTaskClientSettings(@Nonnull String tkiid, @Nonnull Boolean isRelativeUrl) {
 		tkiid = Args.notNull(tkiid, "Task id (tkiid)");
-		isRelativeURL = Args.notNull(isRelativeURL, "IsRelativeURL");
+		isRelativeUrl = Args.notNull(isRelativeUrl, "IsRelativeURL");
 
-		URI uri = new SafeUriBuilder(rootUri).addPath(tkiid).addPath(ACTION_SETTINGS).addPath(SETTINGS_TYPE).addParameter(RELATIVE_URL, isRelativeURL).build();
+		URI uri = new SafeUriBuilder(rootUri).addPath(tkiid).addPath(ACTION_SETTINGS).addPath(SETTINGS_TYPE).addParameter(RELATIVE_URL, isRelativeUrl).build();
 		return makeGet(httpClient, httpContext, uri, new TypeToken<RestRootEntity<TaskClientSettings>>() {});
 	}
 }

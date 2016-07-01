@@ -19,7 +19,7 @@ public interface ExposedClient {
 	 * Retrieve items of all types that are exposed to an end user.
      *
 	 * @return {@link ru.bpmink.bpm.model.common.RestRootEntity} instance, that contains information about
-     *      all exposed to an end user entities: {@link ru.bpmink.bpm.model.other.exposed.ExposedItems}
+     *      all exposed to an end user entities: {@link ru.bpmink.bpm.model.other.exposed.ExposedItems}.
 	 */
 	RestRootEntity<ExposedItems> listItems();
 	
