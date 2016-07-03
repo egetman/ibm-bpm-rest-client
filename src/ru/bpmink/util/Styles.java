@@ -1,6 +1,5 @@
 package ru.bpmink.util;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import ru.bpmink.bpm.model.common.Describable;
 
