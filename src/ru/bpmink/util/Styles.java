@@ -1,17 +1,32 @@
 package ru.bpmink.util;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import ru.bpmink.bpm.model.common.Describable;
 
 import java.util.Collection;
 
-import static ru.bpmink.util.Constants.*;
+import static ru.bpmink.util.Constants.CLOSE_BRACKET;
+import static ru.bpmink.util.Constants.EQUALS;
+import static ru.bpmink.util.Constants.LINE_SEPARATOR;
+import static ru.bpmink.util.Constants.NEW_LINE;
+import static ru.bpmink.util.Constants.NULL_STRING;
+import static ru.bpmink.util.Constants.OPEN_BRACKET;
+import static ru.bpmink.util.Constants.SPACE;
+import static ru.bpmink.util.Constants.TAB;
 
 public class Styles {
 
-    public static class ShortClassNameWithLineBreakToStringStyle extends ToStringStyle {
+    //Can be just once instantiated.
+    public static ToStringStyle shortClassNameWithLineBreak = new ShortClassNameWithLineBreakToStringStyle();
 
-        public ShortClassNameWithLineBreakToStringStyle() {
+    private static class ShortClassNameWithLineBreakToStringStyle extends ToStringStyle {
+
+        /**
+         * <p>Controls <code>String</code> formatting
+         * for {@link org.apache.commons.lang3.builder.ReflectionToStringBuilder}.</p>
+         */
+        private ShortClassNameWithLineBreakToStringStyle() {
             super();
             setUseShortClassName(true);
             setUseIdentityHashCode(false);
@@ -58,6 +73,12 @@ public class Styles {
 
         private final String linePrefix;
 
+        /**
+         * <p>Controls <code>String</code> formatting
+         * for {@link org.apache.commons.lang3.builder.ReflectionToStringBuilder}.</p>
+         *
+         * @param linePrefix is default prefix for each line.
+         */
         public NoClassNameWithLineBreakToStringStyle(String linePrefix) {
             super();
             if (linePrefix == null) {

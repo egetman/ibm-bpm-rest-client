@@ -17,6 +17,16 @@ public class Utils {
         return inputStreamToString(inputStream, Charset.forName(charset));
     }
 
+    /**
+     * Retrieves all data for given {@link java.io.InputStream} as String.
+     *
+     * @param inputStream {@link java.io.InputStream} to process.
+     * @param charset {@link java.nio.charset.Charset} to be used during byte to string conversion.
+     * @return string representation of {@link java.io.InputStream} data.
+     * @throws IOException  If the first byte cannot be read for any reason
+     *      other than the end of the file, if the input stream has been closed, or
+     *      if some other I/O error occurs.
+     */
     public static String inputStreamToString(InputStream inputStream, Charset charset) throws IOException {
         if (inputStream == null) {
             return null;
@@ -31,6 +41,13 @@ public class Utils {
         }
     }
 
+    /**
+     * Writes a list of string in to given {@link java.io.Writer}.
+     *
+     * @param writer {@link java.io.Writer} to write.
+     * @param source {@link java.util.List} of strings to be written.
+     * @throws IOException If an I/O error occurs.
+     */
     public static void writeLines(Writer writer, List<String> source) throws IOException {
         try {
             for (String line : source) {

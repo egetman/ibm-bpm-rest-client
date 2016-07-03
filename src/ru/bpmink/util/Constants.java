@@ -2,29 +2,46 @@ package ru.bpmink.util;
 
 public class Constants {
 
-    /** Opposite of {@link #FAILS}. */
+    /**
+     * Opposite of {@link #FAILS}.
+     */
     public static final boolean PASSES = true;
-    /** Opposite of {@link #PASSES}. */
+
+    /**
+     * Opposite of {@link #PASSES}.
+     */
     public static final boolean FAILS = false;
 
-    /** Opposite of {@link #FAILURE}. */
+    /**
+     * Opposite of {@link #FAILURE}.
+     */
     public static final boolean SUCCESS = true;
-    /** Opposite of {@link #SUCCESS}. */
+
+    /**
+     * Opposite of {@link #SUCCESS}.
+     */
     public static final boolean FAILURE = false;
 
     /**
-     Useful for {@link String} operations, which return an index of <tt>-1</tt> when
-     an item is not found.
+     * Useful for {@link String} operations, which return an index of <tt>-1</tt> when
+     * an item is not found.
      */
     public static final int NOT_FOUND = -1;
 
-    /** System property - <tt>line.separator</tt>*/
+    /**
+     * System property - <tt>line.separator</tt>
+     */
     public static final String LINE_SEPARATOR = System.getProperty("line.separator");
-    /** System property - <tt>file.separator</tt>*/
-    public static final String FILE_SEPARATOR = System.getProperty("file.separator");
-    /** System property - <tt>path.separator</tt>*/
-    public static final String PATH_SEPARATOR = System.getProperty("path.separator");
 
+    /**
+     * System property - <tt>file.separator</tt>
+     */
+    public static final String FILE_SEPARATOR = System.getProperty("file.separator");
+
+    /**
+     * System property - <tt>path.separator</tt>
+     */
+    public static final String PATH_SEPARATOR = System.getProperty("path.separator");
 
     public static final String NULL_STRING = "null";
     public static final String EMPTY_STRING = "";
@@ -42,11 +59,11 @@ public class Constants {
     public static final String SEMICOLON = ";";
 
     /**
-     The caller references the constants using <tt>Constants.EMPTY_STRING</tt>,
-     and so on. Thus, the caller should be prevented from constructing objects of
-     this class, by declaring this private constructor.
+     * The caller references the constants using <tt>Constants.EMPTY_STRING</tt>,
+     * and so on. Thus, the caller should be prevented from constructing objects of
+     * this class, by declaring this private constructor.
      */
-    private Constants(){
+    private Constants() {
         throw new AssertionError();
     }
 }

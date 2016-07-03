@@ -12,34 +12,36 @@ import java.util.Map;
  */
 public class TaskData extends RestEntity {
 
-	//A string which represent the result obtained from evaluating a javascript expression within the context of a currently running service.
-	@SerializedName("result")
-	private String result;
+    //A string which represent the result obtained from evaluating a javascript expression within the
+    //context of a currently running service.
+    @SerializedName("result")
+    private String result;
 
-	//Data information stored in an actual Map.
-	@SerializedName("resultMap")
-	private Map<String, Object> resultMap = Maps.newHashMap();
+    //Data information stored in an actual Map.
+    @SerializedName("resultMap")
+    private Map<String, Object> data = Maps.newHashMap();
 
-	/**
-	 * @return A string which represent the result obtained from evaluating a javascript expression within the context of a currently running service.
-	 */
-	public String getResult() {
-		return result;
-	}
+    /**
+     * @return A string which represent the result obtained from evaluating a javascript expression within the
+     *      context of a currently running service.
+     */
+    public String getResult() {
+        return result;
+    }
 
-	public void setResult(String result) {
-		this.result = result;
-	}
+    public void setResult(String result) {
+        this.result = result;
+    }
 
-	/**
-	 * @return Data information stored in an actual Map.
-	 */
-	public Map<String, Object> getResultMap() {
-		return resultMap;
-	}
+    /**
+     * @return Data information stored in an actual Map.
+     */
+    public Map<String, Object> getData() {
+        return data;
+    }
 
-	public void setResultMap(Map<String, Object> resultMap) {
-		this.resultMap = resultMap;
-	}
+    public void setData(Map<String, Object> data) {
+        this.data = data;
+    }
 
 }

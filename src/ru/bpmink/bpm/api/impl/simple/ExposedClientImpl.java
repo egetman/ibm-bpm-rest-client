@@ -46,9 +46,9 @@ public class ExposedClientImpl extends BaseClient implements ExposedClient {
     /**
      * {@inheritDoc}
      */
-	@Override
-	public RestRootEntity<ExposedItems> listItems(ItemType itemType) {
-		if (itemType == null) {
+    @Override
+    public RestRootEntity<ExposedItems> listItems(ItemType itemType) {
+        if (itemType == null) {
 			return listItems(rootUri);
 		}
 		return listItems(new SafeUriBuilder(rootUri).addPath(itemType.name().toLowerCase()).build());
@@ -90,14 +90,16 @@ public class ExposedClientImpl extends BaseClient implements ExposedClient {
 					if (itemName.equalsIgnoreCase(item.getName())) {
 						return item;
 					}
+                    break;
 				case SERVICE:
 					if (itemName.equalsIgnoreCase(item.getName())) {
 						return item;
 					}
-				case REPORT:
-					//TODO: don't know by which param make search - ProcessAppName or Display, so it's empty for now.
-				case SCOREBOARD:
-					
+                    break;
+                //TODO: don't know by which param make search - ProcessAppName or Display, so it's empty for now.
+                case REPORT: break;
+				case SCOREBOARD: break;
+				default: break;
 			}
 		}
 		return EMPTY_ITEM;		

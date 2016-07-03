@@ -130,7 +130,7 @@
 								<artifactItem>
 									<groupId>ru.bpmink</groupId>
 									<artifactId>ibm-bpm-rest-client</artifactId>
-									<version>0.0.1</version>
+									<version>0.0.2</version>
 									<type>jar</type>
 									<overWrite>true</overWrite>
 								</artifactItem>

@@ -11,8 +11,8 @@ import static ru.bpmink.util.Constants.OPEN_BRACKET;
 import static ru.bpmink.util.Constants.SPACE;
 
 /**
- * Thrown during an attempt to access {@link ru.bpmink.bpm.model.common.RestRootEntity#getPayload()} if the rest-api
- * call was unsuccessful.
+ * Thrown during an attempt to access {@link ru.bpmink.bpm.model.common.RestRootEntity#getPayload()}
+ * if the rest-api call was unsuccessful.
  * This exception contains all information about server-side exceptional event.
  */
 class RestException extends RuntimeException {
@@ -37,7 +37,8 @@ class RestException extends RuntimeException {
     @SerializedName("errorMessageParameters")
     private List<String> errorMessageParameters = Lists.newArrayList();
 
-    //The stacktrace associated with the exception. Note that this will be omitted unless the "server-stacktrace-enabled" property is enabled in the server's 100Custom.xml file.
+    //The stacktrace associated with the exception. Note that this will be omitted unless the
+    //"server-stacktrace-enabled" property is enabled in the server's 100Custom.xml file.
     @SerializedName("programmersDetails")
     private Object programmersDetails;
 
@@ -107,7 +108,8 @@ class RestException extends RuntimeException {
 
     /**
      * @return The stacktrace associated with the exception.
-     *         Note that this will be omitted unless the "server-stacktrace-enabled" property is enabled in the server's 100Custom.xml file.
+     *         <p>Note that this will be omitted unless the "server-stacktrace-enabled" property is
+     *         enabled in the server's 100Custom.xml file.</p>
      */
     public Object getProgrammersDetails() {
         return programmersDetails;

@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.bpmink.bpm.model.common.Describable;
 import ru.bpmink.bpm.model.common.RestRootEntity;
+import ru.bpmink.util.Constants;
 import ru.bpmink.util.Utils;
 
 import javax.annotation.Nonnull;
@@ -46,7 +47,7 @@ abstract class BaseClient {
 	private static final String FORM_URL_CONTENT_TYPE = "application/x-www-form-urlencoded";
 	protected static final String DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 	protected static final String DEFAULT_SEPARATOR = ",";
-	protected static final int DEFAULT_TIMEOUT = 120000; // 120 seconds 
+    protected static final int DEFAULT_TIMEOUT = 120000; // 120 seconds
 	
 	protected void setRequestTimeOut(HttpRequestBase request, int timeOut) {
 		RequestConfig requestConfig = RequestConfig.copy(DEFAULT_CONFIG)

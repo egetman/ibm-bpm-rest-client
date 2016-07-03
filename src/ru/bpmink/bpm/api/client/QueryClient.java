@@ -81,8 +81,8 @@ public interface QueryClient {
      *      the current user. If the current user is an administrative user, then the default is to perform a filtered
      *      search. If the current user is not an administrative user, then this parameter is ignored and a filtered
      *      search is performed.
-     *      Note: This parameter is used only when the request is being executed by an administrative user and no
-     * 	    interactionFilter parameter is set, otherwise it is ignored.
+     *      <p>Note: This parameter is used only when the request is being executed by an administrative user and no
+     * 	    interactionFilter parameter is set, otherwise it is ignored.</p>
      * @return {@link ru.bpmink.bpm.model.common.RestRootEntity} instance, that contains detailed information
      *      about entity instances: {@link ru.bpmink.bpm.model.query.QueryResultSet}
      * @throws IllegalArgumentException if specified {@link ru.bpmink.bpm.model.query.Query} is null

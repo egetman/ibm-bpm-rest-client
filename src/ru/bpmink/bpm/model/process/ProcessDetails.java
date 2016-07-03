@@ -80,7 +80,7 @@ public class ProcessDetails extends RestEntity {
 
 	//ID of the process template this instance is derived from.
 	@SerializedName("processTemplateID")
-	private String processTemplateID;
+	private String processTemplateId;
 
 	//Name of the process template this instance is derived from.
 	@SerializedName("processTemplateName")
@@ -223,8 +223,8 @@ public class ProcessDetails extends RestEntity {
 	/**
 	 * @return ID of the process template this instance is derived from.
 	 */
-	public String getProcessTemplateID() {
-		return processTemplateID;
+	public String getProcessTemplateId() {
+		return processTemplateId;
 	}
 
 	/**
@@ -353,8 +353,8 @@ public class ProcessDetails extends RestEntity {
 		this.piid = piid;
 	}
 
-	public void setProcessTemplateID(String processTemplateID) {
-		this.processTemplateID = processTemplateID;
+	public void setProcessTemplateId(String processTemplateId) {
+		this.processTemplateId = processTemplateId;
 	}
 
 	public void setProcessTemplateName(String processTemplateName) {
