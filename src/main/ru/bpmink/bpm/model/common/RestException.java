@@ -15,7 +15,8 @@ import static ru.bpmink.util.Constants.SPACE;
  * if the rest-api call was unsuccessful.
  * This exception contains all information about server-side exceptional event.
  */
-class RestException extends RuntimeException {
+
+public final class RestException extends RuntimeException {
 
     //The status of the previous API call.
     @SerializedName("status")

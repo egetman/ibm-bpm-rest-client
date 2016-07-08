@@ -1,5 +1,6 @@
 package ru.bpmink.bpm.api.impl.simple;
 
+import com.google.common.io.Closeables;
 import org.apache.http.HttpHost;
 import org.apache.http.annotation.Immutable;
 import org.apache.http.auth.AuthScope;
@@ -190,7 +191,7 @@ public class SimpleBpmClient implements BpmClient {
      */
     @Override
     public void close() throws IOException {
-        httpClient.close();
+        Closeables.close(httpClient, true);
     }
 
 }
