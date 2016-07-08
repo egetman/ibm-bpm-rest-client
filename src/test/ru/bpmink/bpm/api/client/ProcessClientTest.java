@@ -84,13 +84,13 @@ public class ProcessClientTest {
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void illegalArgumentExceptionOnStartProcessWithNullBpdId() {
+    public void processStartThrowExceptionWhenNullBpdId() {
         bpmClient.getProcessClient().startProcess(null, hiringSampleMetadata.getProcessAppId(), null, null, null);
         Assert.assertTrue(false, "Exception must be thrown before this assert");
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void illegalArgumentExceptionOnStartProcessWithNullOptionalIds() {
+    public void processStartThrowExceptionWhenNullOptionalIds() {
         bpmClient.getProcessClient().startProcess(hiringSampleMetadata.getItemId(), null, null, null, null);
         Assert.assertTrue(false, "Exception must be thrown before this assert");
     }

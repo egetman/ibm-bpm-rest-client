@@ -117,19 +117,19 @@ public class ExposedClientTest {
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void illegalArgumentExceptionThrownIfItemTypeNull() {
+    public void exposedItemByNameThrowExceptionWhenNullItemType() {
         bpmClient.getExposedClient().getItemByName(null, "Standard HR Open New Position");
         Assert.assertTrue(false, "Exception must be thrown before this assert");
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void illegalArgumentExceptionThrownIfNameNull() {
+    public void exposedItemByNameThrowExceptionWhenNullName() {
         bpmClient.getExposedClient().getItemByName(ItemType.PROCESS, null);
         Assert.assertTrue(false, "Exception must be thrown before this assert");
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void illegalArgumentExceptionThrownIfItemTypeAndNameNull() {
+    public void exposedItemByNameThrowExceptionWhenNullItemTypeAndName() {
         bpmClient.getExposedClient().getItemByName(null, null);
         Assert.assertTrue(false, "Exception must be thrown before this assert");
     }

@@ -13,6 +13,7 @@ import java.util.Map;
 public class TaskDetails extends RestEntity {
 
     private static final List<String> EMPTY_CLIENT_TYPES = Lists.newArrayList();
+    private static final List<String> EMPTY_NEXT_TASK_IDS = Lists.newArrayList();
     private static final Map<String, Object> EMPTY_DATA = Maps.newHashMap();
 
     public TaskDetails() {}
@@ -102,9 +103,9 @@ public class TaskDetails extends RestEntity {
     @SerializedName("processData")
     private Object processData;
 
-    //Contains ID of the next task if autoflow is enabled and next task was found.
+    //Contains ID list of the next tasks if autoflow is enabled and next tasks was found.
     @SerializedName("nextTaskId")
-    private String nextTaskId;
+    private List<String> nextTaskIds = Lists.newArrayList();
 
     //Shows if the task is under collaboration or not
     @SerializedName("collaboration")
@@ -287,10 +288,11 @@ public class TaskDetails extends RestEntity {
     }
 
     /**
-     * @return ID of the next task if autoflow is enabled and next task was found.
+     * @return ID list of the next tasks if autoflow is enabled and next tasks was found.
+     *      Empty list will be returned, if ids is not found.
      */
-    public String getNextTaskId() {
-        return nextTaskId;
+    public List<String> getNextTaskIds() {
+        return MoreObjects.firstNonNull(nextTaskIds, EMPTY_NEXT_TASK_IDS);
     }
 
     /**
@@ -454,4 +456,11 @@ public class TaskDetails extends RestEntity {
         this.tkiid = tkiid;
     }
 
+    public void setNextTaskIds(List<String> nextTaskIds) {
+        this.nextTaskIds = nextTaskIds;
+    }
+
+    public void setCollaboration(Collaboration collaboration) {
+        this.collaboration = collaboration;
+    }
 }
