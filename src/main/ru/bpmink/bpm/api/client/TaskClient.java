@@ -2,6 +2,7 @@ package ru.bpmink.bpm.api.client;
 
 import ru.bpmink.bpm.model.common.RestEntity;
 import ru.bpmink.bpm.model.common.RestRootEntity;
+import ru.bpmink.bpm.model.task.TaskActions;
 import ru.bpmink.bpm.model.task.TaskClientSettings;
 import ru.bpmink.bpm.model.task.TaskData;
 import ru.bpmink.bpm.model.task.TaskDetails;
@@ -11,6 +12,7 @@ import ru.bpmink.bpm.model.task.TaskStartData;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 
@@ -155,5 +157,23 @@ public interface TaskClient {
 	 * @throws IllegalArgumentException if tkiid or isRelativeUrl is null
 	 */
 	RestRootEntity<TaskClientSettings> getTaskClientSettings(@Nonnull String tkiid, @Nonnull Boolean isRelativeUrl);
+
+    /**
+     * Retrieve available actions for human task instances.
+     *
+     * @param tkiids A list of IDs of human tasks (tkiid list) for which available actions should be returned.
+     * @return {@link ru.bpmink.bpm.model.common.RestRootEntity} instance, which holds an information about available
+     *      actions for specified tkiids.
+     * @throws IllegalArgumentException if tkiids is null or empty.
+     */
+	RestRootEntity<TaskActions> getAvailableActions(@Nonnull List<String> tkiids);
+
+    /**
+     * Same as {@link #getAvailableActions(List)}.
+     * By default it's holds {@code getAvailableActions(Collections.singletonList(tkiid))} logic.
+     *
+     * @throws IllegalArgumentException if tkiid is null.
+     */
+    RestRootEntity<TaskActions> getAvailableActions(@Nonnull String tkiid);
 
 }

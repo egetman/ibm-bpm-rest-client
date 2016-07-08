@@ -1,5 +1,6 @@
 package ru.bpmink.bpm.api.impl.simple;
 
+import com.google.common.base.Joiner;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -11,6 +12,7 @@ import org.apache.http.util.Args;
 import ru.bpmink.bpm.api.client.TaskClient;
 import ru.bpmink.bpm.model.common.RestEntity;
 import ru.bpmink.bpm.model.common.RestRootEntity;
+import ru.bpmink.bpm.model.task.TaskActions;
 import ru.bpmink.bpm.model.task.TaskClientSettings;
 import ru.bpmink.bpm.model.task.TaskData;
 import ru.bpmink.bpm.model.task.TaskDetails;
@@ -20,7 +22,10 @@ import ru.bpmink.util.SafeUriBuilder;
 
 import javax.annotation.Nonnull;
 import java.net.URI;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 @Immutable
@@ -32,11 +37,13 @@ public class TaskClientImpl extends BaseClient implements TaskClient {
 
     //Request parameters constants
     private static final String ACTION = "action";
+    private static final String ACTIONS = "actions";
     private static final String PARAMS = "params";
     private static final String DUE_DATE = "dueDate";
     private static final String PRIORITY = "priority";
     private static final String RELATIVE_URL = "relativeURL";
     private static final String SETTINGS_TYPE = "IBM_WLE_Coach";
+    private static final String TASK_ID_LIST = "taskIDs";
 
     //Methods for tasks
     private static final String ACTION_ASSIGN = "assign";
@@ -261,6 +268,32 @@ public class TaskClientImpl extends BaseClient implements TaskClient {
                                                 .build();
 
         return makeGet(httpClient, httpContext, uri, new TypeToken<RestRootEntity<TaskClientSettings>>() {});
+    }
+
+    /**
+     * {@inheritDoc}
+     * @throws IllegalArgumentException {@inheritDoc}
+     */
+    @Override
+    public RestRootEntity<TaskActions> getAvailableActions(@Nonnull List<String> tkiids) {
+        tkiids = Args.notNull(tkiids, "Task ids (tkiids)");
+        Args.check(!tkiids.isEmpty(), "At least one tkiid must be specified for available actions retrieving");
+
+        URI uri = new SafeUriBuilder(rootUri).addPath(ACTIONS)
+                                            .addParameter(TASK_ID_LIST, Joiner.on(DEFAULT_SEPARATOR).join(tkiids))
+                                            .build();
+
+        return makeGet(httpClient, httpContext, uri, new TypeToken<RestRootEntity<TaskActions>>() {});
+    }
+
+    /**
+     * {@inheritDoc}
+     * @throws IllegalArgumentException {@inheritDoc}
+     */
+    @Override
+    public RestRootEntity<TaskActions> getAvailableActions(@Nonnull String tkiid) {
+        tkiid = Args.notNull(tkiid, "Task id (tkiid)");
+        return getAvailableActions(Collections.singletonList(tkiid));
     }
 }
 

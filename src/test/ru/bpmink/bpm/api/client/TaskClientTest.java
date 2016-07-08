@@ -13,14 +13,15 @@ import ru.bpmink.bpm.api.impl.BpmClientFactory;
 import ru.bpmink.bpm.model.common.RestRootEntity;
 import ru.bpmink.bpm.model.other.exposed.Item;
 import ru.bpmink.bpm.model.process.ProcessDetails;
+import ru.bpmink.bpm.model.task.TaskActions;
 import ru.bpmink.bpm.model.task.TaskData;
 import ru.bpmink.bpm.model.task.TaskDetails;
-import ru.bpmink.bpm.model.task.TaskStartData;
 import ru.bpmink.bpm.model.task.TaskState;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Collections;
 import java.util.Properties;
 
 public class TaskClientTest {
@@ -135,7 +136,31 @@ public class TaskClientTest {
         Assert.assertTrue(false, "Exception must be thrown before this assert");
     }
 
-    
+    @Test
+    public void taskAvailableActions() {
+        ProcessDetails processDetails = getHiringSampleProcessInstance();
+        Assert.assertFalse(processDetails.getTasks().isEmpty(), "Test could not be run, if there is no tasks");
+        TaskDetails submitJobRequisition = processDetails.getTasks().iterator().next();
 
+        TaskActions taskActions = bpmClient.getTaskClient().getAvailableActions(submitJobRequisition.getTkiid())
+                .getPayload();
+
+        logger.info(taskActions.describe());
+        Assert.assertEquals(taskActions.getTaskActions().size(), 1, "Available actions was submitted for 1 task");
+        Assert.assertFalse(taskActions.getTaskActions().iterator().next().getActions().isEmpty(), "Actions should " +
+                "present for claimed task");
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void taskAvailableActionsThrowExceptionWhenNullTkiid() {
+        bpmClient.getTaskClient().getAvailableActions((String) null);
+        Assert.assertTrue(false, "Exception must be thrown before this assert");
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void taskAvailableActionsThrowExceptionWhenEmptyTkiids() {
+        bpmClient.getTaskClient().getAvailableActions(Collections.<String>emptyList());
+        Assert.assertTrue(false, "Exception must be thrown before this assert");
+    }
 
 }

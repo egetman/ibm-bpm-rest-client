@@ -310,6 +310,13 @@ public class TaskDetails extends RestEntity {
     }
 
     /**
+     * @return Collaboration data if the task is under collaboration.
+     */
+    public Collaboration getCollaboration() {
+        return collaboration;
+    }
+
+    /**
      * @return Time when the task was claimed or when an invocation task enters the running state.
      */
     public Date getStartTime() {
