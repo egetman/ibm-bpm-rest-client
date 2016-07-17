@@ -12,9 +12,9 @@ import org.apache.http.util.Args;
 import ru.bpmink.bpm.api.client.TaskClient;
 import ru.bpmink.bpm.model.common.RestEntity;
 import ru.bpmink.bpm.model.common.RestRootEntity;
+import ru.bpmink.bpm.model.service.ServiceData;
 import ru.bpmink.bpm.model.task.TaskActions;
 import ru.bpmink.bpm.model.task.TaskClientSettings;
-import ru.bpmink.bpm.model.task.TaskData;
 import ru.bpmink.bpm.model.task.TaskDetails;
 import ru.bpmink.bpm.model.task.TaskPriority;
 import ru.bpmink.bpm.model.task.TaskStartData;
@@ -22,7 +22,6 @@ import ru.bpmink.util.SafeUriBuilder;
 
 import javax.annotation.Nonnull;
 import java.net.URI;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -50,11 +49,9 @@ public class TaskClientImpl extends BaseClient implements TaskClient {
     private static final String ACTION_COMPLETE = "finish";
     private static final String ACTION_CANCEL = "cancel";
     private static final String ACTION_START = "start";
-    private static final String ACTION_GET_DATA = "getData";
     private static final String ACTION_UPDATE = "update";
     private static final String ACTION_SETTINGS = "clientSettings";
-
-    @SuppressWarnings("unused")
+    private static final String ACTION_GET_DATA = "getData";
     private static final String ACTION_SET_DATA = "setData";
 
     //Assign constants
@@ -175,13 +172,13 @@ public class TaskClientImpl extends BaseClient implements TaskClient {
      * @throws IllegalArgumentException {@inheritDoc}
      */
     @Override
-    public RestRootEntity<TaskDetails> completeTask(@Nonnull String tkiid, Map<String, Object> input) {
+    public RestRootEntity<TaskDetails> completeTask(@Nonnull String tkiid, Map<String, Object> parameters) {
         tkiid = Args.notNull(tkiid, "Task id (tkiid)");
         Gson gson = new GsonBuilder().setDateFormat(DATE_TIME_FORMAT).create();
 
         SafeUriBuilder uri = new SafeUriBuilder(rootUri).addPath(tkiid).addParameter(ACTION, ACTION_COMPLETE);
-        if (input != null && input.size() > 0) {
-            uri.addParameter(PARAMS, gson.toJson(input));
+        if (parameters != null && parameters.size() > 0) {
+            uri.addParameter(PARAMS, gson.toJson(parameters));
         }
 
         return makePost(httpClient, httpContext, uri.build(), new TypeToken<RestRootEntity<TaskDetails>>() {});
@@ -234,21 +231,6 @@ public class TaskClientImpl extends BaseClient implements TaskClient {
         return makePost(httpClient, httpContext, uri, new TypeToken<RestRootEntity<TaskDetails>>() {});
     }
 
-    /**
-     * {@inheritDoc}
-     * @throws IllegalArgumentException {@inheritDoc}
-     */
-    @Override
-    public RestRootEntity<TaskData> getTaskData(@Nonnull String tkiid, String fields) {
-        tkiid = Args.notNull(tkiid, "Task id (tkiid)");
-        SafeUriBuilder uri = new SafeUriBuilder(rootUri).addPath(tkiid).addParameter(ACTION, ACTION_GET_DATA);
-
-        if (fields != null) {
-            uri.addParameter("fields", fields);
-        }
-
-        return makeGet(httpClient, httpContext, uri.build(), new TypeToken<RestRootEntity<TaskData>>() {});
-    }
 
     /**
      * {@inheritDoc}
@@ -295,6 +277,43 @@ public class TaskClientImpl extends BaseClient implements TaskClient {
         tkiid = Args.notNull(tkiid, "Task id (tkiid)");
         return getAvailableActions(Collections.singletonList(tkiid));
     }
+
+    /**
+     * {@inheritDoc}
+     * @throws IllegalArgumentException {@inheritDoc}
+     */
+    @Override
+    public RestRootEntity<ServiceData> getTaskData(@Nonnull String tkiid, String fields) {
+        tkiid = Args.notNull(tkiid, "Task id (tkiid)");
+        SafeUriBuilder uri = new SafeUriBuilder(rootUri).addPath(tkiid).addParameter(ACTION, ACTION_GET_DATA);
+
+        if (fields != null) {
+            uri.addParameter("fields", fields);
+        }
+
+        return makeGet(httpClient, httpContext, uri.build(), new TypeToken<RestRootEntity<ServiceData>>() {});
+    }
+
+    /**
+     * {@inheritDoc}
+     * @throws IllegalArgumentException {@inheritDoc}
+     */
+    @Override
+    public RestRootEntity<ServiceData> setTaskData(@Nonnull String tkiid, @Nonnull Map<String, Object> parameters) {
+        tkiid = Args.notNull(tkiid, "Task id (tkiid)");
+        parameters = Args.notNull(parameters, "Variables (parameters)");
+        Args.notEmpty(parameters.keySet(), "Parameters names");
+        Args.notEmpty(parameters.values(), "Parameters values");
+
+        Gson gson = new GsonBuilder().setDateFormat(DATE_TIME_FORMAT).create();
+        String params = gson.toJson(parameters);
+
+        URI uri = new SafeUriBuilder(rootUri).addPath(tkiid).addParameter(ACTION, ACTION_SET_DATA)
+                .addParameter(PARAMS, params).build();
+
+        return makePost(httpClient, httpContext, uri, new TypeToken<RestRootEntity<ServiceData>>() {});
+    }
+
 }
 
 

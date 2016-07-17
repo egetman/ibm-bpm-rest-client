@@ -27,6 +27,7 @@ import ru.bpmink.bpm.api.client.ExposedClient;
 import ru.bpmink.bpm.api.client.ProcessAppsClient;
 import ru.bpmink.bpm.api.client.ProcessClient;
 import ru.bpmink.bpm.api.client.QueryClient;
+import ru.bpmink.bpm.api.client.ServiceClient;
 import ru.bpmink.bpm.api.client.TaskClient;
 import ru.bpmink.util.SafeUriBuilder;
 
@@ -52,6 +53,7 @@ public class SecuredBpmClient implements BpmClient {
     private static final String EXPOSED_ENDPOINT = "exposed";
     private static final String PROCESS_ENDPOINT = "process";
     private static final String TASK_ENDPOINT = "task";
+    private static final String SERVICE_ENDPOINT = "service";
     private static final String TASKS_QUERY_ENDPOINT = "tasks";
     private static final String TASKS_TEMPLATE_QUERY_ENDPOINT = "taskTemplates";
     private static final String PROCESS_QUERY_ENDPOINT = "processes";
@@ -60,6 +62,7 @@ public class SecuredBpmClient implements BpmClient {
     private ExposedClient exposedClient;
     private ProcessClient processClient;
     private TaskClient taskClient;
+    private ServiceClient serviceClient;
     private ProcessAppsClient processAppsClient;
 
     private QueryClient taskQueryClient;
@@ -151,6 +154,18 @@ public class SecuredBpmClient implements BpmClient {
                     httpClient, httpContext);
         }
         return taskClient;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ServiceClient getServiceClient() {
+        if (serviceClient == null) {
+            serviceClient = new ServiceClientImpl(new SafeUriBuilder(rootUri).addPath(SERVICE_ENDPOINT).build(),
+                    httpClient, httpContext);
+        }
+        return serviceClient;
     }
 
     /**
