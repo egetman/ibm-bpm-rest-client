@@ -167,12 +167,12 @@ public interface TaskClient {
      * Get data from specified running service.
      *
      * @param tkiid The id of the task instance.
-     * @param fields Comma-separated list of fields.
+     * @param fields Fields names to fetch variables values.
      * @return {@link ru.bpmink.bpm.model.common.RestRootEntity} instance, which holds task data information:
      *      {@link ServiceData}
      * @throws IllegalArgumentException if tkiid is null
      */
-    RestRootEntity<ServiceData> getTaskData(@Nonnull String tkiid, @Nullable String fields);
+    RestRootEntity<ServiceData> getTaskData(@Nonnull String tkiid, @Nullable String... fields);
 
     /**
      * This method sets one or more variables within a running service.

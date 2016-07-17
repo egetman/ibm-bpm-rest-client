@@ -283,12 +283,12 @@ public class TaskClientImpl extends BaseClient implements TaskClient {
      * @throws IllegalArgumentException {@inheritDoc}
      */
     @Override
-    public RestRootEntity<ServiceData> getTaskData(@Nonnull String tkiid, String fields) {
+    public RestRootEntity<ServiceData> getTaskData(@Nonnull String tkiid, String... fields) {
         tkiid = Args.notNull(tkiid, "Task id (tkiid)");
         SafeUriBuilder uri = new SafeUriBuilder(rootUri).addPath(tkiid).addParameter(ACTION, ACTION_GET_DATA);
 
-        if (fields != null) {
-            uri.addParameter("fields", fields);
+        if (fields != null && fields.length > 0) {
+            uri.addParameter("fields", Joiner.on(DEFAULT_SEPARATOR).join(fields));
         }
 
         return makeGet(httpClient, httpContext, uri.build(), new TypeToken<RestRootEntity<ServiceData>>() {});

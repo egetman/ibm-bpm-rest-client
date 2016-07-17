@@ -1,5 +1,6 @@
 package ru.bpmink.bpm.api.impl.simple;
 
+import com.google.common.base.Joiner;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -48,12 +49,12 @@ public class ServiceClientImpl extends BaseClient implements ServiceClient {
      * @throws IllegalArgumentException {@inheritDoc}
      */
     @Override
-    public RestRootEntity<ServiceData> getTaskData(@Nonnull String instanceId, String fields) {
+    public RestRootEntity<ServiceData> getServiceData(@Nonnull String instanceId, String... fields) {
         instanceId = Args.notNull(instanceId, "Instance id (instanceId)");
         SafeUriBuilder uri = new SafeUriBuilder(rootUri).addPath(instanceId).addParameter(ACTION, ACTION_GET_DATA);
 
-        if (fields != null) {
-            uri.addParameter("fields", fields);
+        if (fields != null && fields.length > 0) {
+            uri.addParameter("fields", Joiner.on(DEFAULT_SEPARATOR).join(fields));
         }
 
         return makeGet(httpClient, httpContext, uri.build(), new TypeToken<RestRootEntity<ServiceData>>() {});
@@ -64,8 +65,8 @@ public class ServiceClientImpl extends BaseClient implements ServiceClient {
      * @throws IllegalArgumentException {@inheritDoc}
      */
     @Override
-    public RestRootEntity<ServiceData> setTaskData(@Nonnull String instanceId,
-                                                   @Nonnull Map<String, Object> parameters) {
+    public RestRootEntity<ServiceData> setServiceData(@Nonnull String instanceId,
+                                                      @Nonnull Map<String, Object> parameters) {
         instanceId = Args.notNull(instanceId, "Instance id (instanceId)");
         parameters = Args.notNull(parameters, "Variables (parameters)");
         Args.notEmpty(parameters.keySet(), "Parameters names");
@@ -86,9 +87,9 @@ public class ServiceClientImpl extends BaseClient implements ServiceClient {
      * @throws IllegalArgumentException {@inheritDoc}
      */
     @Override
-    public RestRootEntity<ServiceData> setTaskData(@Nonnull String instanceId,
-                                                   @Nonnull String field,
-                                                   @Nonnull Object value) {
+    public RestRootEntity<ServiceData> setServiceData(@Nonnull String instanceId,
+                                                      @Nonnull String field,
+                                                      @Nonnull Object value) {
         instanceId = Args.notNull(instanceId, "Instance id (instanceId)");
         field = Args.notNull(field, "Field name (field)");
         value = Args.notNull(value, "Field value (value)");

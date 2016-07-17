@@ -107,7 +107,7 @@ public class TaskClientTest {
         TaskDetails submitJobRequisition = processDetails.getTasks().iterator().next();
 
         RestRootEntity<ServiceData> taskData = bpmClient.getTaskClient().getTaskData(submitJobRequisition.getTkiid(),
-                                                                                    null);
+                                                                                    "instanceId", "currentPosition");
         logger.info(taskData.describe());
         Assert.assertNotNull(taskData, "Task data could not be null");
         Assert.assertFalse(taskData.getPayload().getVariables().isEmpty(), "Default parameters should be present");
@@ -115,7 +115,7 @@ public class TaskClientTest {
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void taskDataFetchThrowExceptionWhenNullTkiid() {
-        bpmClient.getTaskClient().getTaskData(null, null);
+        bpmClient.getTaskClient().getTaskData(null, "instanceId", "currentPosition");
         Assert.assertTrue(false, "Exception must be thrown before this assert");
     }
 
