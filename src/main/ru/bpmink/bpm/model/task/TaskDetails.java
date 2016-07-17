@@ -13,7 +13,8 @@ import java.util.Map;
 public class TaskDetails extends RestEntity {
 
     private static final List<String> EMPTY_CLIENT_TYPES = Lists.newArrayList();
-    private static final Map<String, Object> EMPTY_DATA = Maps.newHashMap();
+    private static final List<String> EMPTY_NEXT_TASK_IDS = Lists.newArrayList();
+    private static final TaskInstanceData EMPTY_DATA = new TaskInstanceData();
 
     public TaskDetails() {}
 
@@ -44,7 +45,7 @@ public class TaskDetails extends RestEntity {
 
     //Task instance data.
     @SerializedName("data")
-    private Map<String, Object> data = Maps.newHashMap();
+    private TaskInstanceData instanceData;
 
     //Description of the task.
     @SerializedName("description")
@@ -100,11 +101,11 @@ public class TaskDetails extends RestEntity {
 
     //Data of the process instance containing the task, currently business data.
     @SerializedName("processData")
-    private Object processData;
+    private TaskInstanceData processData;
 
-    //Contains ID of the next task if autoflow is enabled and next task was found.
+    //Contains ID list of the next tasks if autoflow is enabled and next tasks was found.
     @SerializedName("nextTaskId")
-    private String nextTaskId;
+    private List<String> nextTaskIds = Lists.newArrayList();
 
     //Shows if the task is under collaboration or not
     @SerializedName("collaboration")
@@ -182,10 +183,10 @@ public class TaskDetails extends RestEntity {
     }
 
     /**
-     * @return Task instance data.
+     * @return Task instance data {@link TaskInstanceData}
      */
-    public Map<String, Object> getData() {
-        return MoreObjects.firstNonNull(data, EMPTY_DATA);
+    public TaskInstanceData getInstanceData() {
+        return MoreObjects.firstNonNull(instanceData, EMPTY_DATA);
     }
 
     /**
@@ -282,15 +283,16 @@ public class TaskDetails extends RestEntity {
     /**
      * @return Data of the process instance containing the task, currently business data.
      */
-    public Object getProcessData() {
-        return processData;
+    public TaskInstanceData getProcessData() {
+        return MoreObjects.firstNonNull(processData, EMPTY_DATA);
     }
 
     /**
-     * @return ID of the next task if autoflow is enabled and next task was found.
+     * @return ID list of the next tasks if autoflow is enabled and next tasks was found.
+     *      Empty list will be returned, if ids is not found.
      */
-    public String getNextTaskId() {
-        return nextTaskId;
+    public List<String> getNextTaskIds() {
+        return MoreObjects.firstNonNull(nextTaskIds, EMPTY_NEXT_TASK_IDS);
     }
 
     /**
@@ -305,6 +307,13 @@ public class TaskDetails extends RestEntity {
      */
     public String getServiceId() {
         return serviceId;
+    }
+
+    /**
+     * @return Collaboration data if the task is under collaboration.
+     */
+    public Collaboration getCollaboration() {
+        return collaboration;
     }
 
     /**
@@ -366,8 +375,8 @@ public class TaskDetails extends RestEntity {
         this.containmentContextId = containmentContextId;
     }
 
-    public void setData(Map<String, Object> data) {
-        this.data = data;
+    public void setInstanceData(TaskInstanceData instanceData) {
+        this.instanceData = instanceData;
     }
 
     public void setDescription(String description) {
@@ -422,7 +431,7 @@ public class TaskDetails extends RestEntity {
         this.priorityName = priorityName;
     }
 
-    public void setProcessData(Object processData) {
+    public void setProcessData(TaskInstanceData processData) {
         this.processData = processData;
     }
 
@@ -454,4 +463,11 @@ public class TaskDetails extends RestEntity {
         this.tkiid = tkiid;
     }
 
+    public void setNextTaskIds(List<String> nextTaskIds) {
+        this.nextTaskIds = nextTaskIds;
+    }
+
+    public void setCollaboration(Collaboration collaboration) {
+        this.collaboration = collaboration;
+    }
 }

@@ -2,8 +2,9 @@ package ru.bpmink.bpm.api.client;
 
 import ru.bpmink.bpm.model.common.RestEntity;
 import ru.bpmink.bpm.model.common.RestRootEntity;
+import ru.bpmink.bpm.model.service.ServiceData;
+import ru.bpmink.bpm.model.task.TaskActions;
 import ru.bpmink.bpm.model.task.TaskClientSettings;
-import ru.bpmink.bpm.model.task.TaskData;
 import ru.bpmink.bpm.model.task.TaskDetails;
 import ru.bpmink.bpm.model.task.TaskPriority;
 import ru.bpmink.bpm.model.task.TaskStartData;
@@ -11,10 +12,10 @@ import ru.bpmink.bpm.model.task.TaskStartData;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 
-//TODO: Add full api possibilities
 /**
 * Client for task api actions.
 */
@@ -87,16 +88,15 @@ public interface TaskClient {
 	
 	/**
 	 * Finish the specified task.
-     * <p><b>Input parameters {@literal NOT} propagated to enclosing process.</b></p>
-     * Use Task api #setTaskData(String, Map) for that purpose.
+     * <p><b>Input parameters propagated to enclosing process as task {@literal output}.</b></p>
      *
 	 * @param tkiid The id of the task instance to be finished.
-	 * @param input Parameters to finish specified task/activity.
+	 * @param parameters Parameters to finish specified task/activity.
      * @return {@link ru.bpmink.bpm.model.common.RestRootEntity} instance, which holds detailed task information:
      *      {@link ru.bpmink.bpm.model.task.TaskDetails}
 	 * @throws IllegalArgumentException if tkiid is null
 	 */
-	RestRootEntity<TaskDetails> completeTask(@Nonnull String tkiid, @Nullable Map<String, Object> input);
+	RestRootEntity<TaskDetails> completeTask(@Nonnull String tkiid, @Nullable Map<String, Object> parameters);
 
 	/**
 	 * Cancel the specified task.
@@ -108,17 +108,6 @@ public interface TaskClient {
 	 * @throws IllegalArgumentException if tkiid is null
 	 */
 	RestRootEntity<RestEntity> cancelTask(@Nonnull String tkiid);
-
-	/**
-	 * Get data from specified task.
-     *
-	 * @param tkiid The id of the task instance.
-	 * @param fields Comma-separated list of fields.
-	 * @return {@link ru.bpmink.bpm.model.common.RestRootEntity} instance, which holds task data information:
-     *      {@link ru.bpmink.bpm.model.task.TaskData}
-	 * @throws IllegalArgumentException if tkiid is null
-	 */
-	RestRootEntity<TaskData> getTaskData(@Nonnull String tkiid, @Nullable String fields);
 
     /**
      * Update a task's priority.
@@ -155,5 +144,47 @@ public interface TaskClient {
 	 * @throws IllegalArgumentException if tkiid or isRelativeUrl is null
 	 */
 	RestRootEntity<TaskClientSettings> getTaskClientSettings(@Nonnull String tkiid, @Nonnull Boolean isRelativeUrl);
+
+    /**
+     * Retrieve available actions for human task instances.
+     *
+     * @param tkiids A list of IDs of human tasks (tkiid list) for which available actions should be returned.
+     * @return {@link ru.bpmink.bpm.model.common.RestRootEntity} instance, which holds an information about available
+     *      actions for specified tkiids.
+     * @throws IllegalArgumentException if tkiids is null or empty.
+     */
+    RestRootEntity<TaskActions> getAvailableActions(@Nonnull List<String> tkiids);
+
+    /**
+     * Same as {@link #getAvailableActions(List)}.
+     * By default it's holds {@code getAvailableActions(Collections.singletonList(tkiid))} logic.
+     *
+     * @throws IllegalArgumentException if tkiid is null.
+     */
+    RestRootEntity<TaskActions> getAvailableActions(@Nonnull String tkiid);
+
+    /**
+     * Get data from specified running service.
+     *
+     * @param tkiid The id of the task instance.
+     * @param fields Comma-separated list of fields.
+     * @return {@link ru.bpmink.bpm.model.common.RestRootEntity} instance, which holds task data information:
+     *      {@link ServiceData}
+     * @throws IllegalArgumentException if tkiid is null
+     */
+    RestRootEntity<ServiceData> getTaskData(@Nonnull String tkiid, @Nullable String fields);
+
+    /**
+     * This method sets one or more variables within a running service.
+     *
+     * @param tkiid The id of the task instance.
+     * @param parameters A {@link Map} that contains one or more variable settings.
+     *      Each of the variables will be set in the context of the running task.
+     * @return {@link ru.bpmink.bpm.model.common.RestRootEntity} instance, which holds task data information:
+     *      {@link ServiceData}
+     * @throws IllegalArgumentException if tkiid or jsonParameters is null.
+     */
+    RestRootEntity<ServiceData> setTaskData(@Nonnull String tkiid, @Nonnull Map<String, Object> parameters);
+
 
 }

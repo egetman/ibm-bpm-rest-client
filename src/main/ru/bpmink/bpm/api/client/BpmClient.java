@@ -27,28 +27,35 @@ public interface BpmClient extends Closeable {
 	 * @return {@link ru.bpmink.bpm.api.client.TaskClient}
 	 */
 	TaskClient getTaskClient();
-	
-	/**
-	 * Client for actions on process apps bpm api.
+
+    /**
+     * Client for actions on service bpm api.
+     * @return {@link ru.bpmink.bpm.api.client.ServiceClient}
+     */
+    ServiceClient getServiceClient();
+
+
+    /**
+     * Client for actions on process apps bpm api.
 	 * @return {@link ru.bpmink.bpm.api.client.ProcessAppsClient}
 	 */
-	ProcessAppsClient getProcessAppsClient();
+    ProcessAppsClient getProcessAppsClient();
 
-	/**
-	 * Client for actions on task query bpm api;
-	 * @return {@link ru.bpmink.bpm.api.client.QueryClient}
-	 */
-	QueryClient getTaskQueryClient();
-	
-	/**
-	 * Client for actions on task template query bpm api;
-	 * @return {@link ru.bpmink.bpm.api.client.QueryClient}
-	 */
-	QueryClient getTaskTemplateQueryClient();
-	
-	/**
-	 * Client for actions on process query bpm api;
-	 * @return {@link ru.bpmink.bpm.api.client.QueryClient}
-	 */
-	QueryClient getProcessQueryClient();
+    /**
+     * Client for actions on task query bpm api;
+     * @return {@link ru.bpmink.bpm.api.client.QueryClient}
+     */
+    QueryClient getTaskQueryClient();
+
+    /**
+     * Client for actions on task template query bpm api;
+     * @return {@link ru.bpmink.bpm.api.client.QueryClient}
+     */
+    QueryClient getTaskTemplateQueryClient();
+
+    /**
+     * Client for actions on process query bpm api;
+     * @return {@link ru.bpmink.bpm.api.client.QueryClient}
+     */
+    QueryClient getProcessQueryClient();
 }
