@@ -16,6 +16,7 @@ import static ru.bpmink.util.Constants.SPACE;
  * This exception contains all information about server-side exceptional event.
  */
 
+@SuppressWarnings("unused")
 public final class RestException extends RuntimeException {
 
     //The status of the previous API call.
@@ -47,7 +48,8 @@ public final class RestException extends RuntimeException {
     @SerializedName("responses")
     private Object responses;
 
-    RestException() {}
+    RestException() {
+    }
 
     @Override
     @SuppressWarnings("StringBufferReplaceableByString")
@@ -109,8 +111,8 @@ public final class RestException extends RuntimeException {
 
     /**
      * @return The stacktrace associated with the exception.
-     *         <p>Note that this will be omitted unless the "server-stacktrace-enabled" property is
-     *         enabled in the server's 100Custom.xml file.</p>
+     * <p>Note that this will be omitted unless the "server-stacktrace-enabled" property is
+     * enabled in the server's 100Custom.xml file.</p>
      */
     public Object getProgrammersDetails() {
         return programmersDetails;

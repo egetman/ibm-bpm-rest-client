@@ -2,9 +2,9 @@ package ru.bpmink.bpm.api.impl.simple;
 
 import com.google.common.collect.Lists;
 import com.google.common.io.Closeables;
+
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
-import org.apache.http.annotation.Immutable;
 import org.apache.http.auth.AuthSchemeProvider;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.Credentials;
@@ -27,6 +27,7 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HttpContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import ru.bpmink.bpm.api.client.BpmClient;
 import ru.bpmink.bpm.api.client.ExposedClient;
 import ru.bpmink.bpm.api.client.ProcessAppsClient;
@@ -37,6 +38,7 @@ import ru.bpmink.bpm.api.client.TaskClient;
 import ru.bpmink.util.SafeUriBuilder;
 import ru.bpmink.util.Utils;
 
+import javax.annotation.concurrent.Immutable;
 import javax.security.auth.Subject;
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
@@ -60,7 +62,7 @@ import java.util.ArrayList;
 //TODO: Broken implementation. Rewrite and retest needed.
 @Immutable
 @SuppressWarnings("deprecation")
-public class KerberosBpmClient implements BpmClient {
+public final class KerberosBpmClient implements BpmClient {
 
     private static final int TOTAL_CONN = 20;
     private static final int ROUTE_CONN = 10;
@@ -93,10 +95,11 @@ public class KerberosBpmClient implements BpmClient {
      * Creates instance of {@link ru.bpmink.bpm.api.impl.simple.KerberosBpmClient}.
      *
      * @param serverUri is a absolute server host/port path.
-     * @param user is a login by which the actions will be performed.
-     * @param password is a user password.
-     * @param domain is an identification string that defines a realm of administrative autonomy, authority or control.
-     * @param kdc key distribution center ({@literal KDC}) is part of a cryptosystem intended to reduce the risks
+     * @param user      is a login by which the actions will be performed.
+     * @param password  is a user password.
+     * @param domain    is an identification string that defines a realm of administrative autonomy, authority or
+     *                  control.
+     * @param kdc       key distribution center ({@literal KDC}) is part of a cryptosystem intended to reduce the risks
      */
     public KerberosBpmClient(URI serverUri, String user, String password, String domain, String kdc) {
         logger.info("Start creating bpm client.");
@@ -105,7 +108,7 @@ public class KerberosBpmClient implements BpmClient {
         logger.info("Bpm client created.");
     }
 
-    protected CloseableHttpClient createClient(String user, String password, String domain, String kdc) {
+    private CloseableHttpClient createClient(String user, String password, String domain, String kdc) {
         return new KerberosHttpClient(user, password, domain, kdc);
     }
 
@@ -115,8 +118,8 @@ public class KerberosBpmClient implements BpmClient {
     @Override
     public ExposedClient getExposedClient() {
         if (exposedClient == null) {
-            exposedClient = new ExposedClientImpl(new SafeUriBuilder(rootUri).addPath(EXPOSED_ENDPOINT).build(),
-                                                    httpClient);
+            final URI uri = new SafeUriBuilder(rootUri).addPath(EXPOSED_ENDPOINT).build();
+            exposedClient = new ExposedClientImpl(uri, httpClient);
         }
         return exposedClient;
     }
@@ -127,8 +130,8 @@ public class KerberosBpmClient implements BpmClient {
     @Override
     public ProcessClient getProcessClient() {
         if (processClient == null) {
-            processClient = new ProcessClientImpl(new SafeUriBuilder(rootUri).addPath(PROCESS_ENDPOINT).build(),
-                                                    httpClient);
+            final URI uri = new SafeUriBuilder(rootUri).addPath(PROCESS_ENDPOINT).build();
+            processClient = new ProcessClientImpl(uri, httpClient);
         }
         return processClient;
     }
@@ -139,7 +142,8 @@ public class KerberosBpmClient implements BpmClient {
     @Override
     public TaskClient getTaskClient() {
         if (taskClient == null) {
-            taskClient = new TaskClientImpl(new SafeUriBuilder(rootUri).addPath(TASK_ENDPOINT).build(), httpClient);
+            final URI uri = new SafeUriBuilder(rootUri).addPath(TASK_ENDPOINT).build();
+            taskClient = new TaskClientImpl(uri, httpClient);
         }
         return taskClient;
     }
@@ -150,8 +154,8 @@ public class KerberosBpmClient implements BpmClient {
     @Override
     public ServiceClient getServiceClient() {
         if (serviceClient == null) {
-            serviceClient = new ServiceClientImpl(new SafeUriBuilder(rootUri).addPath(SERVICE_ENDPOINT).build(),
-                    httpClient);
+            final URI uri = new SafeUriBuilder(rootUri).addPath(SERVICE_ENDPOINT).build();
+            serviceClient = new ServiceClientImpl(uri, httpClient);
         }
         return serviceClient;
     }
@@ -163,8 +167,8 @@ public class KerberosBpmClient implements BpmClient {
     @Override
     public ProcessAppsClient getProcessAppsClient() {
         if (processAppsClient == null) {
-            processAppsClient = new ProcessAppsClientImpl(new SafeUriBuilder(rootUri)
-                                                            .addPath(PROCESS_APPS_ENDPOINT).build(), httpClient);
+            final URI uri = new SafeUriBuilder(rootUri).addPath(PROCESS_APPS_ENDPOINT).build();
+            processAppsClient = new ProcessAppsClientImpl(uri, httpClient);
         }
         return processAppsClient;
     }
@@ -175,8 +179,8 @@ public class KerberosBpmClient implements BpmClient {
     @Override
     public QueryClient getTaskQueryClient() {
         if (taskQueryClient == null) {
-            taskQueryClient = new QueryClientImpl(new SafeUriBuilder(rootUri).addPath(TASKS_QUERY_ENDPOINT).build(),
-                                                    httpClient);
+            final URI uri = new SafeUriBuilder(rootUri).addPath(TASKS_QUERY_ENDPOINT).build();
+            taskQueryClient = new QueryClientImpl(uri, httpClient);
         }
         return taskQueryClient;
     }
@@ -187,8 +191,8 @@ public class KerberosBpmClient implements BpmClient {
     @Override
     public QueryClient getTaskTemplateQueryClient() {
         if (taskTemplateQueryClient == null) {
-            taskTemplateQueryClient = new QueryClientImpl(new SafeUriBuilder(rootUri)
-                                                        .addPath(TASKS_TEMPLATE_QUERY_ENDPOINT).build(), httpClient);
+            final URI uri = new SafeUriBuilder(rootUri).addPath(TASKS_TEMPLATE_QUERY_ENDPOINT).build();
+            taskTemplateQueryClient = new QueryClientImpl(uri, httpClient);
         }
         return taskTemplateQueryClient;
     }
@@ -199,8 +203,8 @@ public class KerberosBpmClient implements BpmClient {
     @Override
     public QueryClient getProcessQueryClient() {
         if (processQueryClient == null) {
-            processQueryClient = new QueryClientImpl(new SafeUriBuilder(rootUri)
-                                                                .addPath(PROCESS_QUERY_ENDPOINT).build(), httpClient);
+            final URI uri = new SafeUriBuilder(rootUri).addPath(PROCESS_QUERY_ENDPOINT).build();
+            processQueryClient = new QueryClientImpl(uri, httpClient);
         }
         return processQueryClient;
     }
@@ -216,8 +220,8 @@ public class KerberosBpmClient implements BpmClient {
     /**
      * Creates a temporary configuration.
      * {@code
-     *      krb5.conf [libdefaults] default_realm = <domain>
-     *      [realms] snb.ch = {kdc = <kdc> admin_server = <kdc>}
+     * krb5.conf [libdefaults] default_realm = <domain>
+     * [realms] snb.ch = {kdc = <kdc> admin_server = <kdc>}
      * }
      */
     private static File createKrb5Configuration(String domain, String kdc) throws IOException {
@@ -250,7 +254,7 @@ public class KerberosBpmClient implements BpmClient {
         private final String user;
         private final String password;
 
-        public KerberosCallBackHandler(String user, String password) {
+        KerberosCallBackHandler(String user, String password) {
             this.user = user;
             this.password = password;
         }
@@ -269,7 +273,7 @@ public class KerberosBpmClient implements BpmClient {
             }
         }
     }
-    
+
     private class KerberosHttpClient extends CloseableHttpClient {
 
         private final CloseableHttpClient client;
@@ -281,16 +285,17 @@ public class KerberosBpmClient implements BpmClient {
             try {
                 File krb5Config = createKrb5Configuration(domain, kdc);
                 File loginConfig = createLoginConfiguration();
-            
+
                 System.setProperty("java.security.auth.login.config", loginConfig.toURI().toString());
                 System.setProperty("java.security.krb5.conf", krb5Config.toURI().toString());
                 System.setProperty("sun.security.krb5.debug", "false");
                 //Change this property to true, if you want debug output.
                 System.setProperty("javax.security.auth.useSubjectCredsOnly", "false");
-            
-                Lookup<AuthSchemeProvider> authSchemeRegistry = RegistryBuilder.<AuthSchemeProvider>create()
-                        .register(AuthSchemes.SPNEGO, new SPNegoSchemeFactory(skipPortAtKerberosDatabaseLookup))
-                        .build();
+
+                RegistryBuilder<AuthSchemeProvider> registryBuilder = RegistryBuilder.create();
+                final String id = AuthSchemes.SPNEGO;
+                final SPNegoSchemeFactory schemeFactory = new SPNegoSchemeFactory(skipPortAtKerberosDatabaseLookup);
+                Lookup<AuthSchemeProvider> authSchemeRegistry = registryBuilder.register(id, schemeFactory).build();
 
                 client = HttpClients.custom().setDefaultAuthSchemeRegistry(authSchemeRegistry)
                         .setConnectionManager(createConnectionManager()).build();
@@ -298,8 +303,9 @@ public class KerberosBpmClient implements BpmClient {
                 loginContext = getLoginContext(user, password);
 
                 //without it, authentication will be failed.
-                Subject.doAs(loginContext.getSubject(),
-                        this.privilegedExecute(new HttpGet(KerberosBpmClient.this.rootUri), httpContext));
+                final Subject subject = loginContext.getSubject();
+                final HttpGet get = new HttpGet(KerberosBpmClient.this.rootUri);
+                Subject.doAs(subject, this.privilegedExecute(get, httpContext));
             } catch (Exception e) {
                 logger.error("Can't create Kerberos client!");
                 e.printStackTrace();
@@ -400,15 +406,17 @@ public class KerberosBpmClient implements BpmClient {
         }
 
         @Override
-        public <T> T execute(HttpHost target, HttpRequest request, ResponseHandler<? extends T> responseHandler,
-                             HttpContext context) throws IOException {
+        public <T> T execute(
+                HttpHost target, HttpRequest request, ResponseHandler<? extends T> responseHandler, HttpContext context)
+                throws IOException {
             return client.execute(target, request, responseHandler, context);
         }
 
 
-        private PrivilegedAction<CloseableHttpResponse> privilegedExecute(final HttpUriRequest request,
-                                                                          final HttpContext context) {
+        private PrivilegedAction<CloseableHttpResponse> privilegedExecute(
+                final HttpUriRequest request, final HttpContext context) {
             return new PrivilegedAction<CloseableHttpResponse>() {
+
                 @Override
                 public CloseableHttpResponse run() {
                     try {

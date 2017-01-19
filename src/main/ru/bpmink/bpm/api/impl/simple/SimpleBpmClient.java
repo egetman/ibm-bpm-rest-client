@@ -1,8 +1,8 @@
 package ru.bpmink.bpm.api.impl.simple;
 
 import com.google.common.io.Closeables;
+
 import org.apache.http.HttpHost;
-import org.apache.http.annotation.Immutable;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.AuthCache;
@@ -16,6 +16,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import ru.bpmink.bpm.api.client.BpmClient;
 import ru.bpmink.bpm.api.client.ExposedClient;
 import ru.bpmink.bpm.api.client.ProcessAppsClient;
@@ -27,13 +28,14 @@ import ru.bpmink.util.SafeUriBuilder;
 
 import java.io.IOException;
 import java.net.URI;
+import javax.annotation.concurrent.Immutable;
 
 /**
  * Simple implementation of {@link ru.bpmink.bpm.api.client.BpmClient} which supports
  * {@link org.apache.http.impl.auth.BasicScheme} authentication.
  */
 @Immutable
-public class SimpleBpmClient implements BpmClient {
+public final class SimpleBpmClient implements BpmClient {
 
     private static final int TOTAL_CONN = 20;
     private static final int ROUTE_CONN = 10;
@@ -67,8 +69,8 @@ public class SimpleBpmClient implements BpmClient {
      * Creates instance of {@link ru.bpmink.bpm.api.impl.simple.SimpleBpmClient}.
      *
      * @param serverUri is a absolute server host/port path.
-     * @param user is a login by which the actions will be performed.
-     * @param password is a user password.
+     * @param user      is a login by which the actions will be performed.
+     * @param password  is a user password.
      */
     public SimpleBpmClient(URI serverUri, String user, String password) {
         logger.info("Start creating bpm client.");
@@ -77,7 +79,7 @@ public class SimpleBpmClient implements BpmClient {
         logger.info("Bpm client created.");
     }
 
-    protected CloseableHttpClient createClient(String user, String password) {
+    private CloseableHttpClient createClient(String user, String password) {
         PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
         cm.setMaxTotal(TOTAL_CONN);
         cm.setDefaultMaxPerRoute(ROUTE_CONN);
@@ -99,10 +101,8 @@ public class SimpleBpmClient implements BpmClient {
         httpContext.setAuthCache(authCache);
         logger.info("HttpContext filled with Auth cache.");
 
-        return HttpClientBuilder.create()
-                                .setDefaultCredentialsProvider(credentialsProvider)
-                                .setConnectionManager(cm)
-                                .build();
+        return HttpClientBuilder.create().setDefaultCredentialsProvider(credentialsProvider).setConnectionManager(cm)
+                .build();
     }
 
     /**
@@ -111,8 +111,8 @@ public class SimpleBpmClient implements BpmClient {
     @Override
     public ExposedClient getExposedClient() {
         if (exposedClient == null) {
-            exposedClient = new ExposedClientImpl(new SafeUriBuilder(rootUri).addPath(EXPOSED_ENDPOINT).build(),
-                    httpClient, httpContext);
+            final URI uri = new SafeUriBuilder(rootUri).addPath(EXPOSED_ENDPOINT).build();
+            exposedClient = new ExposedClientImpl(uri, httpClient, httpContext);
         }
         return exposedClient;
     }
@@ -123,8 +123,8 @@ public class SimpleBpmClient implements BpmClient {
     @Override
     public ProcessClient getProcessClient() {
         if (processClient == null) {
-            processClient = new ProcessClientImpl(new SafeUriBuilder(rootUri).addPath(PROCESS_ENDPOINT).build(),
-                    httpClient, httpContext);
+            final URI uri = new SafeUriBuilder(rootUri).addPath(PROCESS_ENDPOINT).build();
+            processClient = new ProcessClientImpl(uri, httpClient, httpContext);
         }
         return processClient;
     }
@@ -135,8 +135,8 @@ public class SimpleBpmClient implements BpmClient {
     @Override
     public TaskClient getTaskClient() {
         if (taskClient == null) {
-            taskClient = new TaskClientImpl(new SafeUriBuilder(rootUri).addPath(TASK_ENDPOINT).build(),
-                    httpClient, httpContext);
+            final URI uri = new SafeUriBuilder(rootUri).addPath(TASK_ENDPOINT).build();
+            taskClient = new TaskClientImpl(uri, httpClient, httpContext);
         }
         return taskClient;
     }
@@ -147,8 +147,8 @@ public class SimpleBpmClient implements BpmClient {
     @Override
     public ServiceClient getServiceClient() {
         if (serviceClient == null) {
-            serviceClient = new ServiceClientImpl(new SafeUriBuilder(rootUri).addPath(SERVICE_ENDPOINT).build(),
-                    httpClient, httpContext);
+            final URI uri = new SafeUriBuilder(rootUri).addPath(SERVICE_ENDPOINT).build();
+            serviceClient = new ServiceClientImpl(uri, httpClient, httpContext);
         }
         return serviceClient;
     }
@@ -159,8 +159,8 @@ public class SimpleBpmClient implements BpmClient {
     @Override
     public ProcessAppsClient getProcessAppsClient() {
         if (processAppsClient == null) {
-            processAppsClient = new ProcessAppsClientImpl(new SafeUriBuilder(rootUri)
-                    .addPath(PROCESS_APPS_ENDPOINT).build(), httpClient, httpContext);
+            final URI uri = new SafeUriBuilder(rootUri).addPath(PROCESS_APPS_ENDPOINT).build();
+            processAppsClient = new ProcessAppsClientImpl(uri, httpClient, httpContext);
         }
         return processAppsClient;
     }
@@ -171,8 +171,8 @@ public class SimpleBpmClient implements BpmClient {
     @Override
     public QueryClient getTaskQueryClient() {
         if (taskQueryClient == null) {
-            taskQueryClient = new QueryClientImpl(new SafeUriBuilder(rootUri)
-                    .addPath(TASKS_QUERY_ENDPOINT).build(), httpClient, httpContext);
+            final URI uri = new SafeUriBuilder(rootUri).addPath(TASKS_QUERY_ENDPOINT).build();
+            taskQueryClient = new QueryClientImpl(uri, httpClient, httpContext);
         }
         return taskQueryClient;
     }
@@ -183,8 +183,8 @@ public class SimpleBpmClient implements BpmClient {
     @Override
     public QueryClient getTaskTemplateQueryClient() {
         if (taskTemplateQueryClient == null) {
-            taskTemplateQueryClient = new QueryClientImpl(new SafeUriBuilder(rootUri)
-                    .addPath(TASKS_TEMPLATE_QUERY_ENDPOINT).build(), httpClient, httpContext);
+            final URI uri = new SafeUriBuilder(rootUri).addPath(TASKS_TEMPLATE_QUERY_ENDPOINT).build();
+            taskTemplateQueryClient = new QueryClientImpl(uri, httpClient, httpContext);
         }
         return taskTemplateQueryClient;
     }
@@ -195,8 +195,8 @@ public class SimpleBpmClient implements BpmClient {
     @Override
     public QueryClient getProcessQueryClient() {
         if (processQueryClient == null) {
-            processQueryClient = new QueryClientImpl(new SafeUriBuilder(rootUri)
-                    .addPath(PROCESS_QUERY_ENDPOINT).build(), httpClient, httpContext);
+            final URI uri = new SafeUriBuilder(rootUri).addPath(PROCESS_QUERY_ENDPOINT).build();
+            processQueryClient = new QueryClientImpl(uri, httpClient, httpContext);
         }
         return processQueryClient;
     }

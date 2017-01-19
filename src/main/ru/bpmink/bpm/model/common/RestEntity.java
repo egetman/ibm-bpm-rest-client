@@ -2,6 +2,7 @@ package ru.bpmink.bpm.model.common;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
 import ru.bpmink.util.Styles;
 
 public class RestEntity implements Describable {

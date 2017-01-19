@@ -1,6 +1,7 @@
 package ru.bpmink.util;
 
 import org.apache.commons.lang3.builder.ToStringStyle;
+
 import ru.bpmink.bpm.model.common.Describable;
 
 import java.util.Collection;
@@ -19,7 +20,24 @@ public class Styles {
     //Can be just once instantiated.
     public static ToStringStyle shortClassNameWithLineBreak = new ShortClassNameWithLineBreakToStringStyle();
 
-    private static class ShortClassNameWithLineBreakToStringStyle extends ToStringStyle {
+    private static class DescribableStyle extends ToStringStyle {
+
+        @Override
+        @SuppressWarnings("unchecked")
+        protected void appendDetail(StringBuffer buffer, String fieldName, Collection<?> coll) {
+            if (coll == null || coll.isEmpty() || !(coll.iterator().next() instanceof Describable)) {
+                super.appendDetail(buffer, fieldName, coll);
+            } else {
+                Collection<Describable> describableCollection = (Collection<Describable>) coll;
+                for (Describable describable : describableCollection) {
+                    appendDetail(buffer, fieldName, describable);
+                }
+            }
+        }
+
+    }
+
+    private static class ShortClassNameWithLineBreakToStringStyle extends DescribableStyle {
 
         /**
          * <p>Controls <code>String</code> formatting
@@ -43,23 +61,11 @@ public class Styles {
             if (value instanceof Describable) {
                 value = ((Describable) value).describe(getFieldSeparator() + TAB);
             } else if (value instanceof String) {
-                value = ((String)value).replaceAll(NEW_LINE, SPACE);
+                value = ((String) value).replaceAll(NEW_LINE, SPACE);
             }
             super.appendDetail(buffer, fieldName, value);
         }
 
-        @Override
-        @SuppressWarnings("unchecked")
-        protected void appendDetail(StringBuffer buffer, String fieldName, Collection<?> coll) {
-            if (coll == null || coll.isEmpty() || !(coll.iterator().next() instanceof Describable)) {
-                super.appendDetail(buffer, fieldName, coll);
-            } else {
-                Collection<Describable> describableCollection = (Collection<Describable>) coll;
-                for (Describable describable : describableCollection) {
-                    appendDetail(buffer, fieldName, describable);
-                }
-            }
-        }
 
         @Override
         protected void appendClassName(StringBuffer buffer, Object object) {
@@ -68,7 +74,7 @@ public class Styles {
         }
     }
 
-    public static class NoClassNameWithLineBreakToStringStyle extends ToStringStyle {
+    public static class NoClassNameWithLineBreakToStringStyle extends DescribableStyle {
 
         private final String linePrefix;
 
@@ -102,23 +108,11 @@ public class Styles {
             if (value instanceof Describable) {
                 value = ((Describable) value).describe(linePrefix + TAB);
             } else if (value instanceof String) {
-                value = ((String)value).replaceAll(NEW_LINE, SPACE);
+                value = ((String) value).replaceAll(NEW_LINE, SPACE);
             }
 
             super.appendDetail(buffer, fieldName, value);
         }
 
-        @Override
-        @SuppressWarnings("unchecked")
-        protected void appendDetail(StringBuffer buffer, String fieldName, Collection<?> coll) {
-            if (coll == null || coll.isEmpty() || !(coll.iterator().next() instanceof Describable)) {
-                super.appendDetail(buffer, fieldName, coll);
-            } else {
-                Collection<Describable> describableCollection = (Collection<Describable>) coll;
-                for (Describable describable : describableCollection) {
-                    appendDetail(buffer, fieldName, describable);
-                }
-            }
-        }
     }
 }

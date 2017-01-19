@@ -1,12 +1,11 @@
 package ru.bpmink.bpm.api.impl.simple;
 
 import com.google.common.io.Closeables;
+
 import org.apache.http.HttpVersion;
-import org.apache.http.annotation.Immutable;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
@@ -22,6 +21,7 @@ import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import ru.bpmink.bpm.api.client.BpmClient;
 import ru.bpmink.bpm.api.client.ExposedClient;
 import ru.bpmink.bpm.api.client.ProcessAppsClient;
@@ -31,6 +31,7 @@ import ru.bpmink.bpm.api.client.ServiceClient;
 import ru.bpmink.bpm.api.client.TaskClient;
 import ru.bpmink.util.SafeUriBuilder;
 
+import javax.annotation.concurrent.Immutable;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
@@ -47,7 +48,7 @@ import java.security.cert.X509Certificate;
  * Need to be carefully rewrite.
  */
 @Immutable
-public class SecuredBpmClient implements BpmClient {
+public final class SecuredBpmClient implements BpmClient {
 
     private static final String ROOT_ENDPOINT = "rest/bpm/wle/v1";
     private static final String EXPOSED_ENDPOINT = "exposed";
@@ -73,14 +74,12 @@ public class SecuredBpmClient implements BpmClient {
     private final CloseableHttpClient httpClient;
     private final URI rootUri;
 
-    private HttpClientContext httpContext;
-
     /**
      * Creates instance of {@link ru.bpmink.bpm.api.impl.simple.KerberosBpmClient}.
      *
      * @param serverUri is a absolute server host/port path.
-     * @param user is a login by which the actions will be performed.
-     * @param password is a user password.
+     * @param user      is a login by which the actions will be performed.
+     * @param password  is a user password.
      */
     public SecuredBpmClient(URI serverUri, String user, String password) {
         logger.info("Start creating bpm client.");
@@ -90,33 +89,33 @@ public class SecuredBpmClient implements BpmClient {
     }
 
     @SuppressWarnings("deprecation")
-    protected CloseableHttpClient createClient(String user, String password) {
-         try {
-             KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
-             trustStore.load(null, null);
+    private CloseableHttpClient createClient(String user, String password) {
+        try {
+            KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
+            trustStore.load(null, null);
 
-             NoSslSocketFactory socketFactory = new NoSslSocketFactory(trustStore);
-             socketFactory.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+            NoSslSocketFactory socketFactory = new NoSslSocketFactory(trustStore);
+            socketFactory.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
 
-             HttpParams params = new BasicHttpParams();
-             HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
-             HttpProtocolParams.setContentCharset(params, HTTP.UTF_8);
+            HttpParams params = new BasicHttpParams();
+            HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
+            HttpProtocolParams.setContentCharset(params, HTTP.UTF_8);
 
-             SchemeRegistry registry = new SchemeRegistry();
-             registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
-             registry.register(new Scheme("https", socketFactory, 443));
+            SchemeRegistry registry = new SchemeRegistry();
+            registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
+            registry.register(new Scheme("https", socketFactory, 443));
 
-             ClientConnectionManager ccm = new ThreadSafeClientConnManager(params, registry);
-             DefaultHttpClient client = new DefaultHttpClient(ccm, params);
-             CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-             credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(user, password));
+            ClientConnectionManager ccm = new ThreadSafeClientConnManager(params, registry);
+            DefaultHttpClient client = new DefaultHttpClient(ccm, params);
+            CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+            credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(user, password));
 
-             client.setCredentialsProvider(credentialsProvider);
+            client.setCredentialsProvider(credentialsProvider);
 
-             return client;
-         } catch (Exception e) {
-             e.printStackTrace();
-             return new DefaultHttpClient();
+            return client;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new DefaultHttpClient();
         }
     }
 
@@ -126,8 +125,8 @@ public class SecuredBpmClient implements BpmClient {
     @Override
     public ExposedClient getExposedClient() {
         if (exposedClient == null) {
-            exposedClient = new ExposedClientImpl(new SafeUriBuilder(rootUri).addPath(EXPOSED_ENDPOINT).build(),
-                    httpClient, httpContext);
+            final URI uri = new SafeUriBuilder(rootUri).addPath(EXPOSED_ENDPOINT).build();
+            exposedClient = new ExposedClientImpl(uri, httpClient, null);
         }
         return exposedClient;
     }
@@ -138,8 +137,8 @@ public class SecuredBpmClient implements BpmClient {
     @Override
     public ProcessClient getProcessClient() {
         if (processClient == null) {
-            processClient = new ProcessClientImpl(new SafeUriBuilder(rootUri).addPath(PROCESS_ENDPOINT).build(),
-                    httpClient, httpContext);
+            final URI uri = new SafeUriBuilder(rootUri).addPath(PROCESS_ENDPOINT).build();
+            processClient = new ProcessClientImpl(uri, httpClient, null);
         }
         return processClient;
     }
@@ -150,8 +149,8 @@ public class SecuredBpmClient implements BpmClient {
     @Override
     public TaskClient getTaskClient() {
         if (taskClient == null) {
-            taskClient = new TaskClientImpl(new SafeUriBuilder(rootUri).addPath(TASK_ENDPOINT).build(),
-                    httpClient, httpContext);
+            final URI uri = new SafeUriBuilder(rootUri).addPath(TASK_ENDPOINT).build();
+            taskClient = new TaskClientImpl(uri, httpClient, null);
         }
         return taskClient;
     }
@@ -162,8 +161,8 @@ public class SecuredBpmClient implements BpmClient {
     @Override
     public ServiceClient getServiceClient() {
         if (serviceClient == null) {
-            serviceClient = new ServiceClientImpl(new SafeUriBuilder(rootUri).addPath(SERVICE_ENDPOINT).build(),
-                    httpClient, httpContext);
+            final URI uri = new SafeUriBuilder(rootUri).addPath(SERVICE_ENDPOINT).build();
+            serviceClient = new ServiceClientImpl(uri, httpClient, null);
         }
         return serviceClient;
     }
@@ -174,8 +173,8 @@ public class SecuredBpmClient implements BpmClient {
     @Override
     public ProcessAppsClient getProcessAppsClient() {
         if (processAppsClient == null) {
-            processAppsClient = new ProcessAppsClientImpl(new SafeUriBuilder(rootUri)
-                    .addPath(PROCESS_APPS_ENDPOINT).build(), httpClient, httpContext);
+            final URI uri = new SafeUriBuilder(rootUri).addPath(PROCESS_APPS_ENDPOINT).build();
+            processAppsClient = new ProcessAppsClientImpl(uri, httpClient, null);
         }
         return processAppsClient;
     }
@@ -186,8 +185,8 @@ public class SecuredBpmClient implements BpmClient {
     @Override
     public QueryClient getTaskQueryClient() {
         if (taskQueryClient == null) {
-            taskQueryClient = new QueryClientImpl(new SafeUriBuilder(rootUri)
-                    .addPath(TASKS_QUERY_ENDPOINT).build(), httpClient, httpContext);
+            final URI uri = new SafeUriBuilder(rootUri).addPath(TASKS_QUERY_ENDPOINT).build();
+            taskQueryClient = new QueryClientImpl(uri, httpClient, null);
         }
         return taskQueryClient;
     }
@@ -198,8 +197,8 @@ public class SecuredBpmClient implements BpmClient {
     @Override
     public QueryClient getTaskTemplateQueryClient() {
         if (taskTemplateQueryClient == null) {
-            taskTemplateQueryClient = new QueryClientImpl(new SafeUriBuilder(rootUri)
-                    .addPath(TASKS_TEMPLATE_QUERY_ENDPOINT).build(), httpClient, httpContext);
+            final URI uri = new SafeUriBuilder(rootUri).addPath(TASKS_TEMPLATE_QUERY_ENDPOINT).build();
+            taskTemplateQueryClient = new QueryClientImpl(uri, httpClient, null);
         }
         return taskTemplateQueryClient;
     }
@@ -210,8 +209,8 @@ public class SecuredBpmClient implements BpmClient {
     @Override
     public QueryClient getProcessQueryClient() {
         if (processQueryClient == null) {
-            processQueryClient = new QueryClientImpl(new SafeUriBuilder(rootUri)
-                    .addPath(PROCESS_QUERY_ENDPOINT).build(), httpClient, httpContext);
+            final URI uri = new SafeUriBuilder(rootUri).addPath(PROCESS_QUERY_ENDPOINT).build();
+            processQueryClient = new QueryClientImpl(uri, httpClient, null);
         }
         return processQueryClient;
     }
@@ -235,20 +234,22 @@ public class SecuredBpmClient implements BpmClient {
          * @param trustStore Storage facility for cryptographic keys and certificates {@link java.security.KeyStore}.
          * @throws Exception if there was an exception during initialization.
          */
-        public NoSslSocketFactory(KeyStore trustStore) throws Exception {
+        NoSslSocketFactory(KeyStore trustStore) throws Exception {
 
             super(trustStore);
             TrustManager trustManager = new X509TrustManager() {
 
-                public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {}
+                public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+                }
 
-                public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {}
+                public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+                }
 
                 public X509Certificate[] getAcceptedIssuers() {
                     return null;
                 }
             };
-            sslContext.init(null, new TrustManager[] { trustManager }, null);
+            sslContext.init(null, new TrustManager[]{trustManager}, null);
         }
 
         @Override

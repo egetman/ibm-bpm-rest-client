@@ -4,21 +4,23 @@ import com.google.common.base.Joiner;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import org.apache.http.annotation.Immutable;
+
 import org.apache.http.client.HttpClient;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.Args;
+
 import ru.bpmink.bpm.api.client.ServiceClient;
 import ru.bpmink.bpm.model.common.RestRootEntity;
 import ru.bpmink.bpm.model.service.ServiceData;
 import ru.bpmink.util.SafeUriBuilder;
 
 import javax.annotation.Nonnull;
+import javax.annotation.concurrent.Immutable;
 import java.net.URI;
 import java.util.Map;
 
 @Immutable
-public class ServiceClientImpl extends BaseClient implements ServiceClient {
+final class ServiceClientImpl extends BaseClient implements ServiceClient {
 
     private final URI rootUri;
     private final HttpClient httpClient;
@@ -46,6 +48,7 @@ public class ServiceClientImpl extends BaseClient implements ServiceClient {
 
     /**
      * {@inheritDoc}
+     *
      * @throws IllegalArgumentException {@inheritDoc}
      */
     @Override
@@ -62,6 +65,7 @@ public class ServiceClientImpl extends BaseClient implements ServiceClient {
 
     /**
      * {@inheritDoc}
+     *
      * @throws IllegalArgumentException {@inheritDoc}
      */
     @Override
@@ -84,11 +88,11 @@ public class ServiceClientImpl extends BaseClient implements ServiceClient {
 
     /**
      * {@inheritDoc}
+     *
      * @throws IllegalArgumentException {@inheritDoc}
      */
     @Override
-    public RestRootEntity<ServiceData> setServiceData(@Nonnull String instanceId,
-                                                      @Nonnull String field,
+    public RestRootEntity<ServiceData> setServiceData(@Nonnull String instanceId, @Nonnull String field,
                                                       @Nonnull Object value) {
         instanceId = Args.notNull(instanceId, "Instance id (instanceId)");
         field = Args.notNull(field, "Field name (field)");
@@ -101,7 +105,6 @@ public class ServiceClientImpl extends BaseClient implements ServiceClient {
 
         return makePost(httpClient, httpContext, uri, new TypeToken<RestRootEntity<ServiceData>>() {});
     }
-
 
 
 }

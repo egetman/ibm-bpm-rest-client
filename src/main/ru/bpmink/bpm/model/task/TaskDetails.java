@@ -2,13 +2,12 @@ package ru.bpmink.bpm.model.task;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.gson.annotations.SerializedName;
+
 import ru.bpmink.bpm.model.common.RestEntity;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 public class TaskDetails extends RestEntity {
 
@@ -16,7 +15,8 @@ public class TaskDetails extends RestEntity {
     private static final List<String> EMPTY_NEXT_TASK_IDS = Lists.newArrayList();
     private static final TaskInstanceData EMPTY_DATA = new TaskInstanceData();
 
-    public TaskDetails() {}
+    public TaskDetails() {
+    }
 
     //Time the task instance is set into the ready state - this also happens when the task
     //is restarted or when a claim is canceled.

@@ -1,5 +1,6 @@
 package ru.bpmink.util;
 
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class Constants {
 
     /**

@@ -5,12 +5,14 @@ import com.google.common.io.ByteSource;
 import com.google.common.io.Closeables;
 import com.google.common.io.Resources;
 import com.google.gson.Gson;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
 import ru.bpmink.bpm.api.impl.BpmClientFactory;
 import ru.bpmink.bpm.model.common.RestRootEntity;
 import ru.bpmink.bpm.model.other.exposed.Item;
@@ -49,15 +51,12 @@ public class TaskClientTest {
     }
 
     private ProcessDetails getHiringSampleProcessInstance() {
-        return bpmClient.getProcessClient()
-                .startProcess(hiringSampleMetadata.getItemId(),
-                        hiringSampleMetadata.getProcessAppId(),
-                        null,
-                        null,
-                        null)
-                .getPayload();
+        final String itemId = hiringSampleMetadata.getItemId();
+        final String processAppId = hiringSampleMetadata.getProcessAppId();
+        return bpmClient.getProcessClient().startProcess(itemId, processAppId, null, null, null).getPayload();
     }
 
+    @SuppressWarnings("Duplicates")
     private void initializeClient() {
         final URL url = Resources.getResource("server.properties");
         final ByteSource byteSource = Resources.asByteSource(url);
@@ -67,9 +66,10 @@ public class TaskClientTest {
         try {
             inputStream = byteSource.openBufferedStream();
             properties.load(inputStream);
-            bpmClient = BpmClientFactory.createClient(properties.getProperty("secure.url"),
-                    properties.getProperty("default.user"),
-                    properties.getProperty("default.password"));
+            final String serverUrl = properties.getProperty("secure.url");
+            final String user = properties.getProperty("default.user");
+            final String password = properties.getProperty("default.password");
+            bpmClient = BpmClientFactory.createClient(serverUrl, user, password);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -94,6 +94,7 @@ public class TaskClientTest {
         Assert.assertEquals(taskDetails.getPayload().getTkiid(), submitJobRequisition.getTkiid(), "Tkiid must match");
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void taskDetailsFetchThrowExceptionWhenNullTkiid() {
         bpmClient.getTaskClient().getTask(null);
@@ -107,12 +108,13 @@ public class TaskClientTest {
         TaskDetails submitJobRequisition = processDetails.getTasks().iterator().next();
 
         RestRootEntity<ServiceData> taskData = bpmClient.getTaskClient().getTaskData(submitJobRequisition.getTkiid(),
-                                                                                    "instanceId", "currentPosition");
+                "instanceId", "currentPosition");
         logger.info(taskData.describe());
         Assert.assertNotNull(taskData, "Task data could not be null");
         Assert.assertFalse(taskData.getPayload().getVariables().isEmpty(), "Default parameters should be present");
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void taskDataFetchThrowExceptionWhenNullTkiid() {
         bpmClient.getTaskClient().getTaskData(null, "instanceId", "currentPosition");
@@ -133,8 +135,8 @@ public class TaskClientTest {
         Map<String, Object> parameters = Maps.newHashMap();
         parameters.put("currentPosition", position);
 
-        TaskDetails completedTask = bpmClient.getTaskClient().completeTask(submitJobRequisition.getTkiid(), parameters)
-                .getPayload();
+        TaskDetails completedTask = bpmClient.getTaskClient().completeTask(submitJobRequisition.getTkiid(),
+                parameters).getPayload();
 
         logger.info(completedTask.describe());
         Assert.assertEquals(completedTask.getTkiid(), submitJobRequisition.getTkiid(), "Tkiid should match");
@@ -151,6 +153,7 @@ public class TaskClientTest {
         Assert.assertEquals(position.getPositionType(), "Existing");
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void taskCompleteThrowExceptionWhenNullTkiid() {
         bpmClient.getTaskClient().completeTask(null, null);
@@ -168,16 +171,18 @@ public class TaskClientTest {
 
         logger.info(taskActions.describe());
         Assert.assertEquals(taskActions.getTaskActions().size(), 1, "Available actions was submitted for 1 task");
-        Assert.assertFalse(taskActions.getTaskActions().iterator().next().getActions().isEmpty(), "Actions should " +
-                "present for claimed task");
+        Assert.assertFalse(taskActions.getTaskActions().iterator().next().getActions().isEmpty(),
+                "Actions should " + "present for claimed task");
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void taskAvailableActionsThrowExceptionWhenNullTkiid() {
         bpmClient.getTaskClient().getAvailableActions((String) null);
         Assert.assertTrue(false, "Exception must be thrown before this assert");
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void taskAvailableActionsThrowExceptionWhenEmptyTkiids() {
         bpmClient.getTaskClient().getAvailableActions(Collections.<String>emptyList());
@@ -215,6 +220,7 @@ public class TaskClientTest {
     }
 
     //Variable for Submit Requisition task
+    @SuppressWarnings("unused")
     private class Position {
 
         private String positionType;
@@ -222,11 +228,12 @@ public class TaskClientTest {
         private String jobTitle;
         private String iId;
 
-        public String getPositionType() {
+        String getPositionType() {
             return positionType;
         }
 
-        public void setPositionType(String positionType) {
+        @SuppressWarnings("SameParameterValue")
+        void setPositionType(String positionType) {
             this.positionType = positionType;
         }
 
@@ -255,6 +262,7 @@ public class TaskClientTest {
         }
     }
 
+    @SuppressWarnings("unused")
     private class Person {
 
         private String lastName;

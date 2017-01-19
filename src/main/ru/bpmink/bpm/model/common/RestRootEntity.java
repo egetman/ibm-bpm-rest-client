@@ -10,8 +10,10 @@ import static ru.bpmink.util.Constants.SPACE;
 
 /**
  * This class represent an api call result.
+ *
  * @param <T> is one of {@link ru.bpmink.bpm.model.common.RestEntity} instances.
  */
+@SuppressWarnings("unused")
 public class RestRootEntity<T extends Describable> extends RestEntity {
 
     //The status of the API call.
@@ -28,8 +30,9 @@ public class RestRootEntity<T extends Describable> extends RestEntity {
 
     /**
      * @return true if the API call was unsuccessful, and
-     *      {@link ru.bpmink.bpm.model.common.RestRootEntity} contains exception information.
+     * {@link ru.bpmink.bpm.model.common.RestRootEntity} contains exception information.
      */
+    @SuppressWarnings("WeakerAccess")
     public boolean isExceptional() {
         return exception != null;
     }
@@ -37,10 +40,12 @@ public class RestRootEntity<T extends Describable> extends RestEntity {
     /**
      * @return Success API call data.
      * @throws ru.bpmink.bpm.model.common.RestException if the API call was unsuccessful,
-     *      and {@link ru.bpmink.bpm.model.common.RestRootEntity} contain any exception details.
+     *                                                  and {@link ru.bpmink.bpm.model.common.RestRootEntity} contain
+     *                                                  any exception details.
      */
     public T getPayload() {
         if (isExceptional()) {
+            //noinspection ConstantConditions
             throw exception;
         }
         return payload;

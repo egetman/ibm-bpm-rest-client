@@ -4,9 +4,11 @@ import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Collections2;
 import com.google.gson.reflect.TypeToken;
+
 import org.apache.http.client.HttpClient;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.Args;
+
 import ru.bpmink.bpm.api.client.QueryClient;
 import ru.bpmink.bpm.model.common.RestRootEntity;
 import ru.bpmink.bpm.model.query.InteractionFilter;
@@ -22,10 +24,12 @@ import ru.bpmink.util.SafeUriBuilder;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.Immutable;
 import java.net.URI;
 import java.util.List;
 
-public class QueryClientImpl extends BaseClient implements QueryClient {
+@Immutable
+final class QueryClientImpl extends BaseClient implements QueryClient {
 
     private final URI rootUri;
     private final HttpClient httpClient;
@@ -69,8 +73,7 @@ public class QueryClientImpl extends BaseClient implements QueryClient {
      * {@inheritDoc}
      */
     @Override
-    public RestRootEntity<QueryList> listQueries(@Nullable String processAppName,
-                                                 @Nullable QueryKind kind,
+    public RestRootEntity<QueryList> listQueries(@Nullable String processAppName, @Nullable QueryKind kind,
                                                  @Nullable List<QueryAttribute> content) {
 
         SafeUriBuilder uri = new SafeUriBuilder(rootUri).addPath(QUERIES);
@@ -82,8 +85,8 @@ public class QueryClientImpl extends BaseClient implements QueryClient {
             uri.addParameter(KIND, kind.name());
         }
         if (content != null) {
-            uri.addParameter(CONTENT, Joiner.on(DEFAULT_SEPARATOR).skipNulls().join(
-                    Collections2.transform(content, new ContentFunction())));
+            uri.addParameter(CONTENT, Joiner.on(DEFAULT_SEPARATOR).skipNulls().join(Collections2.transform(content,
+                    new ContentFunction())));
         }
 
         return makeGet(httpClient, httpContext, uri.build(), new TypeToken<RestRootEntity<QueryList>>() {});
@@ -91,6 +94,7 @@ public class QueryClientImpl extends BaseClient implements QueryClient {
 
     /**
      * {@inheritDoc}
+     *
      * @throws IllegalArgumentException {@inheritDoc}
      */
     @Override
@@ -99,8 +103,7 @@ public class QueryClientImpl extends BaseClient implements QueryClient {
                                                         @Nullable InteractionFilter interactionFilter,
                                                         @Nullable String processAppName,
                                                         @Nullable List<SortAttribute> sortAttributes,
-                                                        @Nullable Integer size,
-                                                        @Nullable Boolean filterByCurrentUser) {
+                                                        @Nullable Integer size, @Nullable Boolean filterByCurrentUser) {
 
         query = Args.notNull(query, "Search query");
         String querySearch = Args.notNull(query.getName(), "Search query name");
@@ -108,8 +111,7 @@ public class QueryClientImpl extends BaseClient implements QueryClient {
         SafeUriBuilder uri = new SafeUriBuilder(rootUri).addPath(QUERY).addPath(querySearch);
 
         if (selectedAttributes != null) {
-            uri.addParameter(SELECTED_ATTRIBUTES, Joiner.on(DEFAULT_SEPARATOR)
-                    .skipNulls()
+            uri.addParameter(SELECTED_ATTRIBUTES, Joiner.on(DEFAULT_SEPARATOR).skipNulls()
                     .join(Collections2.transform(selectedAttributes, new NameFunction())));
         }
         if (interactionFilter != null) {
@@ -119,8 +121,7 @@ public class QueryClientImpl extends BaseClient implements QueryClient {
             uri.addParameter(PROCESS_APP_NAME, processAppName);
         }
         if (sortAttributes != null) {
-            uri.addParameter(SORT_ATTRIBUTES, Joiner.on(DEFAULT_SEPARATOR)
-                    .skipNulls()
+            uri.addParameter(SORT_ATTRIBUTES, Joiner.on(DEFAULT_SEPARATOR).skipNulls()
                     .join(Collections2.transform(sortAttributes, new SortFunction())));
         }
         if (size != null) {
@@ -135,6 +136,7 @@ public class QueryClientImpl extends BaseClient implements QueryClient {
 
     /**
      * {@inheritDoc}
+     *
      * @throws IllegalArgumentException {@inheritDoc}
      */
     @Override
@@ -163,6 +165,7 @@ public class QueryClientImpl extends BaseClient implements QueryClient {
 
     /**
      * {@inheritDoc}
+     *
      * @throws IllegalArgumentException {@inheritDoc}
      */
     @Override
@@ -181,6 +184,7 @@ public class QueryClientImpl extends BaseClient implements QueryClient {
 
 
     private static class ContentFunction implements Function<QueryAttribute, String> {
+
         @Override
         public String apply(QueryAttribute input) {
             return input.getContent();
@@ -188,6 +192,7 @@ public class QueryClientImpl extends BaseClient implements QueryClient {
     }
 
     private static class NameFunction implements Function<QueryAttribute, String> {
+
         @Override
         public String apply(QueryAttribute input) {
             return input.getName();
@@ -195,6 +200,7 @@ public class QueryClientImpl extends BaseClient implements QueryClient {
     }
 
     private static class SortFunction implements Function<SortAttribute, String> {
+
         @Override
         public String apply(SortAttribute input) {
             return input.getName() + " " + input.getSortOrder().name();

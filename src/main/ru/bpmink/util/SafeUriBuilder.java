@@ -25,6 +25,7 @@ public class SafeUriBuilder extends URIBuilder {
     /**
      * Constructs an empty instance.
      */
+    @SuppressWarnings("unused")
     public SafeUriBuilder() {
         super();
     }
@@ -96,6 +97,7 @@ public class SafeUriBuilder extends URIBuilder {
         return this.addParameter(param, String.valueOf(value));
     }
 
+    @SuppressWarnings("WeakerAccess")
     public SafeUriBuilder addParameter(String param, Date value, Format format) {
         return this.addParameter(param, format.format(value));
     }

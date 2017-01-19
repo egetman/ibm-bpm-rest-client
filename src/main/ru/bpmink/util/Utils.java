@@ -13,6 +13,7 @@ public class Utils {
         return inputStreamToString(inputStream, Charset.forName("UTF-8"));
     }
 
+    @SuppressWarnings("unused")
     public static String inputStreamToString(InputStream inputStream, String charset) throws IOException {
         return inputStreamToString(inputStream, Charset.forName(charset));
     }
@@ -27,6 +28,7 @@ public class Utils {
      *      other than the end of the file, if the input stream has been closed, or
      *      if some other I/O error occurs.
      */
+    @SuppressWarnings("WeakerAccess")
     public static String inputStreamToString(InputStream inputStream, Charset charset) throws IOException {
         if (inputStream == null) {
             return null;

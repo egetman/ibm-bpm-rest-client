@@ -16,10 +16,10 @@ public interface ServiceClient {
      * Get data from specified running service.
      *
      * @param instanceId The "instanceId" parameter is either a service instance id (@numeric) or
-     *      a task instance id (@numeric).
-     * @param fields Fields names to fetch variables values.
+     *                   a task instance id (@numeric).
+     * @param fields     Fields names to fetch variables values.
      * @return {@link ru.bpmink.bpm.model.common.RestRootEntity} instance, which holds service data information:
-     *      {@link ru.bpmink.bpm.model.service.ServiceData}
+     * {@link ru.bpmink.bpm.model.service.ServiceData}
      * @throws IllegalArgumentException if instanceId is null
      */
     RestRootEntity<ServiceData> getServiceData(@Nonnull String instanceId, @Nullable String... fields);
@@ -28,11 +28,11 @@ public interface ServiceClient {
      * This method sets one or more variables within a running service.
      *
      * @param instanceId The "instanceId" parameter is either a service instance id (@numeric) or
-     *      a task instance id (@numeric).
+     *                   a task instance id (@numeric).
      * @param parameters A {@link Map} that contains one or more variable settings.
-     *      Each of the variables will be set in the context of the running task.
+     *                   Each of the variables will be set in the context of the running task.
      * @return {@link ru.bpmink.bpm.model.common.RestRootEntity} instance, which holds service data information:
-     *      {@link ru.bpmink.bpm.model.service.ServiceData}
+     * {@link ru.bpmink.bpm.model.service.ServiceData}
      * @throws IllegalArgumentException if instanceId or jsonParameters is null.
      */
     RestRootEntity<ServiceData> setServiceData(@Nonnull String instanceId, @Nonnull Map<String, Object> parameters);
@@ -41,16 +41,15 @@ public interface ServiceClient {
      * This method sets one variable within a running service.
      *
      * @param instanceId The "instanceId" parameter is either a service instance id (@numeric) or
-     *      a task instance id (@numeric).
-     * @param field The name of the variable to be set.
-     * @param value Object, that represents the value to be assigned to the variable.
-     *      Note: Object will be converted to json for interacting with task.
+     *                   a task instance id (@numeric).
+     * @param field      The name of the variable to be set.
+     * @param value      Object, that represents the value to be assigned to the variable.
+     *                   Note: Object will be converted to json for interacting with task.
      * @return {@link ru.bpmink.bpm.model.common.RestRootEntity} instance, which holds service data information:
-     *      {@link ru.bpmink.bpm.model.service.ServiceData}
+     * {@link ru.bpmink.bpm.model.service.ServiceData}
      * @throws IllegalArgumentException if instanceId, field or value is null.
      */
-    RestRootEntity<ServiceData> setServiceData(@Nonnull String instanceId,
-                                               @Nonnull String field,
+    RestRootEntity<ServiceData> setServiceData(@Nonnull String instanceId, @Nonnull String field,
                                                @Nonnull Object value);
 
 }

@@ -3,12 +3,14 @@ package ru.bpmink.bpm.api.client;
 import com.google.common.io.ByteSource;
 import com.google.common.io.Closeables;
 import com.google.common.io.Resources;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
 import ru.bpmink.bpm.api.impl.BpmClientFactory;
 import ru.bpmink.bpm.model.common.RestRootEntity;
 import ru.bpmink.bpm.model.other.exposed.Item;
@@ -40,6 +42,7 @@ public class ProcessClientTest {
         hiringSampleMetadata = bpmClient.getExposedClient().getItemByName("Standard HR Open New Position");
     }
 
+    @SuppressWarnings("Duplicates")
     private void initializeClient() {
         final URL url = Resources.getResource("server.properties");
         final ByteSource byteSource = Resources.asByteSource(url);
@@ -49,9 +52,10 @@ public class ProcessClientTest {
         try {
             inputStream = byteSource.openBufferedStream();
             properties.load(inputStream);
-            bpmClient = BpmClientFactory.createClient(properties.getProperty("secure.url"),
-                    properties.getProperty("default.user"),
-                    properties.getProperty("default.password"));
+            final String serverUrl = properties.getProperty("secure.url");
+            final String user = properties.getProperty("default.user");
+            final String password = properties.getProperty("default.password");
+            bpmClient = BpmClientFactory.createClient(serverUrl, user, password);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -74,8 +78,8 @@ public class ProcessClientTest {
             BranchId is exposed item branchId (item.getBranchId())
         */
 
-        RestRootEntity<ProcessDetails> startedProcessInstance = bpmClient.getProcessClient().startProcess(
-                hiringSampleMetadata.getItemId(), hiringSampleMetadata.getProcessAppId(), null, null, null);
+        RestRootEntity<ProcessDetails> startedProcessInstance = bpmClient.getProcessClient().startProcess
+                (hiringSampleMetadata.getItemId(), hiringSampleMetadata.getProcessAppId(), null, null, null);
         logger.info(startedProcessInstance.describe());
 
         Assert.assertNotNull(startedProcessInstance.getPayload(), "Process payload should be filled");
@@ -83,12 +87,14 @@ public class ProcessClientTest {
                 "Process state should be: " + ProcessState.STATE_RUNNING);
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void processStartThrowExceptionWhenNullBpdId() {
         bpmClient.getProcessClient().startProcess(null, hiringSampleMetadata.getProcessAppId(), null, null, null);
         Assert.assertTrue(false, "Exception must be thrown before this assert");
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void processStartThrowExceptionWhenNullOptionalIds() {
         bpmClient.getProcessClient().startProcess(hiringSampleMetadata.getItemId(), null, null, null, null);

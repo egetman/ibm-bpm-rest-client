@@ -4,6 +4,7 @@ import com.google.common.base.MoreObjects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.annotations.SerializedName;
+
 import ru.bpmink.bpm.model.common.RestEntity;
 
 import java.util.List;
@@ -14,7 +15,9 @@ public class TaskInstanceData extends RestEntity {
     private static final Map<String, Object> EMPTY_VARIABLES = Maps.newHashMap();
     private static final List<Object> EMPTY_BUSINESS_DATA = Lists.newArrayList();
 
-    public TaskInstanceData() {}
+    @SuppressWarnings("WeakerAccess")
+    public TaskInstanceData() {
+    }
 
     //Variables associated with specified task instance.
     @SerializedName("variables")

@@ -4,10 +4,11 @@ import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import org.apache.http.annotation.Immutable;
+
 import org.apache.http.client.HttpClient;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.Args;
+
 import ru.bpmink.bpm.api.client.ProcessClient;
 import ru.bpmink.bpm.model.common.RestRootEntity;
 import ru.bpmink.bpm.model.process.ProcessDetails;
@@ -15,11 +16,12 @@ import ru.bpmink.util.SafeUriBuilder;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.Immutable;
 import java.net.URI;
 import java.util.Map;
 
 @Immutable
-class ProcessClientImpl extends BaseClient implements ProcessClient {
+final class ProcessClientImpl extends BaseClient implements ProcessClient {
 
     private final URI rootUri;
     private final HttpClient httpClient;
@@ -54,13 +56,12 @@ class ProcessClientImpl extends BaseClient implements ProcessClient {
     /**
      * <p>Will use only one parameter of processAppId, snapshotId or branchId. Which one is not specified.</p>
      * {@inheritDoc}
+     *
      * @throws IllegalArgumentException {@inheritDoc}
      */
     @Override
-    public RestRootEntity<ProcessDetails> startProcess(@Nonnull String bpdId,
-                                                       @Nullable String processAppId,
-                                                       @Nullable String snapshotId,
-                                                       @Nullable String branchId,
+    public RestRootEntity<ProcessDetails> startProcess(@Nonnull String bpdId, @Nullable String processAppId,
+                                                       @Nullable String snapshotId, @Nullable String branchId,
                                                        @Nullable Map<String, Object> input) {
 
         bpdId = Args.notNull(bpdId, "BusinessProcessDefinition (bpdId)");
@@ -73,8 +74,7 @@ class ProcessClientImpl extends BaseClient implements ProcessClient {
         Map.Entry<String, String> entry = reduce(choice);
 
         SafeUriBuilder uri = new SafeUriBuilder(rootUri).addParameter(ACTION, ACTION_START)
-                                                        .addParameter(PROCESS_DEFINITION_ID, bpdId)
-                                                        .addParameter(entry.getKey(), entry.getValue());
+                .addParameter(PROCESS_DEFINITION_ID, bpdId).addParameter(entry.getKey(), entry.getValue());
 
         if (input != null && input.size() > 0) {
             uri.addParameter(PARAMS, gson.toJson(input));
@@ -95,6 +95,7 @@ class ProcessClientImpl extends BaseClient implements ProcessClient {
 
     /**
      * {@inheritDoc}
+     *
      * @throws IllegalArgumentException {@inheritDoc}
      */
     @Override
@@ -104,6 +105,7 @@ class ProcessClientImpl extends BaseClient implements ProcessClient {
 
     /**
      * {@inheritDoc}
+     *
      * @throws IllegalArgumentException {@inheritDoc}
      */
     @Override
@@ -113,6 +115,7 @@ class ProcessClientImpl extends BaseClient implements ProcessClient {
 
     /**
      * {@inheritDoc}
+     *
      * @throws IllegalArgumentException {@inheritDoc}
      */
     @Override
@@ -120,7 +123,7 @@ class ProcessClientImpl extends BaseClient implements ProcessClient {
         return changeProcessState(piid, ACTION_TERMINATE);
     }
 
-    private RestRootEntity<ProcessDetails> changeProcessState(String piid,  String action) {
+    private RestRootEntity<ProcessDetails> changeProcessState(String piid, String action) {
         piid = Args.notNull(piid, "ProcessInstanceID (piid)");
 
         URI uri = new SafeUriBuilder(rootUri).addPath(piid).addParameter(ACTION, action).build();
@@ -130,6 +133,7 @@ class ProcessClientImpl extends BaseClient implements ProcessClient {
 
     /**
      * {@inheritDoc}
+     *
      * @throws IllegalArgumentException {@inheritDoc}
      */
     @Override

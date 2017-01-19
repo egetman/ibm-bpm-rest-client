@@ -4,12 +4,14 @@ package ru.bpmink.bpm.api.client;
 import com.google.common.io.ByteSource;
 import com.google.common.io.Closeables;
 import com.google.common.io.Resources;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
 import ru.bpmink.bpm.api.impl.BpmClientFactory;
 import ru.bpmink.bpm.model.common.RestRootEntity;
 import ru.bpmink.bpm.model.other.exposed.ExposedItems;
@@ -37,9 +39,10 @@ public class ExposedClientTest {
         try {
             inputStream = byteSource.openBufferedStream();
             properties.load(inputStream);
-            bpmClient = BpmClientFactory.createClient(properties.getProperty("default.url"),
-                    properties.getProperty("default.user"),
-                    properties.getProperty("default.password"));
+            final String serverUrl = properties.getProperty("default.url");
+            final String user = properties.getProperty("default.user");
+            final String password = properties.getProperty("default.password");
+            bpmClient = BpmClientFactory.createClient(serverUrl, user, password);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -92,8 +95,8 @@ public class ExposedClientTest {
         RestRootEntity<ExposedItems> entity = bpmClient.getExposedClient().listItems(ItemType.SCOREBOARD);
         logger.info(entity.describe());
         for (Item item : entity.getPayload().getExposedItems()) {
-            Assert.assertEquals(item.getItemType(), ItemType.SCOREBOARD, "Item should match type: "
-                    + ItemType.SCOREBOARD);
+            Assert.assertEquals(item.getItemType(), ItemType.SCOREBOARD,
+                    "Item should match type: " + ItemType.SCOREBOARD);
         }
     }
 
@@ -116,18 +119,21 @@ public class ExposedClientTest {
         Assert.assertEquals(entity.getId(), null);
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void exposedItemByNameThrowExceptionWhenNullItemType() {
         bpmClient.getExposedClient().getItemByName(null, "Standard HR Open New Position");
         Assert.assertTrue(false, "Exception must be thrown before this assert");
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void exposedItemByNameThrowExceptionWhenNullName() {
         bpmClient.getExposedClient().getItemByName(ItemType.PROCESS, null);
         Assert.assertTrue(false, "Exception must be thrown before this assert");
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void exposedItemByNameThrowExceptionWhenNullItemTypeAndName() {
         bpmClient.getExposedClient().getItemByName(null, null);
