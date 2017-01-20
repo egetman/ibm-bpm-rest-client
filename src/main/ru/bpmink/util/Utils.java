@@ -5,15 +5,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
 import java.nio.charset.Charset;
+import java.util.Date;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class Utils {
 
     public static String inputStreamToString(InputStream inputStream) throws IOException {
         return inputStreamToString(inputStream, Charset.forName("UTF-8"));
     }
 
-    @SuppressWarnings("unused")
     public static String inputStreamToString(InputStream inputStream, String charset) throws IOException {
         return inputStreamToString(inputStream, Charset.forName(charset));
     }
@@ -41,6 +42,18 @@ public class Utils {
             }
             return arrayOutputStream.toString(charset.name());
         }
+    }
+
+    /**
+     * Date coping utility, used when you don't wan't to expose internal object state.
+     * @param source Is a date argument to copy.
+     * @return {@link Date} instance.
+     */
+    public static Date cloneDate(Date source) {
+        if (source != null) {
+            return new Date(source.getTime());
+        }
+        return null;
     }
 
     /**

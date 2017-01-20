@@ -5,6 +5,7 @@ import ru.bpmink.bpm.model.common.RestEntity;
 import ru.bpmink.bpm.model.process.ExecutionState;
 import ru.bpmink.bpm.model.process.ProcessState;
 import ru.bpmink.bpm.model.task.TaskKind;
+import ru.bpmink.util.Utils;
 
 import java.util.Date;
 
@@ -128,7 +129,7 @@ public class QueryResult extends RestEntity {
 	}
 
 	public Date getActivated() {
-		return activated;
+		return Utils.cloneDate(activated);
 	}
 
 	public String getPiName() {
@@ -156,7 +157,7 @@ public class QueryResult extends RestEntity {
 	}
 
 	public Date getDue() {
-		return due;
+		return Utils.cloneDate(due);
 	}
 
 	public String getProcessAppAcronym() {
@@ -212,7 +213,7 @@ public class QueryResult extends RestEntity {
 	}
 
 	public void setActivated(Date activated) {
-		this.activated = activated;
+        this.activated = Utils.cloneDate(activated);
 	}
 
 	public void setPiName(String piName) {
@@ -240,7 +241,7 @@ public class QueryResult extends RestEntity {
 	}
 
 	public void setDue(Date due) {
-		this.due = due;
+		this.due = Utils.cloneDate(due);
 	}
 
 	public void setProcessAppAcronym(String processAppAcronym) {
@@ -272,7 +273,7 @@ public class QueryResult extends RestEntity {
 	}
 
 	public Date getSentTime() {
-		return sentTime;
+        return Utils.cloneDate(sentTime);
 	}
 
 	public void setClosedBy(String closedBy) {
@@ -284,7 +285,7 @@ public class QueryResult extends RestEntity {
 	}
 
 	public void setSentTime(Date sentTime) {
-		this.sentTime = sentTime;
+		this.sentTime = Utils.cloneDate(sentTime);
 	}
 	
 	public String getPtName() {

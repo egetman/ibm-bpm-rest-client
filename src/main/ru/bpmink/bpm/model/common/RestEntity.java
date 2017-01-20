@@ -9,7 +9,7 @@ public class RestEntity implements Describable {
 
     @Override
     public String describe() {
-        ToStringStyle stringStyle = Styles.shortClassNameWithLineBreak;
+        ToStringStyle stringStyle = Styles.SHORT_CLASS_WITH_LINE_BREAK;
         return new ReflectionToStringBuilder(this, stringStyle).build();
     }
 

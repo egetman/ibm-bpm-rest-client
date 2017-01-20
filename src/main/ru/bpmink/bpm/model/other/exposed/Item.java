@@ -196,14 +196,19 @@ public class Item extends RestEntity {
      * @return The time, when snapshot is created.
      */
     public Date getSnapshotCreatedOn() {
-        return snapshotCreatedOn;
+        if (snapshotCreatedOn != null) {
+            return new Date(snapshotCreatedOn.getTime());
+        }
+        return null;
     }
 
     /**
      * @param snapshotCreatedOn the snapshotCreatedOn to set.
      */
     public void setSnapshotCreatedOn(Date snapshotCreatedOn) {
-        this.snapshotCreatedOn = snapshotCreatedOn;
+        if (snapshotCreatedOn != null) {
+            this.snapshotCreatedOn = new Date(snapshotCreatedOn.getTime());
+        }
     }
 
     /**

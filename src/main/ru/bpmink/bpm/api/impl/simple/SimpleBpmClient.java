@@ -17,6 +17,7 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import ru.bpmink.bpm.api.client.BpmClient;
 import ru.bpmink.bpm.api.client.ExposedClient;
 import ru.bpmink.bpm.api.client.ProcessAppsClient;
@@ -35,6 +36,7 @@ import javax.annotation.concurrent.Immutable;
  * {@link org.apache.http.impl.auth.BasicScheme} authentication.
  */
 @Immutable
+@SuppressFBWarnings("JCIP_FIELD_ISNT_FINAL_IN_IMMUTABLE_CLASS")
 public final class SimpleBpmClient implements BpmClient {
 
     private static final int TOTAL_CONN = 20;

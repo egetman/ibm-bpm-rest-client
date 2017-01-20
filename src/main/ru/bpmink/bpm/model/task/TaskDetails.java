@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.gson.annotations.SerializedName;
 
 import ru.bpmink.bpm.model.common.RestEntity;
+import ru.bpmink.util.Utils;
 
 import java.util.Date;
 import java.util.List;
@@ -144,7 +145,7 @@ public class TaskDetails extends RestEntity {
      *      task is restarted or when a claim is canceled.
      */
     public Date getActivationTime() {
-        return activationTime;
+        return Utils.cloneDate(activationTime);
     }
 
     /**
@@ -172,7 +173,7 @@ public class TaskDetails extends RestEntity {
      * @return Time when the task instance reached an end state.
      */
     public Date getCompletionTime() {
-        return completionTime;
+        return Utils.cloneDate(completionTime);
     }
 
     /**
@@ -207,7 +208,7 @@ public class TaskDetails extends RestEntity {
      * @return Time when the task is due.
      */
     public Date getDueTime() {
-        return dueTime;
+        return Utils.cloneDate(dueTime);
     }
 
     /**
@@ -228,7 +229,7 @@ public class TaskDetails extends RestEntity {
      * @return Last time a property of the task instance changed.
      */
     public Date getLastModificationTime() {
-        return lastModificationTime;
+        return Utils.cloneDate(lastModificationTime);
     }
 
     /**
@@ -320,7 +321,7 @@ public class TaskDetails extends RestEntity {
      * @return Time when the task was claimed or when an invocation task enters the running state.
      */
     public Date getStartTime() {
-        return startTime;
+        return Utils.cloneDate(startTime);
     }
 
     /**
@@ -352,7 +353,7 @@ public class TaskDetails extends RestEntity {
     }
 
     public void setActivationTime(Date activationTime) {
-        this.activationTime = activationTime;
+        this.activationTime = Utils.cloneDate(activationTime);
     }
 
     public void setAssignedTo(String assignedTo) {
@@ -368,7 +369,7 @@ public class TaskDetails extends RestEntity {
     }
 
     public void setCompletionTime(Date completionTime) {
-        this.completionTime = completionTime;
+        this.completionTime = Utils.cloneDate(completionTime);
     }
 
     public void setContainmentContextId(String containmentContextId) {
@@ -388,7 +389,7 @@ public class TaskDetails extends RestEntity {
     }
 
     public void setDueTime(Date dueTime) {
-        this.dueTime = dueTime;
+        this.dueTime = Utils.cloneDate(dueTime);
     }
 
     public void setExternalActivityId(String externalActivityId) {
@@ -400,7 +401,7 @@ public class TaskDetails extends RestEntity {
     }
 
     public void setLastModificationTime(Date lastModificationTime) {
-        this.lastModificationTime = lastModificationTime;
+        this.lastModificationTime = Utils.cloneDate(lastModificationTime);
     }
 
     public void setMilestone(String milestone) {
@@ -444,7 +445,7 @@ public class TaskDetails extends RestEntity {
     }
 
     public void setStartTime(Date startTime) {
-        this.startTime = startTime;
+        this.startTime = Utils.cloneDate(startTime);
     }
 
     public void setState(TaskState state) {

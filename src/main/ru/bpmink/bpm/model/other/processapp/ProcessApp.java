@@ -3,6 +3,7 @@ package ru.bpmink.bpm.model.other.processapp;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.Lists;
 import com.google.gson.annotations.SerializedName;
+
 import ru.bpmink.bpm.model.common.RestEntity;
 
 import java.util.Date;
@@ -12,7 +13,8 @@ public class ProcessApp extends RestEntity {
 
     private static final List<InstalledSnapshot> EMPTY_SNAPSHOTS = Lists.newArrayList();
 
-    public ProcessApp() {}
+    public ProcessApp() {
+    }
 
     //The ProcessApp identifier.
     @SerializedName("ID")
@@ -112,7 +114,10 @@ public class ProcessApp extends RestEntity {
      * @return The Date of last processApp modification
      */
     public Date getLastModified() {
-        return lastModified;
+        if (lastModified != null) {
+            return new Date(lastModified.getTime());
+        }
+        return null;
     }
 
     public void setId(String id) {
@@ -147,8 +152,13 @@ public class ProcessApp extends RestEntity {
         this.lastModifiedBy = lastModifiedBy;
     }
 
+    /**
+     * @param lastModified Is date of last processApp modification
+     */
     public void setLastModified(Date lastModified) {
-        this.lastModified = lastModified;
+        if (lastModified != null) {
+            this.lastModified = new Date(lastModified.getTime());
+        }
     }
 
 }

@@ -22,6 +22,7 @@ import org.apache.http.protocol.HTTP;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import ru.bpmink.bpm.api.client.BpmClient;
 import ru.bpmink.bpm.api.client.ExposedClient;
 import ru.bpmink.bpm.api.client.ProcessAppsClient;
@@ -48,6 +49,7 @@ import java.security.cert.X509Certificate;
  * Need to be carefully rewrite.
  */
 @Immutable
+@SuppressFBWarnings("JCIP_FIELD_ISNT_FINAL_IN_IMMUTABLE_CLASS")
 public final class SecuredBpmClient implements BpmClient {
 
     private static final String ROOT_ENDPOINT = "rest/bpm/wle/v1";

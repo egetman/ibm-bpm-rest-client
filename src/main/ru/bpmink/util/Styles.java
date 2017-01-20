@@ -18,7 +18,7 @@ import static ru.bpmink.util.Constants.TAB;
 public class Styles {
 
     //Can be just once instantiated.
-    public static ToStringStyle shortClassNameWithLineBreak = new ShortClassNameWithLineBreakToStringStyle();
+    public static final ToStringStyle SHORT_CLASS_WITH_LINE_BREAK = new ShortClassNameWithLineBreakToStringStyle();
 
     private static class DescribableStyle extends ToStringStyle {
 

@@ -28,6 +28,7 @@ import org.apache.http.protocol.HttpContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import ru.bpmink.bpm.api.client.BpmClient;
 import ru.bpmink.bpm.api.client.ExposedClient;
 import ru.bpmink.bpm.api.client.ProcessAppsClient;
@@ -36,7 +37,6 @@ import ru.bpmink.bpm.api.client.QueryClient;
 import ru.bpmink.bpm.api.client.ServiceClient;
 import ru.bpmink.bpm.api.client.TaskClient;
 import ru.bpmink.util.SafeUriBuilder;
-import ru.bpmink.util.Utils;
 
 import javax.annotation.concurrent.Immutable;
 import javax.security.auth.Subject;
@@ -48,8 +48,11 @@ import javax.security.auth.callback.UnsupportedCallbackException;
 import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.net.URI;
 import java.security.Principal;
 import java.security.PrivilegedAction;
@@ -62,6 +65,7 @@ import java.util.ArrayList;
 //TODO: Broken implementation. Rewrite and retest needed.
 @Immutable
 @SuppressWarnings("deprecation")
+@SuppressFBWarnings("JCIP_FIELD_ISNT_FINAL_IN_IMMUTABLE_CLASS")
 public final class KerberosBpmClient implements BpmClient {
 
     private static final int TOTAL_CONN = 20;
@@ -234,8 +238,14 @@ public final class KerberosBpmClient implements BpmClient {
         lines.add("\t\tkdc = " + kdc);
         lines.add("\t\tadmin_server = " + kdc);
         lines.add("\t}");
-        FileWriter writer = new FileWriter(tempFile);
-        Utils.writeLines(writer, lines);
+
+        try (Writer writer = new OutputStreamWriter(new FileOutputStream(tempFile), "UTF-8");
+             PrintWriter printWriter = new PrintWriter(writer)) {
+
+            for (String line : lines) {
+                printWriter.println(line);
+            }
+        }
         return tempFile;
     }
 
@@ -244,8 +254,13 @@ public final class KerberosBpmClient implements BpmClient {
         ArrayList<String> lines = Lists.newArrayList();
         lines.add("krb5.login { com.sun.security.auth.module.Krb5LoginModule required doNotPrompt=false debug=true "
                 + "useTicketCache=false; };");
-        FileWriter writer = new FileWriter(tempFile);
-        Utils.writeLines(writer, lines);
+        try (Writer writer = new OutputStreamWriter(new FileOutputStream(tempFile), "UTF-8");
+             PrintWriter printWriter = new PrintWriter(writer)) {
+
+            for (String line : lines) {
+                printWriter.println(line);
+            }
+        }
         return tempFile;
     }
 
@@ -279,7 +294,7 @@ public final class KerberosBpmClient implements BpmClient {
         private final CloseableHttpClient client;
         private final LoginContext loginContext;
         private final HttpClientContext httpContext;
-        private final boolean skipPortAtKerberosDatabaseLookup = true;
+        private static final boolean SKIP_PORT_AT_KERBEROS_DATABASE_LOOKUP = true;
 
         private KerberosHttpClient(String user, String password, String domain, String kdc) {
             try {
@@ -293,8 +308,8 @@ public final class KerberosBpmClient implements BpmClient {
                 System.setProperty("javax.security.auth.useSubjectCredsOnly", "false");
 
                 RegistryBuilder<AuthSchemeProvider> registryBuilder = RegistryBuilder.create();
-                final String id = AuthSchemes.SPNEGO;
-                final SPNegoSchemeFactory schemeFactory = new SPNegoSchemeFactory(skipPortAtKerberosDatabaseLookup);
+                String id = AuthSchemes.SPNEGO;
+                SPNegoSchemeFactory schemeFactory = new SPNegoSchemeFactory(SKIP_PORT_AT_KERBEROS_DATABASE_LOOKUP);
                 Lookup<AuthSchemeProvider> authSchemeRegistry = registryBuilder.register(id, schemeFactory).build();
 
                 client = HttpClients.custom().setDefaultAuthSchemeRegistry(authSchemeRegistry)
